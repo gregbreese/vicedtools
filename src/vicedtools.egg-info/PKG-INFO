@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: vicedtools
+Version: 0.0.1
+Summary: A collection of tools for school data in Victorian schools.
+Home-page: https://github.com/gregbreese/vicedtools
+Author: Greg Breese
+Author-email: gbr@gwsc.vic.edu.au
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/gregbreese/vicedtools/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# vicedtools
+
+This is a collection of utility tools for working with school data in Victorian schools.
+
+It currently includes tools for:
+
+* automating the exporting of data from Compass
+* creating import spreadsheets for OARS
+* uploading data to Google Cloud storage and bigquery for use with Data Studio
+* combining multiple PAT group reports
+* creating item analysis charts for PAT data
+
+
