@@ -4,6 +4,7 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import datetime
 
 # group report column headings
 COL_NAMES_FRONT = ["Unique ID",
@@ -132,6 +133,60 @@ class PATResults:
                 inplace=True)
             return PATResults(self.test, self.number, self.question_scales, results)
 
+class PATResultsCollection:
+    '''A container for PATResults for different tests and test numbers.'''
+
+    def __init__(self):
+        self.tests = {"Maths":{},
+                      "Reading":{}}
+    def addResults(self,patresults):
+        '''Adds the given PATResults to the collection.'''
+        test = patresults.test
+        number = patresults.number
+        if number in self.tests[test]:
+            self.tests[test][number] += patresults
+        else:
+            self.tests[test][number] = patresults
+    
+    def getResults(self,test,number):
+        '''Return the results for a particular test and number.'''
+        return self.tests[test][number]
+    
+    def exportScores(self, recent=False):
+        '''Exports all PAT scores as a single DataFrame.
+        
+        Arguments
+        recent: if true, only export each student's most recent result
+        '''
+        export_columns = ['Username',
+                            'Completed',
+                            'Year level (at time of test)',
+                            'Test',
+                            'Number',
+                            'Score',
+                            'Scale',
+                            'Score category']
+        results_columns = ['Username',
+                            'Completed',
+                            'Year level (at time of test)',
+                            'Score',
+                            'Scale']
+        export = pd.DataFrame(columns=export_columns)
+        
+        for test in self.tests:
+            for number in self.tests[test]:
+                temp = self.tests[test][number].results[results_columns].copy()
+                temp['Test'] = test
+                temp['Number'] = number
+                temp['Score category'] = temp.apply(lambda x: score_categoriser(test, x['Year level (at time of test)'], x["Scale"]), axis=1)
+                temp['Completed'] = pd.to_datetime(temp['Completed'], format="%d-%m-%Y %H:%M:%S")
+                export = pd.concat([export,temp], ignore_index=True)
+        if recent:
+            export.sort_values("Completed", ascending=False, inplace=True)
+            export.drop_duplicates(subset="Username", inplace=True)
+        return export
+
+
 def score_categoriser(subject, year_level, score):
     '''Returns a qualitative description of a PAT testing result.
 
@@ -163,27 +218,21 @@ def score_categoriser(subject, year_level, score):
 
 
 def group_reports_to_patresults(path, verbose=True):
-    '''Reads all PAT group reports in path and produces a dictionary
-    of dictionaries of PATResults.
-
-    
+    '''Reads all PAT group reports in path.
 
     Keyword arguments
     path: The path in order to search for group report files
+
+    Returns a PATResultsCollection
     '''
-    results = {}
+    results = PATResultsCollection()
     filenames = glob.glob(path + "*.xlsx")
     filenames = filenames[:6]
     for filename in filenames:
         if is_group_report_file(filename):
             print(filename)
             temp = PATResults.fromGroupReport(filename)
-            if temp.test not in results:
-                results[temp.test] = {}
-            if temp.number not in results[temp.test]:
-                results[temp.test][temp.number] = temp
-            else:
-                results[temp.test][temp.number] += temp
+            results.addResults(temp)
     return results
 
 
@@ -317,21 +366,21 @@ def item_analysis_plots(results, save_path="", verbose=True):
     item_analysis_charts(results)
 
     Arguments
-    results: a dictionary of dictionary of PATResults
+    results: a PATResultsCollection
     save_path="": the directory to save plot images
     verbose=True: whether to print information about charts being created
     '''
     print("Generating PAT item analysis graphs.")
-    for test in results:
-        for number in results[test]:
-            for question in results[test][number].question_scales:
+    for test in results.tests:
+        for number in results.tests[test]:
+            for question in results.tests[test][number].question_scales:
                 if verbose:
                     print("Generating graph for " + test 
                             + ", Test " + str(number) 
                             + ", Question " + question)
                 filename = (save_path + test + " test " + number 
                             + " question " + question + ".png")
-                f, ax = item_analysis_plot(results[test][number],question)
+                f, ax = item_analysis_plot(results.tests[test][number],question)
                 f.savefig(filename, 
                             dpi=150, 
                             facecolor="white")
