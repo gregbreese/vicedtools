@@ -143,7 +143,10 @@ class Reports:
                                 'Result':'ResultGrade', 
                                 "TeacherImportIdentifier":"TeacherCode"}, 
                        inplace=True)
-        columns = ['Time', 
+        class_details_columns = ['Time',
+                                 'ClassCode',
+                                 'TeacherCode']
+        data_columns = ['Time', 
                    'ClassCode', 
                    'StudentCode',
                    'ResultName',  
@@ -152,8 +155,8 @@ class Reports:
                    'Type',
                    'SubjectName', 
                    'TeacherCode']
-
-        return cls(temp_df[columns])
+        return cls(temp_df[data_columns],
+                    temp_df[class_details_columns])
     
     @classmethod
     def fromProgressReportsExport(cls,
@@ -213,26 +216,29 @@ class Reports:
         temp_df["SubjectName"] = None
         temp_df["TeacherCode"] = None
         
-        columns = ['Time', 
-                   'ClassCode', 
-                   'StudentCode',
-                   'ResultName',  
-                   'ResultGrade', 
-                   'ResultScore', 
-                   'Type',
-                   'SubjectName', 
-                   'TeacherCode']
-
-        return cls(temp_df[columns])
+        class_details_columns = ['Time',
+                                 'ClassCode',
+                                 'TeacherCode']
+        data_columns = ['Time', 
+                       'ClassCode', 
+                       'StudentCode',
+                       'ResultName',  
+                       'ResultGrade', 
+                       'ResultScore', 
+                       'Type',
+                       'SubjectName', 
+                       'TeacherCode']
+        return cls(temp_df[data_columns],
+                    temp_df[class_details_columns])
     
     @classmethod
     def _semesterDateMapper(cls, year, semester):
         if semester in ["Semester One", "1", "One", "one"]:
-            return str(year) + "-Jun"
+            return str(year) + "-06-30"
         elif semester in ["Semester Two", "2", "Two", "two"]:
-            return str(year) + "-Dec"
+            return str(year) + "-12-31"
         else:
-            return str(year) + "-Dec"
+            return str(year) + "-12-31"
 
     @classmethod
     def _termDateMapper(cls, year, term):
@@ -263,6 +269,9 @@ class Reports:
                                           "SubjectCode",
                                           "ResultName"],
                                   inplace=True)
+        self.class_details = pd.concat([self.class_details, temp.class_details],
+                                       ignore_index=True)
+        self.class_details.drop_duplicates(inplace=True)
 
     def addReportsExport(self,
                          filename, 
@@ -299,6 +308,9 @@ class Reports:
                                           "SubjectCode",
                                           "ResultName"],
                                   inplace=True)
+        self.class_details = pd.concat([self.class_details, temp.class_details],
+                                       ignore_index=True)
+        self.class_details.drop_duplicates(inplace=True)
 
     def __add__(self,other):
         data = pd.concat([self.data, other.data],
@@ -335,67 +347,27 @@ class Reports:
                    'TeacherCode']
         self.data = pd.merge(self.data[columns], subjects_df, on="SubjectCode")
     
-    def updateClassDetails(self):
-        pass
+    def updateFromClassDetails(self):
+        self.data.drop(columns="TeacherCode")
+        self.data = pd.merge(self.data, self.class_details, on=["Time",
+                                                                "ClassCode"])
     
     def aggregatedResults(self):
-        grpd = self.data.groupby(["Time",
-                                  "SubjectCode",
-                                  "ClassCode",
-                                  "StudentCode",
-                                  "Type"],
+        grpd = self.data.groupby(['Time',
+                                  'ClassCode',
+                                  'StudentCode',
+                                  'Type',
+                                  'SubjectCode',
+                                  'TeacherCode'],
                                  as_index=False).mean()
-        pvtd = pvtd.pivot_table(index=["Time",
-                                       "SubjectCode",
-                                       "ClassCode",
-                                       "StudentCode"],
+        pvtd = grpd.pivot_table(index=['Time',
+                                       'ClassCode',
+                                       'StudentCode',
+                                       'SubjectCode',
+                                       'TeacherCode'],
                                 columns=["Type"],
                                 values="ResultScore").reset_index()
-        pvtd = pd.merge(pvtd[['Time',
-                              'ClassCode',
-                              'StudentCode',
-                              'Academic',
-                              'Work Habits']],
-                        class_details_df,
-                        on=["Time",
-                            "ClassCode",
-                            "StudentCode"])
-        pvtd.rename(columns={"TeacherImportIdentifier":"TeacherCode"},
-                    inplace=True)
         pvtd.sort_values("Time",
                          ascending=False,
                          inplace=True)
         return pvtd
-
-def learning_task_result_mapper(result):
-    '''Maps an academic grade to a score on the interval [0,1].'''
-    if result == "Not Demonstrated":
-        return 0.35
-    if result == "Below Standard":
-        return 0.46
-    if result == "Satisfactory":
-        return 0.55
-    if result == "Competent":
-        return 0.64
-    if result == "Good":
-        return 0.73
-    if result == "Very Good":
-        return 0.82
-    if result == "Excellent":
-        return 0.91
-    if result == "Outstanding":
-        return 1.0
-    return np.nan
-
-def work_habit_result_mapper(result):
-    if result == "Unsatisfactory":
-        return 0.35
-    if result == "Satisfactory":
-        return 0.55
-    if result == "Good":
-        return 0.73
-    if result == "Very Good":
-        return 0.82
-    if result == "Excellent":
-        return 1.0
-    return np.nan
