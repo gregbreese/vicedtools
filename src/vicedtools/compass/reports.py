@@ -266,7 +266,7 @@ class Reports:
                                         ignore_index=True)
         self.data.drop_duplicates(subset=["Time",
                                           "StudentCode",
-                                          "SubjectCode",
+                                          "ClassCode",
                                           "ResultName"],
                                   inplace=True)
         self.class_details = pd.concat([self.class_details, temp.class_details],
@@ -286,7 +286,7 @@ class Reports:
                               ignore_index=True)
         self.data.drop_duplicates(subset=["Time",
                                           "StudentCode", 
-                                          "SubjectCode",
+                                          "ClassCode",
                                           "ResultName"],
                                   inplace=True)
 
@@ -305,7 +305,7 @@ class Reports:
                               ignore_index=True)
         self.data.drop_duplicates(subset=["Time",
                                           "StudentCode", 
-                                          "SubjectCode",
+                                          "ClassCode",
                                           "ResultName"],
                                   inplace=True)
         self.class_details = pd.concat([self.class_details, temp.class_details],
@@ -317,7 +317,7 @@ class Reports:
                                         ignore_index=True)
         data.drop_duplicates(subset=["Time",
                                      "StudentCode", 
-                                     "SubjectCode",
+                                     "ClassCode",
                                      "ResultName"],
                              inplace=True)
         return Reports(data)
@@ -345,25 +345,37 @@ class Reports:
                    'Type',
                    'SubjectCode',
                    'TeacherCode']
-        self.data = pd.merge(self.data[columns], subjects_df, on="SubjectCode")
-    
+        self.data = pd.merge(self.data[columns], 
+                             subjects_df,
+                             how="left",
+                             on="SubjectCode")
+
     def updateFromClassDetails(self):
-        self.data.drop(columns="TeacherCode")
-        self.data = pd.merge(self.data, self.class_details, on=["Time",
-                                                                "ClassCode"])
+        self.data.drop(columns="TeacherCode", 
+                       inplace=True, 
+                       errors="ignore")
+        self.data = pd.merge(self.data, 
+                             self.class_details,
+                             how="left",
+                             on=["Time",
+                                 "ClassCode"])
     
-    def aggregatedResults(self):
+    def summary(self):
         grpd = self.data.groupby(['Time',
                                   'ClassCode',
                                   'StudentCode',
                                   'Type',
                                   'SubjectCode',
+                                  'SubjectName',
+                                  'LearningArea',
                                   'TeacherCode'],
                                  as_index=False).mean()
         pvtd = grpd.pivot_table(index=['Time',
                                        'ClassCode',
                                        'StudentCode',
                                        'SubjectCode',
+                                       'SubjectName',
+                                       'LearningArea',
                                        'TeacherCode'],
                                 columns=["Type"],
                                 values="ResultScore").reset_index()
@@ -371,3 +383,10 @@ class Reports:
                          ascending=False,
                          inplace=True)
         return pvtd
+
+    def saveReports(self, filename):
+        self.data.to_csv(filename, index=False)
+    
+    def saveSummary(self, filename):
+        summary = self.summary()
+        summary.to_csv(filename, index=False)
