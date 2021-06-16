@@ -12,11 +12,15 @@ src/vicedtools.egg-info/SOURCES.txt
 src/vicedtools.egg-info/dependency_links.txt
 src/vicedtools.egg-info/top_level.txt
 src/vicedtools/acer/__init__.py
+src/vicedtools/acer/oars.py
+src/vicedtools/acer/plots.py
 src/vicedtools/acer/results.py
-src/vicedtools/acer/users.py
 src/vicedtools/compass/__init__.py
 src/vicedtools/compass/exports.py
 src/vicedtools/compass/learningtasks.py
 src/vicedtools/compass/reports.py
 src/vicedtools/gc/__init__.py
-src/vicedtools/gc/imports.py
+src/vicedtools/gc/format.py
+src/vicedtools/gc/upload.py
+src/vicedtools/gwsc/__init__.py
+src/vicedtools/gwsc/reports.py
