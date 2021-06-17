@@ -9,10 +9,11 @@ from datetime import datetime
 import zipfile
 import os
 
-def export_student_enrolments(download_path, 
-                                geckodriver_path, 
-                                compass_school_code, 
-                                download_wait=10*60):
+
+def export_student_enrolments(download_path,
+                              geckodriver_path,
+                              compass_school_code,
+                              download_wait=10 * 60):
     '''Exports student enrolment information from Compass.
 
     Will prompt for Compass login details.
@@ -30,16 +31,16 @@ def export_student_enrolments(download_path,
     '''
     # create Firefox profile
     profile = webdriver.FirefoxProfile()
-    profile.set_preference("browser.download.folderList",2)
-    profile.set_preference("browser.download.manager.showWhenStarting",False)
-    profile.set_preference("browser.download.dir",download_path)
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk","text/csv")
+    profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference("browser.download.manager.showWhenStarting", False)
+    profile.set_preference("browser.download.dir", download_path)
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
     profile.set_preference("browser.helperApps.neverAsk.saveToDisk",
-                            "application/zip")
+                           "application/zip")
 
     #load web driver
     driver = webdriver.Firefox(executable_path=geckodriver_path,
-                                firefox_profile=profile)
+                               firefox_profile=profile)
 
     #login to compass
     driver.get("https://" + compass_school_code + ".compass.education/")
@@ -53,8 +54,8 @@ def export_student_enrolments(download_path,
     submit_button.click()
 
     # download Microsoft SDS export
-    driver.get("https://" + compass_school_code 
-                + ".compass.education/Learn/Subjects.aspx")
+    driver.get("https://" + compass_school_code +
+               ".compass.education/Learn/Subjects.aspx")
     time.sleep(3)
     export_menu = driver.find_element_by_id("button-1020")
     export_menu.click()
@@ -70,27 +71,27 @@ def export_student_enrolments(download_path,
     time.sleep(download_wait)
     driver.quit()
 
-
-    files = glob.glob(download_path + "\\Bulk SDS SCV Download - Generated - *.zip")
+    files = glob.glob(download_path +
+                      "\\Bulk SDS SCV Download - Generated - *.zip")
     # newest_time = datetime.min
     # file_to_extract = ""
-    # for file in files:    
+    # for file in files:
     #     pattern = r'Bulk SDS SCV Download - Generated - (?P<date>[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}[APM]{2}).zip'
     #     m = re.search(pattern, file)
     #     date = m.group('date')
     #     dt = datetime.strptime(date,"%Y-%m-%d_%I%M%p")
     #     if dt > newest_time:
     #         file_to_extract = file
-    file_to_extract = files[0]        
+    file_to_extract = files[0]
     with zipfile.ZipFile(file_to_extract, 'r') as zip_ref:
-        zip_ref.extract("StudentEnrollment.csv",path=download_path)
+        zip_ref.extract("StudentEnrollment.csv", path=download_path)
     os.remove(file_to_extract)
 
 
-def export_student_details(download_path, 
-                            compass_school_code, 
-                            auth, 
-                            geckodriver_path=""):
+def export_student_details(download_path,
+                           compass_school_code,
+                           auth,
+                           geckodriver_path=""):
     '''Exports student details from Compass.
 
     Keyword arguments:
@@ -103,12 +104,14 @@ def export_student_details(download_path,
             Compass, and then extract auth cookies.
     geckodriver_path: The location of geckodriver.exe, only required 
                         if auth='selenium'
-    '''    
+    '''
     if auth == 'browser_cookie3':
         import browser_cookie3
         cj = browser_cookie3.firefox(domain_name='compass.education')
-        url = ("https://" + compass_school_code 
-            + ".compass.education/Services/FileDownload/CsvRequestHandler?type=37")
+        url = (
+            "https://" + compass_school_code +
+            ".compass.education/Services/FileDownload/CsvRequestHandler?type=37"
+        )
         r = requests.get(url, cookies=cj)
     elif auth == 'selenium':
         from selenium import webdriver
@@ -135,13 +138,12 @@ def export_student_details(download_path,
             c = {cookie['name']: cookie['value']}
             s.cookies.update(c)
         # request student details file
-        r = s.get("https://" + compass_school_code 
-            + ".compass.education/Services/FileDownload/CsvRequestHandler?type=38")    
+        r = s.get(
+            "https://" + compass_school_code +
+            ".compass.education/Services/FileDownload/CsvRequestHandler?type=38"
+        )
     else:
         raise ValueError("Unrecognised auth method " + auth)
-    
-    with open(download_path,"xb") as f:
-        f.write(r.content)
-    
 
-        
+    with open(download_path, "xb") as f:
+        f.write(r.content)

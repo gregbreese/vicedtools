@@ -2,23 +2,15 @@ import numpy as np
 import pandas as pd
 import re
 
-grade_order = ["Exempt", 
-         "Modified", 
-         "Not Demonstrated",
-         "Unsatisfactory",
-         "Rarely",
-         "Below Standard", 
-         "Satisfactory",
-         "Sometimes",
-         "Competent", 
-         "Good", 
-         "Very Good",
-         "Usually",
-         "Excellent",
-         "Consistently",
-         "Outstanding"]
+grade_order = [
+    "Exempt", "Modified", "Not Demonstrated", "Unsatisfactory", "Rarely",
+    "Below Standard", "Satisfactory", "Sometimes", "Competent", "Good",
+    "Very Good", "Usually", "Excellent", "Consistently", "Outstanding"
+]
 
-results_dtype = pd.api.types.CategoricalDtype(categories=grade_order, ordered=True)
+results_dtype = pd.api.types.CategoricalDtype(categories=grade_order,
+                                              ordered=True)
+
 
 def learning_tasks_result_mapper(result):
     if result == "Not Demonstrated":
@@ -39,6 +31,7 @@ def learning_tasks_result_mapper(result):
         return 1.0
     return np.nan
 
+
 def work_habits_result_mapper(result):
     if result == "Unsatisfactory":
         return 0.35
@@ -52,6 +45,7 @@ def work_habits_result_mapper(result):
         return 1.0
     return np.nan
 
+
 def progress_report_result_mapper(result):
     if result == "Rarely":
         return 0.25
@@ -63,15 +57,16 @@ def progress_report_result_mapper(result):
         return 1.0
     return np.nan
 
-progress_report_items = ["Completes all set learning", 
-                         "Contribution in class", 
-                         "Perseverance", 
-                         "Ready to learn", 
-                         "Respectfully works/communicates with others",
-                         "Uses feedback to improve"]
+
+progress_report_items = [
+    "Completes all set learning", "Contribution in class", "Perseverance",
+    "Ready to learn", "Respectfully works/communicates with others",
+    "Uses feedback to improve"
+]
+
 
 def class_code_parser(class_code, pattern_string):
-    m = re.search(pattern_string,class_code)
+    m = re.search(pattern_string, class_code)
     if m:
         subject_code = m.group('code')
         # test for Global Goodies vs Geography
@@ -81,5 +76,5 @@ def class_code_parser(class_code, pattern_string):
                 subject_code = "10GL"
         return subject_code
     else:
-        print( class_code + " not found")
+        print(class_code + " not found")
         return ""
