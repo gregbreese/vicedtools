@@ -43,7 +43,8 @@ REPORTS_SUMMARY_SCHEMA=[
     bigquery.SchemaField("LearningArea", "STRING"),
     bigquery.SchemaField("TeacherCode", "STRING"),
     bigquery.SchemaField("Academic", "FLOAT"),
-    bigquery.SchemaField("Work_Habits", "FLOAT")]
+    bigquery.SchemaField("Work_Habits", "FLOAT"),
+]
 REPORTS_SUMMARY_CLUSTERING_FIELDS = ["StudentCode", 
                                      "Time", 
                                      "LearningArea", 

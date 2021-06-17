@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from vicedtools.acer.results import RESPONSE_DTYPE
+from vicedtools.acer.patresults import RESPONSE_DTYPE
 
 def question_summary(pat_results, question, open_ended=False):
     '''Creates an item results summary for a PAT item.

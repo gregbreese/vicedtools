@@ -70,6 +70,7 @@ class PATResults:
         temp_df.rename(columns={i:col_names[i] for i in range(len(col_names))}, 
                        inplace=True)
         temp_df["Scale"] = temp_df["Scale"].astype(float)
+        temp_df['Completed'] = pd.to_datetime(temp_df['Completed'], format="%d-%m-%Y %H:%M:%S")
         return cls(test, number, question_scales, temp_df)
     
     @classmethod
@@ -130,6 +131,18 @@ class PATResults:
                 inplace=True)
             return PATResults(self.test, self.number, self.question_scales, results)
 
+    def scores(self):
+        columns = ['Username',
+                   'Gender',
+                   'Completed',
+                   'Year level (at time of test)',
+                   'Score',
+                   'Scale']
+        temp = self.results[columns].copy()
+        temp["Test"] = self.test
+        temp["Number"] = self.number
+        return temp
+
 class PATResultsCollection:
     '''A container for PATResults for different tests and test numbers.'''
 
@@ -175,7 +188,10 @@ class PATResultsCollection:
                 temp = self.tests[test][number].results[results_columns].copy()
                 temp['Test'] = test
                 temp['Number'] = number
-                temp['Score category'] = temp.apply(lambda x: score_categoriser(test, x['Year level (at time of test)'], x["Scale"]), axis=1)
+                temp['Score category'] = temp.apply(lambda x: score_categoriser(test, 
+                                                                                x['Year level (at time of test)'], 
+                                                                                x["Scale"]), 
+                                                    axis=1)
                 temp['Completed'] = pd.to_datetime(temp['Completed'], format="%d-%m-%Y %H:%M:%S")
                 export = pd.concat([export,temp], ignore_index=True)
         if recent:
@@ -183,13 +199,30 @@ class PATResultsCollection:
             export.drop_duplicates(subset="Username", inplace=True)
         return export
 
+    def scores(self):
+        columns = ['Username',
+                   'Gender',
+                   'Completed',
+                   'Year level (at time of test)',
+                   'Score',
+                   'Scale',
+                   'Test',
+                   'Number']
+        scores = pd.DataFrame(columns=columns)
+        for test in self.tests:
+            for number in self.tests[test]:
+                temp = self.tests[test][number].scores() 
+                scores = pd.concat([scores,temp], ignore_index=True)
+        return scores
 
-def score_categoriser(subject, year_level, score):
+
+def score_categoriser(subject, year_level, date, score):
     '''Returns a qualitative description of a PAT testing result.
 
     Keyword arguments:
-    subject: Reading or Maths, which PAT test the score is for
-    year_level: 6 - 10, the year level of the student when they sat the test
+    subject: "Reading" or "Maths", which PAT test the score is for
+    year_level: "Year 5", "Year 6", "Year 7", ..., "Year 10"
+        the year level of the student when they sat the test
     score: the PAT scale score
     '''
     means = {'Reading': {6:128.8, 7: 132.0, 8:134.7, 9: 137.3, 10: 140.4},
@@ -199,6 +232,8 @@ def score_categoriser(subject, year_level, score):
             'Maths': {6:12.0, 7: 12.6, 8: 10.7, 9:11.4, 10: 10.4}}
     # expect year_level as "Year 7"
     year_level_num = int(year_level[5:])
+    if date.month <= 4:
+        year_level_num -= 1
     if year_level_num > 10:
         year_level_num = 10
     z = (score - means[subject][year_level_num])/stdevs[subject][year_level_num]
