@@ -13,15 +13,13 @@
 # limitations under the License.
 """Functions for automating the export of data from Compass."""
 
-from selenium import webdriver
-import time
-import requests
-import urllib.request
 import glob
-import re
-from datetime import datetime
-import zipfile
 import os
+import requests
+import time
+
+from selenium import webdriver
+import zipfile
 
 
 # Todo: provide additional login options, including grabbing cookies from an

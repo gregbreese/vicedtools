@@ -13,6 +13,8 @@
 # limitations under the License.
 """Functions for creating visualisations of PAT results."""
 
+from __future__ import annotations
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -129,7 +131,7 @@ def question_summary(pat_results: PATResults,
 
 
 def item_analysis_plot(pat_results: PATResults,
-                       question: str) -> "tuple[plt.Figure, plt.Axes]":
+                       question: str) -> tuple[plt.Figure, plt.Axes]:
     '''Creates an item analysis plot for a single PAT question.
     
     Compares the expected performance of students on an item, based on their

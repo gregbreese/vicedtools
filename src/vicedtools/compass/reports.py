@@ -1,10 +1,29 @@
-import pandas as pd
+# Copyright 2021 VicEdTools authors
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""A class for storing reports export data from Compass."""
+
+from __future__ import annotations
 import re
+from typing import Callable
+
+import pandas as pd
+
 
 class Reports:
     '''A container class for Compass Reports data.'''
 
-    def __init__(self, data=None, class_details=None):
+    def __init__(self, data=None, class_details=None) -> Reports:
         columns = [
             'Time', 'ClassCode', 'StudentCode', 'ResultName', 'ResultGrade',
             'ResultScore', 'Type', 'SubjectCode', 'SubjectName', 'LearningArea',
@@ -21,12 +40,12 @@ class Reports:
 
     @classmethod
     def fromReportsExport(cls,
-                          filename,
-                          year=None,
-                          semester=None,
-                          grade_score_mapper=None,
-                          grade_dtype=None,
-                          replace_values=None):
+                          filename: str,
+                          year: str = None,
+                          semester: str = None,
+                          grade_score_mapper: Callable[[str], float] = None,
+                          grade_dtype: pd.api.types.CategoricalDtype = None,
+                          replace_values: dict[str, dict] = None) -> Reports:
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df = temp_df[temp_df["AssessmentType"] == "Work Habits"]
 
@@ -80,12 +99,13 @@ class Reports:
         return cls(temp_df[columns])
 
     @classmethod
-    def fromLearningTasksExport(cls,
-                                filename,
-                                year=None,
-                                grade_score_mapper=None,
-                                grade_dtype=None,
-                                replace_values=None):
+    def fromLearningTasksExport(
+            cls,
+            filename: str,
+            year: str = None,
+            grade_score_mapper: Callable[[str], float] = None,
+            grade_dtype: pd.api.types.CategoricalDtype = None,
+            replace_values: dict[str, dict] = None) -> Reports:
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df = temp_df[temp_df["IsIncludedInReport"]]
         temp_df = temp_df[temp_df["ComponentType"] != "Comment"]
@@ -133,14 +153,15 @@ class Reports:
         return cls(temp_df[data_columns], temp_df[class_details_columns])
 
     @classmethod
-    def fromProgressReportsExport(cls,
-                                  filename,
-                                  progress_report_items,
-                                  year=None,
-                                  term=None,
-                                  grade_score_mapper=None,
-                                  grade_dtype=None,
-                                  replace_values=None):
+    def fromProgressReportsExport(
+            cls,
+            filename: str,
+            progress_report_items: list[str],
+            year: str = None,
+            term: str = None,
+            grade_score_mapper: Callable[[str], float] = None,
+            grade_dtype: pd.api.types.CategoricalDtype = None,
+            replace_values: dict[str, dict] = None) -> Reports:
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df.rename(columns={
             "Id": "StudentCode",
@@ -198,7 +219,7 @@ class Reports:
         return cls(temp_df[data_columns], temp_df[class_details_columns])
 
     @classmethod
-    def _semesterDateMapper(cls, year, semester):
+    def _semesterDateMapper(cls, year: str, semester: str) -> str:
         if semester in ["Semester One", "1", "One", "one"]:
             return str(year) + "-06-30"
         elif semester in ["Semester Two", "2", "Two", "two"]:
@@ -207,7 +228,7 @@ class Reports:
             return str(year) + "-12-31"
 
     @classmethod
-    def _termDateMapper(cls, year, term):
+    def _termDateMapper(cls, year: str, term: str) -> str:
         if term in ["1", "One", "one"]:
             return str(year) + "-03-31"
         elif term in ["2", "Two", "two"]:
@@ -219,11 +240,12 @@ class Reports:
         else:
             return None
 
-    def addLearningTasksExport(self,
-                               filename,
-                               grade_score_mapper=None,
-                               grade_dtype=None,
-                               replace_values=None):
+    def addLearningTasksExport(
+            self,
+            filename: str,
+            grade_score_mapper: Callable[[str], float] = None,
+            grade_dtype: pd.api.types.CategoricalDtype = None,
+            replace_values: dict[str, dict] = None) -> None:
         temp = Reports.fromLearningTasksExport(
             filename,
             grade_score_mapper=grade_score_mapper,
@@ -238,10 +260,10 @@ class Reports:
         self.class_details.drop_duplicates(inplace=True)
 
     def addReportsExport(self,
-                         filename,
-                         grade_score_mapper=None,
-                         grade_dtype=None,
-                         replace_values=None):
+                         filename: str,
+                         grade_score_mapper: Callable[[str], float] = None,
+                         grade_dtype: pd.api.types.CategoricalDtype = None,
+                         replace_values: dict[str, dict] = None) -> None:
         temp = Reports.fromReportsExport(filename,
                                          grade_score_mapper=grade_score_mapper,
                                          grade_dtype=grade_dtype,
@@ -251,12 +273,13 @@ class Reports:
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],
             inplace=True)
 
-    def addProgressReportsExport(self,
-                                 filename,
-                                 progress_report_items,
-                                 grade_score_mapper=None,
-                                 grade_dtype=None,
-                                 replace_values=None):
+    def addProgressReportsExport(
+            self,
+            filename: str,
+            progress_report_items: list[str],
+            grade_score_mapper: Callable[[str], float] = None,
+            grade_dtype: pd.api.types.CategoricalDtype = None,
+            replace_values: dict[str, dict] = None) -> None:
         temp = Reports.fromProgressReportsExport(
             filename,
             progress_report_items,
@@ -271,7 +294,7 @@ class Reports:
                                        ignore_index=True)
         self.class_details.drop_duplicates(inplace=True)
 
-    def __add__(self, other):
+    def __add__(self, other: Reports):
         data = pd.concat([self.data, other.data], ignore_index=True)
         data.drop_duplicates(
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],
@@ -279,9 +302,9 @@ class Reports:
         return Reports(data)
 
     def importSubjectsData(self,
-                           subjects_file,
-                           class_code_parser,
-                           replace_values=None):
+                           subjects_file: str,
+                           class_code_parser: Callable[[str, str], str],
+                           replace_values: dict[str, dict] = None) -> None:
 
         subjects_df = pd.read_csv(subjects_file)
 
@@ -301,14 +324,14 @@ class Reports:
                              how="left",
                              on="SubjectCode")
 
-    def updateFromClassDetails(self):
+    def updateFromClassDetails(self) -> None:
         self.data.drop(columns="TeacherCode", inplace=True, errors="ignore")
         self.data = pd.merge(self.data,
                              self.class_details,
                              how="left",
                              on=["Time", "ClassCode"])
 
-    def summary(self):
+    def summary(self) -> pd.DataFrame:
         grpd = self.data.groupby([
             'Time', 'ClassCode', 'StudentCode', 'Type', 'SubjectCode',
             'SubjectName', 'LearningArea', 'TeacherCode'
@@ -323,9 +346,9 @@ class Reports:
         pvtd.sort_values("Time", ascending=False, inplace=True)
         return pvtd
 
-    def saveReports(self, filename):
+    def saveReports(self, filename: str) -> None:
         self.data.to_csv(filename, index=False)
 
-    def saveSummary(self, filename):
+    def saveSummary(self, filename: str) -> None:
         summary = self.summary()
         summary.to_csv(filename, index=False)

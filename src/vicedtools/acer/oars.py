@@ -13,10 +13,11 @@
 # limitations under the License.
 """Utilities for importing data into OARS."""
 
-import pandas as pd
-import numpy as np
-import re
 from datetime import datetime
+import re
+
+import numpy as np
+import pandas as pd
 
 # Todo: Transition from only adding maths/english class codes to adding all
 # relevant class codes as tags from the student enrolment data

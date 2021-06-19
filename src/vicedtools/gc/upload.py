@@ -13,10 +13,9 @@
 # limitations under the License.
 """Utilities for uploading data to GC."""
 
-import pandas as pd
-
 from google.cloud import storage
 from google.cloud import bigquery
+import pandas as pd
 
 STUDENT_DETAILS_SCHEMA = [
     bigquery.SchemaField("StudentCode", "STRING"),
@@ -82,8 +81,8 @@ def upload_blob(bucket_name: str, source_file_name: str,
                                            destination_blob_name))
 
 
-def update_table(schema: list, clustering_fields: list, uri: str,
-                 table_id: str) -> None:
+def update_table(schema: list[bigquery.SchemaField],
+                 clustering_fields: list[str], uri: str, table_id: str) -> None:
     '''Updates a table in bigquery.
 
     Copied from
