@@ -1,4 +1,18 @@
-# get a compass authentication cookie
+# Copyright 2021 VicEdTools authors
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Functions for automating the export of data from Compass."""
+
 from selenium import webdriver
 import time
 import requests
@@ -10,24 +24,33 @@ import zipfile
 import os
 
 
-def export_student_enrolments(download_path,
-                              geckodriver_path,
-                              compass_school_code,
-                              download_wait=10 * 60):
-    '''Exports student enrolment information from Compass.
+# Todo: provide additional login options, including grabbing cookies from an
+#   existing Firefox profile and from environment variables.
+def export_student_enrolments(download_path: str,
+                              geckodriver_path: str,
+                              compass_school_code: str,
+                              download_wait: int = 10 * 60) -> None:
+    '''Exports class enrolment and teacher information from Compass.
+
+    Downloads the Microsoft SDS export from Compass using Selenium and the
+    Firefox webdriver.
 
     Will prompt for Compass login details.
     Requires access to SDS Export rights in the Subjects and Classes page.
 
-    Keyword arguments
-    download_path: The directory to save the export. Must use \\ slashes in 
-                    windows.
-    geckodriver_path: The location of geckodriver.exe
-    compass_school_code: Your Compass school code
-    
-    Optional keyword argumenbts
-    download_wait: the amount of time to wait for Compass to generate the 
-                    export, default 10 mins
+    Will save four files in the provided path:
+        StudentEnrollment.csv: contains student->class mappings
+        Teacher.csv: contains teacher id information
+        TeacherRoster.csv: contains teacher->class mappings
+        Section.csv: contains class id information
+
+    Args:
+        download_path: The directory to save the export. Must use \\ slashes in 
+                        windows.
+        geckodriver_path: The location of geckodriver.exe
+        compass_school_code: Your Compass school code.
+        download_wait: Optional; the amount of time to wait for Compass to 
+            generate the export, default 10 mins.
     '''
     # create Firefox profile
     profile = webdriver.FirefoxProfile()
@@ -85,25 +108,28 @@ def export_student_enrolments(download_path,
     file_to_extract = files[0]
     with zipfile.ZipFile(file_to_extract, 'r') as zip_ref:
         zip_ref.extract("StudentEnrollment.csv", path=download_path)
+        zip_ref.extract("Teacher.csv", path=download_path)
+        zip_ref.extract("TeacherRoster.csv", path=download_path)
+        zip_ref.extract("Section.csv", path=download_path)
     os.remove(file_to_extract)
 
 
-def export_student_details(download_path,
-                           compass_school_code,
-                           auth,
-                           geckodriver_path=""):
+def export_student_details(download_path: str,
+                           compass_school_code: str,
+                           auth: str,
+                           geckodriver_path: str = "") -> None:
     '''Exports student details from Compass.
 
-    Keyword arguments:
-    download_path: The file location to save the csv export.
-    compass_school_code: Your Compass school code.
-    auth: 'selenium', 'browser_cookie3'
-        The method for getting authentication cookies for Compass.
-        browser_cookie3: uses locally stored cookies from Firefox
-        selenium: will prompt for Compass login details, log into
-            Compass, and then extract auth cookies.
-    geckodriver_path: The location of geckodriver.exe, only required 
-                        if auth='selenium'
+    Args:
+        download_path: The file path to save the csv export.
+        compass_school_code: Your Compass school code.
+        auth: 'selenium', 'browser_cookie3'
+            The method for getting authentication cookies for Compass.
+            browser_cookie3: uses locally stored cookies from Firefox
+            selenium: will prompt for Compass login details, log into
+                Compass, and then extract auth cookies.
+        geckodriver_path: The location of geckodriver.exe, only required 
+            if auth='selenium'
     '''
     if auth == 'browser_cookie3':
         import browser_cookie3

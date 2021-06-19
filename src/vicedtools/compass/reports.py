@@ -1,12 +1,5 @@
 import pandas as pd
-import numpy as np
 import re
-
-import pandas as pd
-import numpy as np
-import glob
-import re
-
 
 class Reports:
     '''A container class for Compass Reports data.'''

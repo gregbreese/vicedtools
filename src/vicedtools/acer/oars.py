@@ -1,15 +1,35 @@
+# Copyright 2021 VicEdTools authors
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Utilities for importing data into OARS."""
+
 import pandas as pd
 import numpy as np
 import re
 from datetime import datetime
 
+# Todo: Transition from only adding maths/english class codes to adding all
+# relevant class codes as tags from the student enrolment data
 
-# need to add customisable maths/english class code patterns
-def class_selector(class_string):
+
+def class_selector(class_string: str) -> pd.Series:
     '''Identifies whether a given class name is an english or maths class.
 
-    Keyword arguments
-    class_string: a class code string
+    Args:
+        class_string: a class code string
+
+    Returns:
+        A pandas Series containing two times, "Maths"/"English" and the class code.
     '''
     # maths pattern
     pattern = "(?P<class_code>[789]MA[BEFG][0-9]|10MA[PQRSTU][X]?[0-9]|11FM[PQRSTU][0-9])"
@@ -27,23 +47,23 @@ def class_selector(class_string):
     return pd.Series([None, None])
 
 
-def student_imports(student_details_file, student_enrolment_file,
-                    current_students_file, new_students_file,
-                    update_students_file):
+def student_imports(student_details_file: str, student_enrolment_file: str,
+                    current_students_file: str, new_students_file: str,
+                    update_students_file: str) -> None:
     '''Creates files to update the OARS student database.
 
     Creates two separate files, one to update the details of existing students
     in the database and one to add new students.
 
-    Keyword arguments
-    student_details_file: a student details export csv from Compass. Can be 
-        downloaded using vicedtools.compass.export_student_details or directly
-        from https://###.compass.education/Services/FileDownload/CsvRequestHandler?type=37
-    student_enrolment_file: a student enrolment file exported from Compass.
-        Can be downloaded using vicedtools.compass.export_student_enrolments
-    current_students_file: a current students export from OARS
-    new_students_file: the filename to save the new students import for OARS
-    update_students_file: the filename to save the update students import for OARS
+    Args:
+        student_details_file: a student details export csv from Compass. Can be 
+            downloaded using vicedtools.compass.export_student_details or directly
+            from https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37
+        student_enrolment_file: a student enrolment file exported from Compass.
+            Can be downloaded using vicedtools.compass.export_student_enrolments
+        current_students_file: a current students export from OARS
+        new_students_file: the filename to save the new students import for OARS
+        update_students_file: the filename to save the update students import for OARS
     '''
     existing_students_df = pd.read_excel(current_students_file)
     student_details_df = pd.read_csv(student_details_file, dtype=np.str)

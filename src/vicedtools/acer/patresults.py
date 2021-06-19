@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Classes for storing data from PAT group reports exported from OARS.
 
 The class PATResults stores collated results for a particular PAT test/
@@ -21,15 +20,14 @@ The class PATResultsCollection stores PATResults and organises them by their
 test/test number. Includes the ability to take a folder containing all of your
 group report exports and to parse them all in one go.
 """
-
-from datetime import datetime
-import re
-import pandas as pd
-import glob
-import numpy as np
 from __future__ import annotations
 
-from pandas.core.frame import DataFrame
+from datetime import datetime
+
+import glob
+import numpy as np
+import pandas as pd
+import re
 
 # group report column headings
 COL_NAMES_FRONT = [
@@ -45,7 +43,7 @@ RESPONSE_DTYPE = pd.api.types.CategoricalDtype(categories=RESPONSE_ORDER,
                                                ordered=True)
 
 
-def is_group_report_file(file_location:str) -> bool:
+def is_group_report_file(file_location: str) -> bool:
     '''Tests whether a given xlsx file contains a PAT Group Report.
     
     Only looks for PAT Reading 5th edition and PAT Maths 4th edition.
@@ -82,7 +80,8 @@ class PATResults:
         results: A pandas DataFrame containing the test results.
     '''
 
-    def __init__(self, test: str, number: str, question_scales: dict, results: pd.DataFrame):
+    def __init__(self, test: str, number: str,
+                 question_scales: dict[str, float], results: pd.DataFrame):
         """Initialises PATResults with the given arguments.
         
         Mostly intended for use by the provided factory methods.
@@ -164,7 +163,8 @@ class PATResults:
         temp["Number"] = self.number
         return temp
 
-def group_report_metadata(df: pd.DataFrame) -> tuple:
+
+def group_report_metadata(df: pd.DataFrame) -> tuple[str, str]:
     '''Extract the test and test number from the group report DataFrame.
 
     Looks at the top left cell and extracts the relevant test (Reading/
@@ -187,7 +187,8 @@ def group_report_metadata(df: pd.DataFrame) -> tuple:
     else:
         raise ValueError("DataFrame did not contain a valid group report.")
 
-def extract_question_scales(df: pd.DataFrame) -> dict:
+
+def extract_question_scales(df: pd.DataFrame) -> dict[str, float]:
     '''Extract question difficulties from the group report.
     
     Searches through the group report cells and finds the columns containing
@@ -197,7 +198,8 @@ def extract_question_scales(df: pd.DataFrame) -> dict:
         df: A pandas DataFrame containing the data from a PAT group report xlsx.
 
     Returns:
-        A dictionary containing (question number: str, scale score: float) pairs.
+        A dictionary containing each question number (str) as a key and the 
+        corresponding scale score (float) as values.
 
     Raises:
         ValueError: DataFrame did not contain expected question scales.
@@ -207,14 +209,14 @@ def extract_question_scales(df: pd.DataFrame) -> dict:
         current_question = 1
         offset = 12
         while not np.isnan(float(df[current_question + offset][3])):
-            question_scales[str(current_question)] = float(
-                df[current_question + offset][3])
+            question_scales[str(current_question)] = float(df[current_question +
+                                                              offset][3])
             current_question += 1
     # could also extract Strand info from fifth row if present
         return question_scales
     else:
-        raise ValueError(
-            "DataFrame did not contain expected question scales")
+        raise ValueError("DataFrame did not contain expected question scales")
+
 
 def locate_header_row(df: pd.DataFrame) -> int:
     '''Identifies the row in a group report containing the column headings.
@@ -234,6 +236,7 @@ def locate_header_row(df: pd.DataFrame) -> int:
             return row_id
         row_id += 1
     raise ValueError("DataFrame did not contain the expected header row.")
+
 
 class PATResultsCollection:
     '''A container for PATResults for different tests and test numbers.
@@ -275,7 +278,7 @@ class PATResultsCollection:
         '''
         return self.tests[test][number]
 
-    def exportScores(self, recent: bool=False) -> pd.DataFrame:
+    def exportScores(self, recent: bool = False) -> pd.DataFrame:
         '''Exports all PAT scores as a single DataFrame.
         
         Args:
@@ -324,7 +327,8 @@ class PATResultsCollection:
         return scores
 
 
-def score_categoriser(test: str, year_level: str, date: datetime, score: float) -> str:
+def score_categoriser(test: str, year_level: str, date: datetime,
+                      score: float) -> str:
     '''Returns a qualitative description of a PAT testing result.
 
     Args:
@@ -376,8 +380,7 @@ def score_categoriser(test: str, year_level: str, date: datetime, score: float) 
         year_level_num -= 1
     if year_level_num > 10:
         year_level_num = 10
-    z = (score -
-         means[test][year_level_num]) / stdevs[test][year_level_num]
+    z = (score - means[test][year_level_num]) / stdevs[test][year_level_num]
     if z < -1.75:
         return "Very low"
     elif z < -0.75:
@@ -390,7 +393,8 @@ def score_categoriser(test: str, year_level: str, date: datetime, score: float) 
         return "Very high"
 
 
-def group_reports_to_patresults(path: str, verbose: bool=True) -> PATResultsCollection:
+def group_reports_to_patresults(path: str,
+                                verbose: bool = True) -> PATResultsCollection:
     '''Reads all PAT group reports in path.
 
     Args:

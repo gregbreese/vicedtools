@@ -1,12 +1,53 @@
+# Copyright 2021 VicEdTools authors
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Functions for creating visualisations of PAT results."""
+
 import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
-from vicedtools.acer.patresults import RESPONSE_DTYPE
+import seaborn as sns
+
+from vicedtools.acer.patresults import RESPONSE_DTYPE, PATResults, PATResultsCollection
 
 
-def question_summary(pat_results, question, open_ended=False):
-    '''Creates an item results summary for a PAT item.
+def question_summary(pat_results: PATResults,
+                     question: str,
+                     open_ended=False) -> pd.DataFrame:
+    '''Creates an item analysis summary for a PAT item.
 
+    Groups the students by their scale score and then for each group determines
+    the proportion of students that selected each response option. Groups the
+    students in three to five bins depending on how many students there are.
+    Centers the bins based on the distribution of student scale scores and
+    labels the bins based on their relative level compared to the question.
+
+    Students with higher scale scores should be observed to select the correct
+    response more often.
+
+    Used by item_analysis_plot to summarise item results.
+
+    Args:
+        pat_results: An instance of PATResults to summarise.
+        question: Which question number to produce a summary of.
+        open_ended: Optional; If true, then include outliers in the outermost 
+            bins. Otherwise, these students are exluded from the plot.
+
+    Returns:
+        A pandas DataFrame with these columns:
+            'Student v Question': A qualitative description of the relative
+                scale score of the students compared to the item. 
+            'Response': 'A', 'B', 'C', 'D', 'E', or '✓'.
+            'Percentage of responses': as float
     '''
     q_difficulty = pat_results.question_scales[question]
     summary_df = pat_results.results[["Scale", question]].copy()
@@ -87,15 +128,21 @@ def question_summary(pat_results, question, open_ended=False):
     return grouped_df
 
 
-def item_analysis_plot(pat_results, question):
+def item_analysis_plot(pat_results: PATResults,
+                       question: str) -> "tuple[plt.Figure, plt.Axes]":
     '''Creates an item analysis plot for a single PAT question.
     
-    Arguments
-    pat_results: an instance of PATResults
-    question: which question to create a plot for
+    Compares the expected performance of students on an item, based on their
+    PAT scale score and the question's scale score, with their responses.
+    The correct response is expected to be selected more often by students with
+    higher scale scores.
 
-    Returns
-    f, ax: the matplotlib figure and axes for the plot
+    Args:
+        pat_results: An instance of PATResults to analyse.
+        question: The question number to produce a plot for.
+
+    Returns:
+        f, ax: the matplotlib figure and axes for the plot
     '''
     grouped_df = question_summary(pat_results, question)
 
@@ -128,17 +175,25 @@ def item_analysis_plot(pat_results, question):
     return f, ax
 
 
-def item_analysis_plots(results, save_path="", verbose=True):
+def item_analysis_plots(results: PATResultsCollection,
+                        save_path: str = "",
+                        verbose: bool = True) -> None:
     '''Creates item analysis charts for all tests and questions results.
     
-    Example usage
-    results = group_reports_to_patresults(path_to_group_reports)
-    item_analysis_charts(results)
+    Creates a chart for each question in each PAT test found in the provided
+    PATResultsCollection and saves each chart as a .png.
+    Files are saved using the format 
+        "[save_path][Reading/Maths] test [test number] question [question number].png"
 
-    Arguments
-    results: a PATResultsCollection
-    save_path="": the directory to save plot images
-    verbose=True: whether to print information about charts being created
+    Example usage:
+        results = group_reports_to_patresults(path_to_group_reports)
+        item_analysis_charts(results)
+
+    Args:
+        results: a PATResultsCollection instance to produce plots from
+        save_path="": Optional; the path to save plot images to
+        verbose=True: Optional; if True, print information about each chart as
+            it is generated.
     '''
     print("Generating PAT item analysis graphs.")
     for test in results.tests:
