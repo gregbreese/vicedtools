@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""A class for storing reports export data from Compass."""
+"""A class for storing reporting data exported from Compass.
+
+Aggregates data from Learning Tasks, Reports and Progress reports exports.
+"""
 
 from __future__ import annotations
 import re
@@ -21,7 +24,7 @@ import pandas as pd
 
 
 class Reports:
-    '''A container class for Compass Reports data.'''
+    '''A container class for reporting data from Compass.'''
 
     def __init__(self, data=None, class_details=None) -> Reports:
         columns = [
