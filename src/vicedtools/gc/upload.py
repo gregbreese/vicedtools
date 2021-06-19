@@ -13,6 +13,8 @@
 # limitations under the License.
 """Utilities for uploading data to GC."""
 
+from __future__ import annotations
+
 from google.cloud import storage
 from google.cloud import bigquery
 import pandas as pd
@@ -73,6 +75,7 @@ def upload_blob(bucket_name: str, source_file_name: str,
         source_file_name: The path of local file to upload
         destination_blob_name: The Name of destination GC storage blob
     """
+
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_blob_name)
@@ -96,6 +99,7 @@ def update_table(schema: list[bigquery.SchemaField],
         table_id: The BigQuery table ID.
             E.g. "your-project.your_dataset.your_table_name
     '''
+
     client = bigquery.Client()
 
     job_config = bigquery.LoadJobConfig(
@@ -130,6 +134,7 @@ def upload_student_details(source_file: str, table_id: str,
         table_id: The bigquery table ID of the student details table.
         bucket: The name of the GC storage bucket.
     '''
+
     blob_name = "student details/student details.csv"
     uri = "gs://" + bucket + "/" + blob_name
     upload_blob(bucket, source_file, blob_name)
@@ -151,6 +156,7 @@ def upload_reports(source_file: str, table_id: str, bucket: str) -> None:
         table_id: The bigquery table ID of the student details table.
         bucket: The name of the GC storage bucket.
     '''
+
     blob_name = "reports/reports.csv"
     uri = "gs://" + bucket + "/" + blob_name
     upload_blob(bucket, source_file, blob_name)
@@ -172,6 +178,7 @@ def upload_reports_summary(source_file: str, table_id: str,
         table_id: The bigquery table ID of the student details table.
         bucket: The name of the GC storage bucket.
     '''
+    
     blob_name = "reports/reports_summary.csv"
     uri = "gs://" + bucket + "/" + blob_name
     upload_blob(bucket, source_file, blob_name)

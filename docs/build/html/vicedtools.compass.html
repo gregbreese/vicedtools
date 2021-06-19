@@ -183,24 +183,27 @@
 </div>
 <div class="section" id="module-vicedtools.compass.exports">
 <span id="vicedtools-compass-exports-module"></span><h2>vicedtools.compass.exports module<a class="headerlink" href="#module-vicedtools.compass.exports" title="Permalink to this headline">¶</a></h2>
+<p>Functions for automating the export of data from Compass.</p>
 <dl class="py function">
 <dt id="vicedtools.compass.exports.export_student_details">
 <code class="sig-prename descclassname">vicedtools.compass.exports.</code><code class="sig-name descname">export_student_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">download_path</span></em>, <em class="sig-param"><span class="n">compass_school_code</span></em>, <em class="sig-param"><span class="n">auth</span></em>, <em class="sig-param"><span class="n">geckodriver_path</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_student_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports student details from Compass.</p>
-<p>Keyword arguments:
-download_path: The file location to save the csv export.
-compass_school_code: Your Compass school code.
-auth: ‘selenium’, ‘browser_cookie3’</p>
-<blockquote>
-<div><p>The method for getting authentication cookies for Compass.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>download_path</strong> – The file path to save the csv export.</p></li>
+<li><p><strong>compass_school_code</strong> – Your Compass school code.</p></li>
+<li><p><strong>auth</strong> – <p>‘selenium’, ‘browser_cookie3’
+The method for getting authentication cookies for Compass.
 browser_cookie3: uses locally stored cookies from Firefox
 selenium: will prompt for Compass login details, log into</p>
 <blockquote>
 <div><p>Compass, and then extract auth cookies.</p>
 </div></blockquote>
-</div></blockquote>
-<dl class="simple">
-<dt>geckodriver_path: The location of geckodriver.exe, only required</dt><dd><p>if auth=’selenium’</p>
+</p></li>
+<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe, only required
+if auth=’selenium’</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -208,21 +211,30 @@ selenium: will prompt for Compass login details, log into</p>
 <dl class="py function">
 <dt id="vicedtools.compass.exports.export_student_enrolments">
 <code class="sig-prename descclassname">vicedtools.compass.exports.</code><code class="sig-name descname">export_student_enrolments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">download_path</span></em>, <em class="sig-param"><span class="n">geckodriver_path</span></em>, <em class="sig-param"><span class="n">compass_school_code</span></em>, <em class="sig-param"><span class="n">download_wait</span><span class="o">=</span><span class="default_value">600</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_student_enrolments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports student enrolment information from Compass.</p>
+<dd><p>Exports class enrolment and teacher information from Compass.</p>
+<p>Downloads the Microsoft SDS export from Compass using Selenium and the
+Firefox webdriver.</p>
 <p>Will prompt for Compass login details.
 Requires access to SDS Export rights in the Subjects and Classes page.</p>
-<p>Keyword arguments
-download_path: The directory to save the export. Must use slashes in</p>
-<blockquote>
-<div><p>windows.</p>
-</div></blockquote>
-<p>geckodriver_path: The location of geckodriver.exe
-compass_school_code: Your Compass school code</p>
-<p>Optional keyword argumenbts
-download_wait: the amount of time to wait for Compass to generate the</p>
-<blockquote>
-<div><p>export, default 10 mins</p>
-</div></blockquote>
+<dl class="simple">
+<dt>Will save four files in the provided path:</dt><dd><p>StudentEnrollment.csv: contains student-&gt;class mappings
+Teacher.csv: contains teacher id information
+TeacherRoster.csv: contains teacher-&gt;class mappings
+Section.csv: contains class id information</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
+windows.</p></li>
+<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe</p></li>
+<li><p><strong>compass_school_code</strong> – Your Compass school code.</p></li>
+<li><p><strong>download_wait</strong> – Optional; the amount of time to wait for Compass to
+generate the export, default 10 mins.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -231,6 +243,7 @@ download_wait: the amount of time to wait for Compass to generate the</p>
 </div>
 <div class="section" id="module-vicedtools.compass.reports">
 <span id="vicedtools-compass-reports-module"></span><h2>vicedtools.compass.reports module<a class="headerlink" href="#module-vicedtools.compass.reports" title="Permalink to this headline">¶</a></h2>
+<p>A class for storing reports export data from Compass.</p>
 <dl class="py class">
 <dt id="vicedtools.compass.reports.Reports">
 <em class="property">class </em><code class="sig-prename descclassname">vicedtools.compass.reports.</code><code class="sig-name descname">Reports</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">class_details</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports" title="Permalink to this definition">¶</a></dt>

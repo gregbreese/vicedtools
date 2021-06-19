@@ -30,7 +30,7 @@ def class_selector(class_string: str) -> pd.Series:
         class_string: a class code string
 
     Returns:
-        A pandas Series containing two times, "Maths"/"English" and the class code.
+        A pandas Series containing two items, "Maths"/"English" and the class code.
     '''
     # maths pattern
     pattern = "(?P<class_code>[789]MA[BEFG][0-9]|10MA[PQRSTU][X]?[0-9]|11FM[PQRSTU][0-9])"

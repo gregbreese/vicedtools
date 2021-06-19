@@ -183,15 +183,23 @@
 </div>
 <div class="section" id="module-vicedtools.acer.ewriteresults">
 <span id="vicedtools-acer-ewriteresults-module"></span><h2>vicedtools.acer.ewriteresults module<a class="headerlink" href="#module-vicedtools.acer.ewriteresults" title="Permalink to this headline">¶</a></h2>
+<p>Utility functions for working with eWrite results exports.</p>
 </div>
 <div class="section" id="module-vicedtools.acer.oars">
 <span id="vicedtools-acer-oars-module"></span><h2>vicedtools.acer.oars module<a class="headerlink" href="#module-vicedtools.acer.oars" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for importing data into OARS.</p>
 <dl class="py function">
 <dt id="vicedtools.acer.oars.class_selector">
 <code class="sig-prename descclassname">vicedtools.acer.oars.</code><code class="sig-name descname">class_selector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">class_string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.class_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies whether a given class name is an english or maths class.</p>
-<p>Keyword arguments
-class_string: a class code string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>class_string</strong> – a class code string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas Series containing two times, “Maths”/”English” and the class code.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -200,19 +208,20 @@ class_string: a class code string</p>
 <dd><p>Creates files to update the OARS student database.</p>
 <p>Creates two separate files, one to update the details of existing students
 in the database and one to add new students.</p>
-<p>Keyword arguments
-student_details_file: a student details export csv from Compass. Can be</p>
-<blockquote>
-<div><p>downloaded using vicedtools.compass.export_student_details or directly
-from <a class="reference external" href="https:/">https:/</a>/###.compass.education/Services/FileDownload/CsvRequestHandler?type=37</p>
-</div></blockquote>
-<dl class="simple">
-<dt>student_enrolment_file: a student enrolment file exported from Compass.</dt><dd><p>Can be downloaded using vicedtools.compass.export_student_enrolments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>student_details_file</strong> – a student details export csv from Compass. Can be
+downloaded using vicedtools.compass.export_student_details or directly
+from <a class="reference external" href="https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37">https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37</a></p></li>
+<li><p><strong>student_enrolment_file</strong> – a student enrolment file exported from Compass.
+Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
+<li><p><strong>current_students_file</strong> – a current students export from OARS</p></li>
+<li><p><strong>new_students_file</strong> – the filename to save the new students import for OARS</p></li>
+<li><p><strong>update_students_file</strong> – the filename to save the update students import for OARS</p></li>
+</ul>
 </dd>
 </dl>
-<p>current_students_file: a current students export from OARS
-new_students_file: the filename to save the new students import for OARS
-update_students_file: the filename to save the update students import for OARS</p>
 </dd></dl>
 
 </div>
@@ -374,13 +383,11 @@ question difficulty scale scores.</p>
 <dd class="field-odd"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>str, scale score: float) pairs.</p>
+<dd class="field-even"><p>A dictionary containing each question number (str) as a key and the
+corresponding scale score (float) as values.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>A dictionary containing (question number</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – DataFrame did not contain expected question scales.</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – DataFrame did not contain expected question scales.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -474,34 +481,92 @@ the year level of the student when they sat the test</p></li>
 </div>
 <div class="section" id="module-vicedtools.acer.plots">
 <span id="vicedtools-acer-plots-module"></span><h2>vicedtools.acer.plots module<a class="headerlink" href="#module-vicedtools.acer.plots" title="Permalink to this headline">¶</a></h2>
+<p>Functions for creating visualisations of PAT results.</p>
 <dl class="py function">
 <dt id="vicedtools.acer.plots.item_analysis_plot">
 <code class="sig-prename descclassname">vicedtools.acer.plots.</code><code class="sig-name descname">item_analysis_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pat_results</span></em>, <em class="sig-param"><span class="n">question</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.item_analysis_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an item analysis plot for a single PAT question.</p>
-<p>Arguments
-pat_results: an instance of PATResults
-question: which question to create a plot for</p>
-<p>Returns
-f, ax: the matplotlib figure and axes for the plot</p>
+<p>Compares the expected performance of students on an item, based on their
+PAT scale score and the question’s scale score, with their responses.
+The correct response is expected to be selected more often by students with
+higher scale scores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pat_results</strong> – An instance of PATResults to analyse.</p></li>
+<li><p><strong>question</strong> – The question number to produce a plot for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the matplotlib figure and axes for the plot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>f, ax</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.acer.plots.item_analysis_plots">
 <code class="sig-prename descclassname">vicedtools.acer.plots.</code><code class="sig-name descname">item_analysis_plots</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.item_analysis_plots" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates item analysis charts for all tests and questions results.</p>
-<p>Example usage
-results = group_reports_to_patresults(path_to_group_reports)
+<p>Creates a chart for each question in each PAT test found in the provided
+PATResultsCollection and saves each chart as a .png.
+Files are saved using the format</p>
+<blockquote>
+<div><p>“[save_path][Reading/Maths] test [test number] question [question number].png”</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Example usage:</dt><dd><p>results = group_reports_to_patresults(path_to_group_reports)
 item_analysis_charts(results)</p>
-<p>Arguments
-results: a PATResultsCollection
-save_path=””: the directory to save plot images
-verbose=True: whether to print information about charts being created</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> – a PATResultsCollection instance to produce plots from</p></li>
+<li><p><strong>save_path=&quot;&quot;</strong> – Optional; the path to save plot images to</p></li>
+<li><p><strong>verbose=True</strong> – Optional; if True, print information about each chart as
+it is generated.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.acer.plots.question_summary">
 <code class="sig-prename descclassname">vicedtools.acer.plots.</code><code class="sig-name descname">question_summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pat_results</span></em>, <em class="sig-param"><span class="n">question</span></em>, <em class="sig-param"><span class="n">open_ended</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.question_summary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates an item results summary for a PAT item.</p>
+<dd><p>Creates an item analysis summary for a PAT item.</p>
+<p>Groups the students by their scale score and then for each group determines
+the proportion of students that selected each response option. Groups the
+students in three to five bins depending on how many students there are.
+Centers the bins based on the distribution of student scale scores and
+labels the bins based on their relative level compared to the question.</p>
+<p>Students with higher scale scores should be observed to select the correct
+response more often.</p>
+<p>Used by item_analysis_plot to summarise item results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pat_results</strong> – An instance of PATResults to summarise.</p></li>
+<li><p><strong>question</strong> – Which question number to produce a summary of.</p></li>
+<li><p><strong>open_ended</strong> – Optional; If true, then include outliers in the outermost
+bins. Otherwise, these students are exluded from the plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>‘Student v Question’: A qualitative description of the relative</dt><dd><p>scale score of the students compared to the item.</p>
+</dd>
+</dl>
+<p>’Response’: ‘A’, ‘B’, ‘C’, ‘D’, ‘E’, or ‘✓’.
+‘Percentage of responses’: as float</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A pandas DataFrame with these columns</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

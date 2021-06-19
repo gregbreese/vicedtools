@@ -183,72 +183,128 @@
 </div>
 <div class="section" id="module-vicedtools.gc.format">
 <span id="vicedtools-gc-format-module"></span><h2>vicedtools.gc.format module<a class="headerlink" href="#module-vicedtools.gc.format" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for formatting data for upload to GC.</p>
 <dl class="py function">
 <dt id="vicedtools.gc.format.create_student_details_gc_csv">
-<code class="sig-prename descclassname">vicedtools.gc.format.</code><code class="sig-name descname">create_student_details_gc_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">compass_student_details</span></em>, <em class="sig-param"><span class="n">save_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.format.create_student_details_gc_csv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a csv for uploading to gc.</p>
-<p>Arguments
-compass_student_details: a student details export csv from Compass. Can be</p>
-<blockquote>
-<div><p>downloaded using vicedtools.compass.export_student_details or directly
-from <a class="reference external" href="https:/">https:/</a>/###.compass.education/Services/FileDownload/CsvRequestHandler?type=37</p>
-</div></blockquote>
-<p>save_path: the path to save the csv</p>
+<code class="sig-prename descclassname">vicedtools.gc.format.</code><code class="sig-name descname">create_student_details_gc_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">compass_student_details_file</span></em>, <em class="sig-param"><span class="n">save_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.format.create_student_details_gc_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a csv for uploading to GC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compass_student_details</strong> – a student details export csv from Compass. Can be
+downloaded using vicedtools.compass.export_student_details or directly
+from <a class="reference external" href="https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37">https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37</a></p></li>
+<li><p><strong>save_path</strong> – the path to save the csv</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 <div class="section" id="module-vicedtools.gc.upload">
 <span id="vicedtools-gc-upload-module"></span><h2>vicedtools.gc.upload module<a class="headerlink" href="#module-vicedtools.gc.upload" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for uploading data to GC.</p>
 <dl class="py function">
 <dt id="vicedtools.gc.upload.update_table">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">update_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">schema</span></em>, <em class="sig-param"><span class="n">clustering_fields</span></em>, <em class="sig-param"><span class="n">uri</span></em>, <em class="sig-param"><span class="n">table_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.update_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a table in bigquery.</p>
+<p>Copied from
+<a class="reference external" href="https://github.com/googleapis/python-bigquery/blob/35627d145a41d57768f19d4392ef235928e00f72/samples/load_table_uri_csv.py">https://github.com/googleapis/python-bigquery/blob/35627d145a41d57768f19d4392ef235928e00f72/samples/load_table_uri_csv.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>schema</strong> – A list of bigquery.SchemaField to define to schema</p></li>
+<li><p><strong>clustering_fields</strong> – A list of up to four names of fields</p></li>
+<li><p><strong>uri</strong> – The GC uri to upload the file from
+E.g. “gs://cloud-samples-data/bigquery/us-states/us-states.csv”</p></li>
+<li><p><strong>table_id</strong> – The BigQuery table ID.
+E.g. “your-project.your_dataset.your_table_name</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.gc.upload.upload_blob">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_blob</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bucket_name</span></em>, <em class="sig-param"><span class="n">source_file_name</span></em>, <em class="sig-param"><span class="n">destination_blob_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_blob" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uploads a file to the gc bucket.</p>
-<p>Arguments
-bucket_name: name of gc storage bucket
-source_file_name: path of local file
-destination_blob_name: name of destination gc storage blob</p>
+<p>Copied from
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/python-docs-samples/blob/HEAD/storage/cloud-client/storage_upload_file.py">https://github.com/GoogleCloudPlatform/python-docs-samples/blob/HEAD/storage/cloud-client/storage_upload_file.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> – The name of the GC storage bucket</p></li>
+<li><p><strong>source_file_name</strong> – The path of local file to upload</p></li>
+<li><p><strong>destination_blob_name</strong> – The Name of destination GC storage blob</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.gc.upload.upload_reports">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_reports</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_reports" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a reports table in bigquery.</p>
-<p>Arguments
-source_file: the reports csv file</p>
-<blockquote>
-<div><p>e.g. from vicedtools.compass.Reports.saveReports(source_file)</p>
-</div></blockquote>
-<p>table_id: the bigquery table_id of your student details table
-bucket: the name of your GC storage bucket</p>
+<dl class="simple">
+<dt>Takes a reports csv as produced from</dt><dd><p>vicedtools.compass.Reports.saveReports(source_file)</p>
+</dd>
+<dt>and uploads it under</dt><dd><p>./reports/reports.csv</p>
+</dd>
+</dl>
+<p>in the given GCS bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_file</strong> – The path of the reports csv file.</p></li>
+<li><p><strong>table_id</strong> – The bigquery table ID of the student details table.</p></li>
+<li><p><strong>bucket</strong> – The name of the GC storage bucket.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.gc.upload.upload_reports_summary">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_reports_summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_reports_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a reports summary table in bigquery.</p>
-<p>Arguments
-source_file: the reports csv file</p>
-<blockquote>
-<div><p>e.g. from vicedtools.compass.Reports.saveSummary(source_file)</p>
-</div></blockquote>
-<p>table_id: the bigquery table_id of your student details table
-bucket: the name of your GC storage bucket</p>
+<dl class="simple">
+<dt>Takes a reports csv as produced from</dt><dd><p>vicedtools.compass.Reports.saveSummary(source_file)</p>
+</dd>
+<dt>and uploads it under</dt><dd><p>./reports/reports.csv</p>
+</dd>
+</dl>
+<p>in the given GCS bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_file</strong> – The path of the reports summary csv file.</p></li>
+<li><p><strong>table_id</strong> – The bigquery table ID of the student details table.</p></li>
+<li><p><strong>bucket</strong> – The name of the GC storage bucket.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="vicedtools.gc.upload.upload_student_details">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_student_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_student_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a students details table in bigquery.</p>
-<p>Arguments
-source_file: the student details csv file
-table_id: the bigquery table_id of your student details table
-bucket: the name of your GC storage bucket</p>
+<dl class="simple">
+<dt>Takes a student details csv file as produced from</dt><dd><p>vicedtools.gc.format.create_student_details_gc_csv(…)</p>
+</dd>
+<dt>and uploads to under</dt><dd><p>./student details/student details.csv</p>
+</dd>
+</dl>
+<p>in the given GCS bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_file</strong> – The path of the student details csv file.</p></li>
+<li><p><strong>table_id</strong> – The bigquery table ID of the student details table.</p></li>
+<li><p><strong>bucket</strong> – The name of the GC storage bucket.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
