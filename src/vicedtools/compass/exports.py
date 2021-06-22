@@ -24,10 +24,10 @@ import zipfile
 
 # Todo: provide additional login options, including grabbing cookies from an
 #   existing Firefox profile and from environment variables.
-def export_student_enrolments(download_path: str,
-                              geckodriver_path: str,
-                              compass_school_code: str,
-                              download_wait: int = 10 * 60) -> None:
+def sds_export(download_path: str,
+               geckodriver_path: str,
+               compass_school_code: str,
+               download_wait: int = 10 * 60) -> None:
     '''Exports class enrolment and teacher information from Compass.
 
     Downloads the Microsoft SDS export from Compass using Selenium and the
