@@ -19,6 +19,7 @@ import requests
 import time
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 import zipfile
 
 
@@ -142,7 +143,7 @@ def export_student_details(download_path: str,
         #load web driver
         driver = webdriver.Firefox(executable_path=geckodriver_path)
         #login to compass
-        driver.get("https://gwsc-vic.compass.education/")
+        driver.get("https://" + compass_school_code + ".compass.education/")
         username_field = driver.find_element_by_name("username")
         username = input("Compass username: ")
         username_field.send_keys(username)
@@ -171,3 +172,104 @@ def export_student_details(download_path: str,
 
     with open(download_path, "xb") as f:
         f.write(r.content)
+
+
+def exportLearningTasks(download_path: str, geckodriver_path: str,
+                        compass_school_code: str, academic_year: str) -> None:
+    """Exports all learning tasks data from Compass.
+    
+    Downloads the Learning Tasks exports from Compass using Selenium and the
+    Firefox webdriver.
+
+    Will prompt for Compass login details.
+    Requires access to Learning Tasks Administration.
+
+    Args:
+        download_path: The directory to save the export. Must use \\ slashes in 
+                        windows.
+        geckodriver_path: The location of geckodriver.exe
+        compass_school_code: Your Compass school code.
+        academic_year: Which Compass academic year to download the export for.
+            Use 'all' to download all available years.
+    """
+
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference("browser.download.manager.showWhenStarting", False)
+    profile.set_preference("browser.download.dir", download_path)
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk",
+                           "application/zip")
+
+    #load web driver
+    driver = webdriver.Firefox(executable_path=geckodriver_path,
+                               firefox_profile=profile)
+
+    #login to compass
+    driver.get("https://" + compass_school_code + ".compass.education/")
+    username_field = driver.find_element_by_name("username")
+    username = input("Compass username: ")
+    username_field.send_keys(username)
+    password_field = driver.find_element_by_name("password")
+    password = input("Compass password: ")
+    password_field.send_keys(password)
+    submit_button = driver.find_element_by_name("button1")
+    submit_button.click()
+
+    driver.get(
+        "https://" + compass_school_code +
+        ".compass.education/Communicate/LearningTasksAdministration.aspx")
+    # Open Reports tab
+    button = driver.find_element_by_id("tab-1101-btnIconEl")
+    button.click()
+    # Open dropdown menu
+    button = driver.find_element_by_id("ext-gen1188")
+    button.click()
+    # Get dropdown menu items
+    items = driver.find_elements_by_class_name("x-boundlist-item")
+    academic_years = [item.text for item in items]
+    if academic_year == all:
+        for year in academic_years:
+            # select the academic year
+            button = driver.find_element_by_xpath("//*[contains(text(),'" +
+                                                  year + "')]")
+            button.click()
+            # Press export button
+            button = driver.find_element_by_id("button-1061-btnInnerEl")
+            button.click()
+            for _i in range(600):  # 10 minutes
+                time.sleep(1)
+                try:
+                    # Get cancel button
+                    button = driver.find_element_by_xpath(
+                        "//*[contains(text(),'Cancel')]")
+                    # Get 'Generating' banner
+                    #banner = driver.find_element_by_xpath("//*[contains(text(),'Generating')]")
+                except NoSuchElementException:
+                    button = driver.find_element_by_xpath(
+                        "//*[contains(text(),'Close')]")
+                    button.click()
+                    break
+    elif academic_year in academic_years:
+        # select the academic year
+        button = driver.find_element_by_xpath("//*[contains(text(),'" + academic_year +
+                                              "')]")
+        button.click()
+        # Press export button
+        button = driver.find_element_by_id("button-1061-btnInnerEl")
+        button.click()
+        for _i in range(600):  # 10 minutes
+            time.sleep(1)
+            try:
+                # Get cancel button
+                button = driver.find_element_by_xpath(
+                    "//*[contains(text(),'Cancel')]")
+                # Get 'Generating' banner
+                #banner = driver.find_element_by_xpath("//*[contains(text(),'Generating')]")
+            except NoSuchElementException:
+                button = driver.find_element_by_xpath(
+                    "//*[contains(text(),'Close')]")
+                button.click()
+                break
+    else:
+        print("Academic year '" + academic_year + "' not found.")
