@@ -56,9 +56,7 @@ def sds_export(download_path: str,
     profile.set_preference("browser.download.folderList", 2)
     profile.set_preference("browser.download.manager.showWhenStarting", False)
     profile.set_preference("browser.download.dir", download_path)
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk",
-                           "application/zip")
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv, application/zip")
 
     #load web driver
     driver = webdriver.Firefox(executable_path=geckodriver_path,
@@ -197,9 +195,7 @@ def exportLearningTasks(download_path: str, geckodriver_path: str,
     profile.set_preference("browser.download.folderList", 2)
     profile.set_preference("browser.download.manager.showWhenStarting", False)
     profile.set_preference("browser.download.dir", download_path)
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
-    profile.set_preference("browser.helperApps.neverAsk.saveToDisk",
-                           "application/zip")
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv, application/zip")
 
     #load web driver
     driver = webdriver.Firefox(executable_path=geckodriver_path,
@@ -273,3 +269,95 @@ def exportLearningTasks(download_path: str, geckodriver_path: str,
                 break
     else:
         print("Academic year '" + academic_year + "' not found.")
+
+    driver.close()
+
+
+def exportProgressReports(download_path: str, geckodriver_path: str,
+                        compass_school_code: str, cycle: str) -> None:
+    """Export progress report data."""
+
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("browser.download.folderList", 2)
+    profile.set_preference("browser.download.manager.showWhenStarting", False)
+    profile.set_preference("browser.download.dir", download_path)
+    profile.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv, application/zip")
+
+    #load web driver
+    driver = webdriver.Firefox(executable_path=geckodriver_path,
+                            firefox_profile=profile)
+    #login to compass
+    driver.get("https://" + compass_school_code + ".compass.education/")
+    username_field = driver.find_element_by_name("username")
+    username = input("Compass username: ")
+    username_field.send_keys(username)
+    password_field = driver.find_element_by_name("password")
+    password = input("Compass password: ")
+    password_field.send_keys(password)
+    submit_button = driver.find_element_by_name("button1")
+    submit_button.click()
+
+    # open progress reports page
+    driver.get("https://" + compass_school_code + ".compass.education/Organise/Reporting/GPA/Default.aspx")
+    # open cycles tab
+    button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
+    button.click()
+    # all published progress reports
+    progress_report_cycles = [e.text for e in driver.find_elements_by_xpath("//table/tbody/tr/td/div[contains(text(),'Published To All')]/parent::*/parent::*/child::td[1]/div/a")]
+
+    if cycle == 'all':
+        for this_cycle in progress_report_cycles:
+            link = driver.find_element_by_xpath("//td/div/a[contains(text(), '" + this_cycle + "')]")
+            link.click()
+
+            # export link
+            link = driver.find_element_by_link_text("Export results to CSV")
+            link.click()
+
+            button = driver.find_element_by_xpath("//a/span/span/span[contains(text(),'Export')]")
+            button.click()
+
+            button = driver.find_element_by_xpath("//a/span/span/span[contains(text(),'OK')]")
+            button.click()
+
+            try:
+                # Get cancel button
+                button = driver.find_element_by_xpath("//*[contains(text(),'Cancel')]")
+                # Get 'Generating' banner
+                banner = driver.find_element_by_xpath("//*[contains(text(),'Generating')]")
+            except NoSuchElementException:
+                button = driver.find_element_by_xpath("//*[contains(text(),'Close')]")
+                button.click()
+
+        # back to progres reports page
+        link = driver.find_element_by_link_text("Back to Progress Reports")
+        link.click()
+        # open cycles tab
+        button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
+        button.click()
+    elif cycle in progress_report_cycles:
+        link = driver.find_element_by_xpath("//td/div/a[contains(text(), '" + cycle + "')]")
+        link.click()
+
+        # export link
+        link = driver.find_element_by_link_text("Export results to CSV")
+        link.click()
+
+        button = driver.find_element_by_xpath("//a/span/span/span[contains(text(),'Export')]")
+        button.click()
+
+        button = driver.find_element_by_xpath("//a/span/span/span[contains(text(),'OK')]")
+        button.click()
+
+        try:
+            # Get cancel button
+            button = driver.find_element_by_xpath("//*[contains(text(),'Cancel')]")
+            # Get 'Generating' banner
+            banner = driver.find_element_by_xpath("//*[contains(text(),'Generating')]")
+        except NoSuchElementException:
+            button = driver.find_element_by_xpath("//*[contains(text(),'Close')]")
+            button.click()
+    else:
+        print("Progress report cycle '" + cycle + "' not found.")
+
+    driver.close()
