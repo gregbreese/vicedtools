@@ -49,6 +49,7 @@ class Reports:
                           grade_score_mapper: Callable[[str], float] = None,
                           grade_dtype: pd.api.types.CategoricalDtype = None,
                           replace_values: dict[str, dict] = None) -> Reports:
+        """Creates a new Reports instance from a Compass reports export."""
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df = temp_df[temp_df["AssessmentType"] == "Work Habits"]
 
@@ -109,6 +110,8 @@ class Reports:
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
+        """Creates a new Reports instance from a Compass Learning Tasks export."""
+
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df = temp_df[temp_df["IsIncludedInReport"]]
         temp_df = temp_df[temp_df["ComponentType"] != "Comment"]
@@ -165,6 +168,8 @@ class Reports:
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
+        """Creates a new Reports instance from a Compass progress reports export."""
+
         temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
         temp_df.rename(columns={
             "Id": "StudentCode",
@@ -249,6 +254,8 @@ class Reports:
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> None:
+        """Adds data from a Compass Learning Tasks export."""
+
         temp = Reports.fromLearningTasksExport(
             filename,
             grade_score_mapper=grade_score_mapper,
@@ -267,6 +274,8 @@ class Reports:
                          grade_score_mapper: Callable[[str], float] = None,
                          grade_dtype: pd.api.types.CategoricalDtype = None,
                          replace_values: dict[str, dict] = None) -> None:
+        """Adds data from a Compass reports export."""
+
         temp = Reports.fromReportsExport(filename,
                                          grade_score_mapper=grade_score_mapper,
                                          grade_dtype=grade_dtype,
@@ -283,6 +292,8 @@ class Reports:
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> None:
+        """Adds data from a Compass progress reports export."""
+
         temp = Reports.fromProgressReportsExport(
             filename,
             progress_report_items,
@@ -308,6 +319,10 @@ class Reports:
                            subjects_file: str,
                            class_code_parser: Callable[[str, str], str],
                            replace_values: dict[str, dict] = None) -> None:
+        """Adds subject metadata from a separate csv file.
+        
+        Expects a csv with columns 'SubjectCode', 'LearningArea', 'SubjectName'.
+        """
 
         subjects_df = pd.read_csv(subjects_file)
 
@@ -328,6 +343,8 @@ class Reports:
                              on="SubjectCode")
 
     def updateFromClassDetails(self) -> None:
+        """Infills TeacherCode data with data available from other reports."""
+
         self.data.drop(columns="TeacherCode", inplace=True, errors="ignore")
         self.data = pd.merge(self.data,
                              self.class_details,
@@ -335,6 +352,7 @@ class Reports:
                              on=["Time", "ClassCode"])
 
     def summary(self) -> pd.DataFrame:
+        """Aggregates Academic and Work Habits results to produce a summary."""
         grpd = self.data.groupby([
             'Time', 'ClassCode', 'StudentCode', 'Type', 'SubjectCode',
             'SubjectName', 'LearningArea', 'TeacherCode'
