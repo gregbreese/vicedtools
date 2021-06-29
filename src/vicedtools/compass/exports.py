@@ -24,7 +24,7 @@ from selenium.common.exceptions import NoSuchElementException
 import zipfile
 
 
-# TODO: implement auth from local environment variables
+# TODO: implement auth from local environment variables/config file
 # TODO: implement Chrome support
 def getCompassDriver(school_code: str,
                      geckodriver_path: str,
@@ -85,20 +85,17 @@ def getCompassDriver(school_code: str,
     else:
         raise ValueError("auth value '" + auth + "' not valid.")
 
-
-# Todo: provide additional login options, including grabbing cookies from an
-#   existing Firefox profile and from environment variables.
 def sds_export(school_code: str,
                geckodriver_path: str,
                download_path: str,
                auth='cli',
-               download_wait: int = 10 * 60) -> None:
+               download_wait: int = 10 * 60,
+               append_date: bool = False) -> None:
     '''Exports class enrolment and teacher information from Compass.
 
     Downloads the Microsoft SDS export from Compass using Selenium and the
     Firefox webdriver.
 
-    Will prompt for Compass login details.
     Requires access to SDS Export rights in the Subjects and Classes page.
 
     Will save four files in the provided path:
@@ -117,6 +114,8 @@ def sds_export(school_code: str,
             the local Firefox installation.
         download_wait: Optional; the amount of time to wait for Compass to 
             generate the export, default 10 mins.
+        append_date: If True, append today's date to the filenames in
+            yyyy-mm-dd format.
     '''
     driver = getCompassDriver(school_code,
                               geckodriver_path,
@@ -153,11 +152,18 @@ def sds_export(school_code: str,
     #     if dt > newest_time:
     #         file_to_extract = file
     file_to_extract = files[0]
+    contents = ["StudentEnrollment.csv", "Teacher.csv", "TeacherRoster.csv","Section.csv"]
     with zipfile.ZipFile(file_to_extract, 'r') as zip_ref:
-        zip_ref.extract("StudentEnrollment.csv", path=download_path)
-        zip_ref.extract("Teacher.csv", path=download_path)
-        zip_ref.extract("TeacherRoster.csv", path=download_path)
-        zip_ref.extract("Section.csv", path=download_path)
+        for content in contents:
+            if append_date:
+                today = datetime.today().strftime('%Y-%m-%d')
+                parts = content.split('.')
+                new_filename = parts[0] + " " + today + "." + parts[1]
+                info = zip_ref.get_info(content)
+                info.filename = new_filename
+                zip_ref.extract(new_filename, path=download_path)
+            else:
+                zip_ref.extract(file, path=download_path)
     os.remove(file_to_extract)
 
 
@@ -169,7 +175,7 @@ def export_student_details(school_code: str,
 
     Args:
         school_code: Your Compass school code.
-        download_path: The file path to save the csv export.
+        download_path: The file path to save the csv export, including filename.
         auth: Either 'cli' or 'browser'. If 'cli' then will open a
             browser window using Selenium and prompt for Compass login details
             from the command line. If 'browser' then will use cookies from the
@@ -226,6 +232,9 @@ def exportLearningTasks(school_code: str,
 
     Will prompt for Compass login details.
     Requires access to Learning Tasks Administration.
+
+    Saves a file called "LearningTasks-[academic-year].csv" in the folder
+    specified in download_path.
 
     Args:
         compass_school_code: Your Compass school code.
