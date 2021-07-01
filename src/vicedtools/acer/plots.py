@@ -45,11 +45,12 @@ def question_summary(pat_results: PATResults,
             bins. Otherwise, these students are exluded from the plot.
 
     Returns:
-        A pandas DataFrame with these columns:
-            'Student v Question': A qualitative description of the relative
-                scale score of the students compared to the item. 
-            'Response': 'A', 'B', 'C', 'D', 'E', or '✓'.
-            'Percentage of responses': as float
+        A pandas DataFrame with these columns
+
+        'Student v Question': A qualitative description of the relative
+            scale score of the students compared to the item. 
+        'Response': 'A', 'B', 'C', 'D', 'E', or '✓'.
+        'Percentage of responses': as float
     '''
     q_difficulty = pat_results.question_scales[question]
     summary_df = pat_results.results[["Scale", question]].copy()
@@ -184,8 +185,7 @@ def item_analysis_plots(results: PATResultsCollection,
     
     Creates a chart for each question in each PAT test found in the provided
     PATResultsCollection and saves each chart as a .png.
-    Files are saved using the format 
-        "[save_path][Reading/Maths] test [test number] question [question number].png"
+    Files are saved using the format "[save_path][Reading/Maths] test [test number] question [question number].png"
 
     Example usage:
         results = group_reports_to_patresults(path_to_group_reports)
