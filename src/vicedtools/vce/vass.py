@@ -158,7 +158,7 @@ class VASSWebDriver(webdriver.Ie):
         external_results_url = "https://www.vass.vic.edu.au/results/reports/GradedAssessmentResultsByClass/GAResultsReport.vass?StudySequenceCode=ALL&ClassCode=&Semester=ALL&ReportOrder=Unit&exportReport=Y"
         s = requests.session()
         # copy cookies from selenium session
-        for cookie in driver.driver.get_cookies():
+        for cookie in self.driver.get_cookies():
             c = {cookie['name']: cookie['value']}
             s.cookies.update(c)
         # request student details file
@@ -176,7 +176,7 @@ class VASSWebDriver(webdriver.Ie):
         personal_details_url = "https://www.vass.vic.edu.au/student/reports/StudentPersonalDetailsSummary/PersonalDetailsSummary.vass?yearLevel=ALL&formGroup=&course=ALL&reportType=1&includeAddress=N&reportOrder=yrLevel"
         s = requests.session()
         # copy cookies from selenium session
-        for cookie in driver.driver.get_cookies():
+        for cookie in self.driver.get_cookies():
             c = {cookie['name']: cookie['value']}
             s.cookies.update(c)
         # request student details file
@@ -303,7 +303,7 @@ class VASSWebDriver(webdriver.Ie):
                 self.driver.execute_script("arguments[0].click();", button)
             except TimeoutException:
                 pass
-            handle = find_window(self.driver, f"Ranked School Scores Report for Glen Waverley Secondary College - {year}")
+            handle = find_window(self.driver, f"Ranked School Scores Report for Glen Waverley Secondary College - {self.year}")
             self.driver.switch_to.window(handle)
             while(True):
                 self.driver.switch_to.frame("VASSFrame")
