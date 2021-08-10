@@ -21,6 +21,7 @@ test/test number. Includes the ability to take a folder containing all of your
 group report exports and to parse them all in one go.
 """
 from __future__ import annotations
+
 from datetime import datetime
 import glob
 import re

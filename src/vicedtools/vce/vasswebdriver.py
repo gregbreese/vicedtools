@@ -76,6 +76,14 @@ def find_window(driver: WebDriver, window_title: str) -> str:
 
 
 def is_menu_item_displayed(driver: WebDriver, xpath_expr: str) -> bool:
+    """Tests to see if a given menu item is displayed in VASS.
+    
+    Used to deal with unreliable clicks in IE.
+    
+    Args:
+        driver: An instance of VASSWebDriver.
+        xpath_expr: An xpath expression that matches the menu item.
+    """
     cf = current_frame(driver)
     driver.switch_to.default_content()
     driver.switch_to.frame('main')
@@ -87,7 +95,7 @@ def is_menu_item_displayed(driver: WebDriver, xpath_expr: str) -> bool:
 
 
 def current_frame(driver: WebDriver) -> str:
-    """Returns the name of the current frame."""
+    """Returns the name of the webdriver's current frame."""
     return driver.execute_script("""
             var frame = window.frameElement;
             if (!frame) {
@@ -97,12 +105,11 @@ def current_frame(driver: WebDriver) -> str:
             """)
 
 
-# TODO: Implement username/password/grid passsword input from config file.
+# TODO: Update time.sleep() calls to smart waits.
 class VASSWebDriver(webdriver.Ie):
 
     def __init__(self,
                  iedriver_path: str,
-                 auth: str = 'kwargs',
                  username="",
                  password="",
                  grid_password=""):
@@ -141,34 +148,33 @@ class VASSWebDriver(webdriver.Ie):
         handle = find_window(self, "Login To VASS")
         self.switch_to.window(handle)
         self.main_window = self.current_window_handle
-        if auth == 'kwargs':
-            # username/password
-            username_field = self.find_element_by_name("username")
-            username_field.send_keys(username)
-            password_field = self.find_element_by_name("password")
-            password_field.send_keys(password)
-            login_button = self.find_element_by_xpath(
-                "//input[contains(@name, 'Login')]")
-            login_button.click()
-            time.sleep(3)
-            # password grid
-            # TODO: review this as it's very slow
-            elements = self.find_elements_by_xpath(
-                "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")
-            grid_values = {}
-            for e in elements:
-                grid_values[(
-                    e.get_attribute("ColumnNum"),
-                    e.get_attribute("RowNum"))] = e.get_attribute("value")
-            grid_password_characters = "".join(
-                [grid_values[i] for i in grid_password])
-            password_field = self.find_element_by_xpath(
-                "//input[contains(@name, 'PassCode')]")
-            password_field.send_keys(grid_password_characters)
-            accept_button = self.find_element_by_xpath(
-                "//input[contains(@name, 'AcceptButton')]")
-            accept_button.click()
-            time.sleep(2)
+        # username/password auth
+        username_field = self.find_element_by_name("username")
+        username_field.send_keys(username)
+        password_field = self.find_element_by_name("password")
+        password_field.send_keys(password)
+        login_button = self.find_element_by_xpath(
+            "//input[contains(@name, 'Login')]")
+        login_button.click()
+        time.sleep(3)
+        # password grid auth
+        # TODO: review this as it's very slow
+        elements = self.find_elements_by_xpath(
+            "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")
+        grid_values = {}
+        for e in elements:
+            grid_values[(
+                e.get_attribute("ColumnNum"),
+                e.get_attribute("RowNum"))] = e.get_attribute("value")
+        grid_password_characters = "".join(
+            [grid_values[i] for i in grid_password])
+        password_field = self.find_element_by_xpath(
+            "//input[contains(@name, 'PassCode')]")
+        password_field.send_keys(grid_password_characters)
+        accept_button = self.find_element_by_xpath(
+            "//input[contains(@name, 'AcceptButton')]")
+        accept_button.click()
+        time.sleep(2)
         pattern = "VASS - (?P<school>[A-Za-z ]+) - Year (?P<year>[0-9]{4})"
         m = re.match(pattern, self.title)
         if m:

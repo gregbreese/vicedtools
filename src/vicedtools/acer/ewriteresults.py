@@ -13,11 +13,6 @@
 # limitations under the License.
 """Utility functions for working with eWrite results exports."""
 
-import re
-import pandas as pd
-import glob
-import numpy as np
-
 COLUMNS = [
     'Family name', 'Given name', 'Middle name', 'Username', 'Gender',
     'Year level (at time of test)', 'Tags (at time of test)', 'Date', 'Score',
