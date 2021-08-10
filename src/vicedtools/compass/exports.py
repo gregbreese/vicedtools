@@ -21,82 +21,12 @@ import os
 import requests
 import time
 
-import browser_cookie3
-from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import zipfile
 
+from vicedtools.compass.compasswebdriver import CompassWebDriver
 
-# TODO: implement auth from local environment variables/config file
-# TODO: implement Chrome support
-class CompassWebDriver(webdriver.Firefox):
-    """WebDriver extension that stores the Compass school code."""
-
-    def __init__(self,
-                 school_code: str,
-                 geckodriver_path: str,
-                 download_path: str = "./",
-                 auth: str = 'cli'):
-        """Creates a webdriver with Compass authentication completed.
-    
-        Creates an instance of selenium.webdriver.Firefox and authenticates either
-        through a manually entered username/password or through cookies stored in
-        the locally installed Firefox installation.
-        
-        Args:
-            school_code: Your school's compass school code.
-            geckodriver_path: The path to geckodriver.exe
-            download_path: The path to download any files to.
-            auth: Either 'cli' or 'browser'. If 'cli' will request a username and
-                password from the command line. If 'browser' will use cookies from
-                the local Firefox installation.
-
-        Returns:
-            An instance of selenium.webdriver.Firefox with authentication to
-            Compass completed.
-        """
-        self.school_code = school_code
-
-        profile = webdriver.FirefoxProfile()
-        profile.set_preference("browser.download.folderList", 2)
-        profile.set_preference("browser.download.manager.showWhenStarting",
-                               False)
-        profile.set_preference("browser.download.dir", download_path)
-        profile.set_preference("browser.helperApps.neverAsk.saveToDisk",
-                               "text/csv, application/zip")
-
-        webdriver.firefox.webdriver.WebDriver.__init__(
-            self, executable_path=geckodriver_path, firefox_profile=profile)
-
-        if auth == 'cli':
-            #login to compass
-            self.get("https://" + school_code + ".compass.education/")
-            username_field = self.find_element_by_name("username")
-            username = input("Compass username: ")
-            username_field.send_keys(username)
-            password_field = self.find_element_by_name("password")
-            password = input("Compass password: ")
-            password_field.send_keys(password)
-            submit_button = self.find_element_by_name("button1")
-            submit_button.click()
-        elif auth == 'browser_cookie3':
-            self.get("https://" + school_code + ".compass.education/")
-            cj = browser_cookie3.firefox(domain_name=school_code +
-                                         '.compass.education')
-            for c in cj:
-                cookie_dict = {
-                    'name': c.name,
-                    'value': c.value,
-                    'domain': c.domain,
-                    'expires': c.expires,
-                    'path': c.path
-                }
-                self.add_cookie(cookie_dict)
-        else:
-            raise ValueError("auth value '" + auth + "' not valid.")
-
-
-def sds_export(driver: CompassWebDriver,
+def export_sds(driver: CompassWebDriver,
                download_path: str = ".\\",
                download_wait: int = 10 * 60,
                append_date: bool = False) -> None:
@@ -140,7 +70,6 @@ def sds_export(driver: CompassWebDriver,
     yes_button = driver.find_element_by_id("button-1120")
     yes_button.click()
     time.sleep(download_wait)
-    driver.quit()
 
     files = glob.glob(download_path +
                       "\\Bulk SDS SCV Download - Generated - *.zip")
@@ -198,7 +127,7 @@ def export_student_details(driver: CompassWebDriver,
         f.write(r.content)
 
 
-def discoverAcademicYears(driver: CompassWebDriver) -> list(str):
+def discover_academic_years(driver: CompassWebDriver) -> list(str):
     """Discovers the academic years that exist in Compass.
     
     Useful for downloading learning tasks.
@@ -224,7 +153,7 @@ def discoverAcademicYears(driver: CompassWebDriver) -> list(str):
     return academic_years
 
 
-def exportLearningTasks(driver: CompassWebDriver,
+def export_learning_tasks(driver: CompassWebDriver,
                         academic_year: str,
                         download_path: str = ".\\") -> None:
     """Exports all learning tasks data from Compass.
@@ -273,7 +202,7 @@ def exportLearningTasks(driver: CompassWebDriver,
             break
 
 
-def discoverProgressReportCycles(driver: CompassWebDriver,
+def discover_progress_report_cycles(driver: CompassWebDriver,
                                  published_only: bool = True) -> list(str):
     """Discovers the available progress report cycles.
 
@@ -304,7 +233,7 @@ def discoverProgressReportCycles(driver: CompassWebDriver,
     return progress_report_cycles
 
 
-def exportProgressReport(driver: CompassWebDriver,
+def export_progress_report(driver: CompassWebDriver,
                          cycle: str,
                          download_path: str = ".\\") -> None:
     """Export progress report data.
@@ -353,7 +282,7 @@ def exportProgressReport(driver: CompassWebDriver,
             break
 
 
-def discoverReportCycles(driver: CompassWebDriver,
+def discover_report_cycles(driver: CompassWebDriver,
                          published_only: bool = True) -> list(tuple(str)):
     """Discovers the available report cycles.
 
@@ -381,7 +310,7 @@ def discoverReportCycles(driver: CompassWebDriver,
     return cycles
 
 
-def exportReportCycle(driver: CompassWebDriver,
+def export_report_cycle(driver: CompassWebDriver,
                       year: str,
                       title: str,
                       download_path: str = ".\\") -> None:
