@@ -137,8 +137,6 @@ class VASSWebDriver(webdriver.Ie):
         login_link = WebDriverWait(self, 20).until(
             EC.element_to_be_clickable((By.NAME, "boslogin")))
         click_with_retry(login_link, lambda: find_window(self, "Login To VASS"))
-        #login_link = self.driver.find_element_by_name("boslogin")
-        #login_link.click()
         time.sleep(1)
         handle = find_window(self, "Login To VASS")
         self.switch_to.window(handle)
@@ -283,7 +281,7 @@ class VASSWebDriver(webdriver.Ie):
         menu_item = self.find_element_by_id("item7_3_1")  # GAT Summary
         self.execute_script("arguments[0].click();", menu_item)
         time.sleep(2)
-        button = self.driver.find_element_by_xpath(
+        button = self.find_element_by_xpath(
             "//input[(@name='btnRunReport') and (@type='submit')]"
         )  # Run report
         button.click()
@@ -311,6 +309,11 @@ class VASSWebDriver(webdriver.Ie):
         self.find_element_by_id("idClose").click()
         self.switch_to.window(self.main_window)
         df = pd.DataFrame(students)
+        df.rename(columns={
+            "CandNum": "Student Number",
+            "name": "Student Name"
+        },
+                  inplace=True)
         df.to_csv(file_name, index=False)
 
     # TODO: See if data can be downloaded  directly from https://www.vass.vic.edu.au/common/VASSExtract.cfm?Filename=" + unit_code + ga_code
