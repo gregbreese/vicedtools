@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from google.cloud import storage
 from google.cloud import bigquery
-import pandas as pd
 
 STUDENT_DETAILS_SCHEMA = [
     bigquery.SchemaField("StudentCode", "STRING"),
