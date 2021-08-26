@@ -11,9 +11,18 @@ Subpackages
    vicedtools.compass
    vicedtools.gc
    vicedtools.gwsc
+   vicedtools.vce
 
 Submodules
 ----------
+
+vicedtools.educationperfect module
+----------------------------------
+
+.. automodule:: vicedtools.educationperfect
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 vicedtools.grok module
 ----------------------

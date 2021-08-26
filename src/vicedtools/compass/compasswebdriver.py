@@ -11,11 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """A class derived from webdriver.Firefox that includes Compass authentication."""
+
+from __future__ import annotations
+
+from abc import abstractmethod
+from typing import Protocol
 
 import browser_cookie3
 from selenium import webdriver
+
 
 # TODO: implement auth from local environment variables/config file
 # TODO: implement Chrome support
@@ -25,8 +30,8 @@ class CompassWebDriver(webdriver.Firefox):
     def __init__(self,
                  school_code: str,
                  geckodriver_path: str,
-                 download_path: str = "./",
-                 auth: str = 'cli'):
+                 authenticator: CompassAuthenticator,
+                 download_path: str = "./"):
         """Creates a webdriver with Compass authentication completed.
     
         Creates an instance of selenium.webdriver.Firefox and authenticates either
@@ -36,10 +41,10 @@ class CompassWebDriver(webdriver.Firefox):
         Args:
             school_code: Your school's compass school code.
             geckodriver_path: The path to geckodriver.exe
+            authenticator: An instance of CompassAuthenticator to perform the
+                required authentication with Compass.
             download_path: The path to download any files to.
-            auth: Either 'cli' or 'browser'. If 'cli' will request a username and
-                password from the command line. If 'browser' will use cookies from
-                the local Firefox installation.
+
 
         Returns:
             An instance of selenium.webdriver.Firefox with authentication to
@@ -58,29 +63,45 @@ class CompassWebDriver(webdriver.Firefox):
         webdriver.firefox.webdriver.WebDriver.__init__(
             self, executable_path=geckodriver_path, firefox_profile=profile)
 
-        if auth == 'cli':
-            #login to compass
-            self.get("https://" + school_code + ".compass.education/")
-            username_field = self.find_element_by_name("username")
-            username = input("Compass username: ")
-            username_field.send_keys(username)
-            password_field = self.find_element_by_name("password")
-            password = input("Compass password: ")
-            password_field.send_keys(password)
-            submit_button = self.find_element_by_name("button1")
-            submit_button.click()
-        elif auth == 'browser_cookie3':
-            self.get("https://" + school_code + ".compass.education/")
-            cj = browser_cookie3.firefox(domain_name=school_code +
-                                         '.compass.education')
-            for c in cj:
-                cookie_dict = {
-                    'name': c.name,
-                    'value': c.value,
-                    'domain': c.domain,
-                    'expires': c.expires,
-                    'path': c.path
-                }
-                self.add_cookie(cookie_dict)
-        else:
-            raise ValueError("auth value '" + auth + "' not valid.")
+        authenticator.authenticate(self)
+
+
+class CompassAuthenticator(Protocol):
+    """An abstract class for generic Compass Authenticator objects."""
+
+    @abstractmethod
+    def authenticate(self, driver: CompassWebDriver) -> None:
+        """Authenticates the given webdriver with Compass."""
+        raise NotImplementedError
+
+
+class CompassCLIAuthenticator(CompassAuthenticator):
+    """A Compass Authenticator that gets login details from CLI prompt."""
+
+    def authenticate(self, driver: CompassWebDriver):
+        driver.get("https://" + driver.school_code + ".compass.education/")
+        username_field = self.find_element_by_name("username")
+        username = input("Compass username: ")
+        username_field.send_keys(username)
+        password_field = self.find_element_by_name("password")
+        password = input("Compass password: ")
+        password_field.send_keys(password)
+        submit_button = self.find_element_by_name("button1")
+        submit_button.click()
+
+
+class CompassBrowserCookieAuthenticator(CompassAuthenticator):
+    """A Compass Authenticator that gets login details from local Firefox cookies."""
+
+    def authenticate(self, driver: CompassWebDriver):
+        cj = browser_cookie3.firefox(domain_name=driver.school_code +
+                                     '.compass.education')
+        for c in cj:
+            cookie_dict = {
+                'name': c.name,
+                'value': c.value,
+                'domain': c.domain,
+                'expires': c.expires,
+                'path': c.path
+            }
+            driver.add_cookie(cookie_dict)

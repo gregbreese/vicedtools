@@ -87,22 +87,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">vicedtools</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="vicedtools.html">vicedtools package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="vicedtools.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.acer.html">vicedtools.acer package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gc.html">vicedtools.gc package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gwsc.html">vicedtools.gwsc package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-grok-module">vicedtools.grok module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-naplan-module">vicedtools.naplan module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-sportstrak-module">vicedtools.sportstrak module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-contents">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.educationperfect">vicedtools.educationperfect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.grok">vicedtools.grok module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.naplan">vicedtools.naplan module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.sportstrak">vicedtools.sportstrak module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -155,7 +157,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="modules.html">src</a> &raquo;</li>
+          <li><a href="modules.html">vicedtools</a> &raquo;</li>
         
           <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
         
@@ -183,79 +185,54 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-vicedtools.compass.exports">
-<span id="vicedtools-compass-exports-module"></span><h2>vicedtools.compass.exports module<a class="headerlink" href="#module-vicedtools.compass.exports" title="Permalink to this headline">¶</a></h2>
-<p>Functions for automating the export of data from Compass.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.exportLearningTasks">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">exportLearningTasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cli'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.exportLearningTasks" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports all learning tasks data from Compass.</p>
-<p>Downloads the Learning Tasks exports from Compass using Selenium and the
-Firefox webdriver.</p>
-<p>Will prompt for Compass login details.
-Requires access to Learning Tasks Administration.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>compass_school_code</strong> – Your Compass school code.</p></li>
-<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-<li><p><strong>academic_year</strong> – Which Compass academic year to download the export for.
-Use ‘all’ to download all available years.</p></li>
-<li><p><strong>auth</strong> – Either ‘cli’ or ‘browser’. If ‘cli’ will request a username and
-password from the command line. If ‘browser’ will use cookies from
-the local Firefox installation.</p></li>
-</ul>
-</dd>
-</dl>
+<div class="section" id="module-vicedtools.compass.compasswebdriver">
+<span id="vicedtools-compass-compasswebdriver-module"></span><h2>vicedtools.compass.compasswebdriver module<a class="headerlink" href="#module-vicedtools.compass.compasswebdriver" title="Permalink to this headline">¶</a></h2>
+<p>A class derived from webdriver.Firefox that includes Compass authentication.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassAuthenticator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>An abstract class for generic Compass Authenticator objects.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassAuthenticator.authenticate">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates the given webdriver with Compass.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.exportProgressReports">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">exportProgressReports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cli'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.exportProgressReports" title="Permalink to this definition">¶</a></dt>
-<dd><p>Export progress report data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>compass_school_code</strong> – Your Compass school code.</p></li>
-<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-<li><p><strong>academic_year</strong> – Which Compass academic year to download the export for.
-Use ‘all’ to download all available years.</p></li>
-<li><p><strong>auth</strong> – Either ‘cli’ or ‘browser’. If ‘cli’ will request a username and
-password from the command line. If ‘browser’ will use cookies from
-the local Firefox installation.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_student_details">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_student_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_student_details" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exports student details from Compass.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>school_code</strong> – Your Compass school code.</p></li>
-<li><p><strong>download_path</strong> – The file path to save the csv export.</p></li>
-<li><p><strong>auth</strong> – Either ‘cli’ or ‘browser’. If ‘cli’ then will open a
-browser window using Selenium and prompt for Compass login details
-from the command line. If ‘browser’ then will use cookies from the
-local Firefox installation.</p></li>
-<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe, only required
-if auth=’selenium’</p></li>
-</ul>
-</dd>
-</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassBrowserCookieAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">vicedtools.compass.compasswebdriver.CompassAuthenticator</span></code></a></p>
+<p>A Compass Authenticator that gets login details from local Firefox cookies.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates the given webdriver with Compass.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.getCompassDriver">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">getCompassDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cli'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.getCompassDriver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a webdriver with Compass authentication completed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassCLIAuthenticator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassCLIAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassCLIAuthenticator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">vicedtools.compass.compasswebdriver.CompassAuthenticator</span></code></a></p>
+<p>A Compass Authenticator that gets login details from CLI prompt.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassCLIAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassCLIAuthenticator.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates the given webdriver with Compass.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassWebDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">selenium.webdriver.firefox.webdriver.WebDriver</span></code></p>
+<p>WebDriver extension that stores the Compass school code.</p>
+<p>Creates a webdriver with Compass authentication completed.</p>
 <p>Creates an instance of selenium.webdriver.Firefox and authenticates either
 through a manually entered username/password or through cookies stored in
 the locally installed Firefox installation.</p>
@@ -264,10 +241,9 @@ the locally installed Firefox installation.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>school_code</strong> – Your school’s compass school code.</p></li>
 <li><p><strong>geckodriver_path</strong> – The path to geckodriver.exe</p></li>
+<li><p><strong>authenticator</strong> – An instance of CompassAuthenticator to perform the
+required authentication with Compass.</p></li>
 <li><p><strong>download_path</strong> – The path to download any files to.</p></li>
-<li><p><strong>auth</strong> – Either ‘cli’ or ‘browser’. If ‘cli’ will request a username and
-password from the command line. If ‘browser’ will use cookies from
-the local Firefox installation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -277,14 +253,124 @@ Compass completed.</p>
 </dl>
 </dd></dl>
 
+</div>
+<div class="section" id="module-vicedtools.compass.exports">
+<span id="vicedtools-compass-exports-module"></span><h2>vicedtools.compass.exports module<a class="headerlink" href="#module-vicedtools.compass.exports" title="Permalink to this headline">¶</a></h2>
+<p>Functions for automating the export of data from Compass.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.sds_export">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">sds_export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cli'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.sds_export" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_academic_years">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_academic_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_academic_years" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discovers the academic years that exist in Compass.</p>
+<p>Useful for downloading learning tasks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>driver</strong> – An instance of CompassWebDriver</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of the names of each academic year.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_progress_report_cycles">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_progress_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_progress_report_cycles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discovers the available progress report cycles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>published_only</strong> – if true, only return those cycles set as “Published to
+All”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of the names of each progress report cyle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_report_cycles">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_report_cycles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discovers the available report cycles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>published_only</strong> – if true, only return those cycles set to allow student
+access.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of the names of each report cyle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.export_learning_tasks">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_learning_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_learning_tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports all learning tasks data from Compass.</p>
+<p>Downloads the Learning Tasks exports from Compass using Selenium and the
+Firefox webdriver.</p>
+<p>Will prompt for Compass login details.
+Requires access to Learning Tasks Administration.</p>
+<p>Data is saved as “[download_path]/LearningTasks-[academic_year].csv”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
+windows.</p></li>
+<li><p><strong>academic_year</strong> – Which Compass academic year to download the export for.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.export_progress_report">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_progress_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_progress_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export progress report data.</p>
+<p>Data is saved as “[download_path]/[cycle].csv”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>cycle</strong> – The name of the progress report cycle to export.</p></li>
+<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
+windows.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.export_report_cycle">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_report_cycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_report_cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export progress report data.</p>
+<p>Data is saved as “[download_path]/SemesterReportAllResultsCsvExport Generated - [%Y-%m-%d_%I%M%p].csv”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>year</strong> – The year of the report cycle to export.</p></li>
+<li><p><strong>title</strong> – The title of the report cycle to export.</p></li>
+<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
+windows.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.export_sds">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_sds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exports class enrolment and teacher information from Compass.</p>
 <p>Downloads the Microsoft SDS export from Compass using Selenium and the
 Firefox webdriver.</p>
-<p>Will prompt for Compass login details.
-Requires access to SDS Export rights in the Subjects and Classes page.</p>
+<p>Requires access to SDS Export rights in the Subjects and Classes page.</p>
 <dl class="simple">
 <dt>Will save four files in the provided path:</dt><dd><p>StudentEnrollment.csv: contains student-&gt;class mappings
 Teacher.csv: contains teacher id information
@@ -295,23 +381,32 @@ Section.csv: contains class id information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>school_code</strong> – Your Compass school code.</p></li>
-<li><p><strong>geckodriver_path</strong> – The location of geckodriver.exe</p></li>
+<li><p><strong>driver</strong> – A CompassWebDriver instance</p></li>
 <li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
 windows.</p></li>
-<li><p><strong>auth</strong> – Either ‘cli’ or ‘browser’. If ‘cli’ will request a username and
-password from the command line. If ‘browser’ will use cookies from
-the local Firefox installation.</p></li>
 <li><p><strong>download_wait</strong> – Optional; the amount of time to wait for Compass to
 generate the export, default 10 mins.</p></li>
+<li><p><strong>append_date</strong> – If True, append today’s date to the filenames in
+yyyy-mm-dd format.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="vicedtools-compass-learningtasks-module">
-<h2>vicedtools.compass.learningtasks module<a class="headerlink" href="#vicedtools-compass-learningtasks-module" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.compass.exports.export_student_details">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_student_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'student</span> <span class="pre">details.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_student_details" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports student details from Compass.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
+<li><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-vicedtools.compass.reports">
 <span id="vicedtools-compass-reports-module"></span><h2>vicedtools.compass.reports module<a class="headerlink" href="#module-vicedtools.compass.reports" title="Permalink to this headline">¶</a></h2>

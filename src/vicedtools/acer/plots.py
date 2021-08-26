@@ -21,7 +21,6 @@ import seaborn as sns
 
 from vicedtools.acer.patresults import RESPONSE_DTYPE, PATResults, PATResultsCollection
 
-
 def question_summary(pat_results: PATResults,
                      question: str,
                      open_ended=False) -> pd.DataFrame:
@@ -45,12 +44,11 @@ def question_summary(pat_results: PATResults,
             bins. Otherwise, these students are exluded from the plot.
 
     Returns:
-        A pandas DataFrame with these columns
-
-        'Student v Question': A qualitative description of the relative
-            scale score of the students compared to the item. 
-        'Response': 'A', 'B', 'C', 'D', 'E', or '✓'.
-        'Percentage of responses': as float
+        A pandas DataFrame with these columns.
+            'Student v Question': A qualitative description of the relative
+                scale score of the students compared to the item. 
+            'Response': 'A', 'B', 'C', 'D', 'E', or '✓'.
+            'Percentage of responses': as float
     '''
     q_difficulty = pat_results.question_scales[question]
     summary_df = pat_results.results[["Scale", question]].copy()

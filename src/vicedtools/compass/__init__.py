@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vicedtools.compass.compasswebdriver import CompassWebDriver
+from vicedtools.compass.compasswebdriver import CompassWebDriver, CompassCLIAuthenticator, CompassBrowserCookieAuthenticator
 from vicedtools.compass.exports import (discover_academic_years, 
                                         discover_progress_report_cycles, 
                                         discover_report_cycles, 

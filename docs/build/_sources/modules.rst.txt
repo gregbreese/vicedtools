@@ -1,5 +1,5 @@
-src
-===
+vicedtools
+==========
 
 .. toctree::
    :maxdepth: 4

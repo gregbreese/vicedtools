@@ -123,10 +123,8 @@ def upload_student_details(source_file: str, table_id: str,
     '''Updates a students details table in bigquery.
 
     Takes a student details csv file as produced from 
-        vicedtools.gc.format.create_student_details_gc_csv(...)
-    and uploads to under 
-        ./student details/student details.csv 
-    in the given GCS bucket.
+    vicedtools.gc.format.create_student_details_gc_csv(...) and uploads to 
+    under ./student details/student details.csv in the given GCS bucket.
 
     Args:
         source_file: The path of the student details csv file.
@@ -145,10 +143,8 @@ def upload_reports(source_file: str, table_id: str, bucket: str) -> None:
     '''Updates a reports table in bigquery.
 
     Takes a reports csv as produced from
-        vicedtools.compass.Reports.saveReports(source_file)
-    and uploads it under
-        ./reports/reports.csv
-    in the given GCS bucket.
+    vicedtools.compass.Reports.saveReports(source_file) and uploads it under
+    ./reports/reports.csv in the given GCS bucket.
 
     Args:
         source_file: The path of the reports csv file.
@@ -167,10 +163,8 @@ def upload_reports_summary(source_file: str, table_id: str,
     '''Updates a reports summary table in bigquery.
 
     Takes a reports csv as produced from
-        vicedtools.compass.Reports.saveSummary(source_file)
-    and uploads it under
-        ./reports/reports.csv
-    in the given GCS bucket.
+    vicedtools.compass.Reports.saveSummary(source_file) and uploads it under
+    ./reports/reports.csv in the given GCS bucket.
 
     Args:
         source_file: The path of the reports summary csv file.
