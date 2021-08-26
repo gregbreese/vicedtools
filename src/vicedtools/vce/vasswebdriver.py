@@ -163,9 +163,8 @@ class VASSWebDriver(webdriver.Ie):
             "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")
         grid_values = {}
         for e in elements:
-            grid_values[(
-                e.get_attribute("ColumnNum"),
-                e.get_attribute("RowNum"))] = e.get_attribute("value")
+            grid_values[(e.get_attribute("ColumnNum"),
+                         e.get_attribute("RowNum"))] = e.get_attribute("value")
         grid_password_characters = "".join(
             [grid_values[i] for i in grid_password])
         password_field = self.find_element_by_xpath(

@@ -18,6 +18,7 @@ import re
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
 def parse_vass_school_scores_file(file_name: str) -> pd.DataFrame:
     """Converts the data in VASS school score export into a pandas DataFrame.
 
@@ -44,38 +45,35 @@ def parse_vass_school_scores_file(file_name: str) -> pd.DataFrame:
         output_rows.append(output_row)
     # import results rows from CSV into dataframe
     df = pd.DataFrame(data=output_rows[7:], columns=output_rows[5])
-    df.drop(columns=df.columns[4:],inplace=True)
+    df.drop(columns=df.columns[4:], inplace=True)
     # drop NAs and make all scores out of 1.
-    df = df[df.iloc[:,3] != "NA"]
+    df = df[df.iloc[:, 3] != "NA"]
     mark_total_pattern = "Total GA Score / (?P<total>[0-9]+)"
     mark_total_str = df.columns[3]
     m = re.search(mark_total_pattern, mark_total_str)
     total = m.group('total')
-    scores = df.iloc[:,3].astype(int) / int(total)
-    df.drop(columns=df.columns[3],inplace=True)
+    scores = df.iloc[:, 3].astype(int) / int(total)
+    df.drop(columns=df.columns[3], inplace=True)
     df["Score"] = scores
     # add column to dataframe with year
     year_str = output_rows[0][0]
     year_pattern = "(?P<year>[0-9][0-9][0-9][0-9])"
-    m = re.search(year_pattern,year_str)
+    m = re.search(year_pattern, year_str)
     year = m.group('year')
     # add column to dataframe with subject and unit
     subject_str = output_rows[1][0]
     subject_pattern = "- (?P<subject>[A-Z():. ]+) (?P<unit>[34])"
-    m = re.search(subject_pattern,subject_str)
+    m = re.search(subject_pattern, subject_str)
     subject = m.group('subject')
     unit = m.group('unit')
     # add column to dataframe with assessment data type
     assessment_type_pattern = "- (?P<type>[A-Z34 -/]+)"
     assessment_type_str = output_rows[2][0]
-    m = re.search(assessment_type_pattern,assessment_type_str)
+    m = re.search(assessment_type_pattern, assessment_type_str)
     assessment_type = m.group('type')
     df["Year"] = year
     df["Subject"] = subject
     #df["Unit"] = unit
     df["Graded Assessment"] = output_rows[2][0][6:-1]
-    
-    
+
     return df
-
-
