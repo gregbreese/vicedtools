@@ -13,8 +13,12 @@
 # limitations under the License.
 
 from vicedtools.compass.compasswebdriver import CompassWebDriver, CompassCLIAuthenticator, CompassBrowserCookieAuthenticator
-from vicedtools.compass.exports import (
-    discover_academic_years, discover_progress_report_cycles,
-    discover_report_cycles, export_learning_tasks, export_progress_report,
-    export_report_cycle, export_sds, export_student_details)
+from vicedtools.compass.exports import (discover_academic_years, 
+                                        discover_progress_report_cycles, 
+                                        discover_report_cycles, 
+                                        export_learning_tasks, 
+                                        export_progress_report,
+                                        export_report_cycle, 
+                                        export_sds, 
+                                        export_student_details)
 from vicedtools.compass.reports import Reports

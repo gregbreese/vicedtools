@@ -36,13 +36,9 @@ class Reports:
         if type(data) == pd.core.frame.DataFrame:
             self.data = pd.concat([self.data, data], ignore_index=True)
         columns = ['Time', 'ClassCode', 'TeacherCode']
-        self.class_details = pd.DataFrame(columns=columns).dropna(
-            subset=["TeacherCode"])
+        self.class_details = pd.DataFrame(columns=columns).dropna(subset=["TeacherCode"])
         if type(class_details) == pd.core.frame.DataFrame:
-            self.class_details = pd.concat([
-                self.class_details,
-                class_details.dropna(subset=["TeacherCode"])
-            ],
+            self.class_details = pd.concat([self.class_details, class_details.dropna(subset=["TeacherCode"])],
                                            ignore_index=True)
 
     @classmethod
@@ -268,10 +264,7 @@ class Reports:
         self.data.drop_duplicates(
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],
             inplace=True)
-        self.class_details = pd.concat([
-            self.class_details,
-            temp.class_details.dropna(subset=["TeacherCode"])
-        ],
+        self.class_details = pd.concat([self.class_details, temp.class_details.dropna(subset=["TeacherCode"])],
                                        ignore_index=True)
         self.class_details.drop_duplicates(inplace=True)
 
@@ -310,10 +303,7 @@ class Reports:
         self.data.drop_duplicates(
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],
             inplace=True)
-        self.class_details = pd.concat([
-            self.class_details,
-            temp.class_details.dropna(subset=["TeacherCode"])
-        ],
+        self.class_details = pd.concat([self.class_details, temp.class_details.dropna(subset=["TeacherCode"])],
                                        ignore_index=True)
         self.class_details.drop_duplicates(inplace=True)
 

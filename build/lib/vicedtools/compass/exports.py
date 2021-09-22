@@ -26,7 +26,6 @@ import zipfile
 
 from vicedtools.compass.compasswebdriver import CompassWebDriver
 
-
 def export_sds(driver: CompassWebDriver,
                download_path: str = ".\\",
                download_wait: int = 10 * 60,
@@ -155,8 +154,8 @@ def discover_academic_years(driver: CompassWebDriver) -> list(str):
 
 
 def export_learning_tasks(driver: CompassWebDriver,
-                          academic_year: str,
-                          download_path: str = ".\\") -> None:
+                        academic_year: str,
+                        download_path: str = ".\\") -> None:
     """Exports all learning tasks data from Compass.
     
     Downloads the Learning Tasks exports from Compass using Selenium and the
@@ -204,7 +203,7 @@ def export_learning_tasks(driver: CompassWebDriver,
 
 
 def discover_progress_report_cycles(driver: CompassWebDriver,
-                                    published_only: bool = True) -> list(str):
+                                 published_only: bool = True) -> list(str):
     """Discovers the available progress report cycles.
 
     Args:
@@ -235,8 +234,8 @@ def discover_progress_report_cycles(driver: CompassWebDriver,
 
 
 def export_progress_report(driver: CompassWebDriver,
-                           cycle: str,
-                           download_path: str = ".\\") -> None:
+                         cycle: str,
+                         download_path: str = ".\\") -> None:
     """Export progress report data.
     
     Data is saved as "[download_path]/[cycle].csv"
@@ -284,7 +283,7 @@ def export_progress_report(driver: CompassWebDriver,
 
 
 def discover_report_cycles(driver: CompassWebDriver,
-                           published_only: bool = True) -> list(tuple(str)):
+                         published_only: bool = True) -> list(tuple(str)):
     """Discovers the available report cycles.
 
     Args:
@@ -312,9 +311,9 @@ def discover_report_cycles(driver: CompassWebDriver,
 
 
 def export_report_cycle(driver: CompassWebDriver,
-                        year: str,
-                        title: str,
-                        download_path: str = ".\\") -> None:
+                      year: str,
+                      title: str,
+                      download_path: str = ".\\") -> None:
     """Export progress report data.
     
     Data is saved as "[download_path]/SemesterReportAllResultsCsvExport Generated - [%Y-%m-%d_%I%M%p].csv"
