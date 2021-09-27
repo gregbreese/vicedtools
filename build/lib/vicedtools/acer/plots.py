@@ -21,6 +21,7 @@ import seaborn as sns
 
 from vicedtools.acer.patresults import RESPONSE_DTYPE, PATResults, PATResultsCollection
 
+
 def question_summary(pat_results: PATResults,
                      question: str,
                      open_ended=False) -> pd.DataFrame:

@@ -5,9 +5,6 @@ setup.cfg
 setup.py
 src/vicedtools/__init__.py
 src/vicedtools/educationperfect.py
-src/vicedtools/grok.py
-src/vicedtools/naplan.py
-src/vicedtools/sportstrak.py
 src/vicedtools.egg-info/PKG-INFO
 src/vicedtools.egg-info/SOURCES.txt
 src/vicedtools.egg-info/dependency_links.txt
@@ -27,6 +24,8 @@ src/vicedtools/gc/format.py
 src/vicedtools/gc/upload.py
 src/vicedtools/gwsc/__init__.py
 src/vicedtools/gwsc/reports.py
+src/vicedtools/naplan/__init__.py
+src/vicedtools/naplan/sssrdata.py
 src/vicedtools/vce/__init__.py
 src/vicedtools/vce/schoolscores.py
 src/vicedtools/vce/vasswebdriver.py

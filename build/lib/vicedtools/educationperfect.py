@@ -17,12 +17,10 @@ import re
 
 import pandas as pd
 
-def import_spreadsheet(student_details_file: str,
-                       student_enrolment_file: str,
-                       teacher_roster_file: str,
-                       email_domain: str,
-                       class_regex: str,
-                       destination_file: str) -> None:
+
+def import_spreadsheet(student_details_file: str, student_enrolment_file: str,
+                       teacher_roster_file: str, email_domain: str,
+                       class_regex: str, destination_file: str) -> None:
     """Creates a student import spreadsheet for Education Perfect.
 
     Args:
@@ -43,30 +41,41 @@ def import_spreadsheet(student_details_file: str,
 
     columns = ["Last Name", "Preferred Name", "SUSSI ID"]
     student_details_df = student_details_df[columns]
-    student_details_df.rename(columns={"Last Name":"Surname", "Preferred Name":"First Name","SUSSI ID":"Student ID"}, inplace=True, errors="raise")
-    student_details_df["Student Email Address"] = student_details_df["Student ID"] + email_domain
+    student_details_df.rename(columns={
+        "Last Name": "Surname",
+        "Preferred Name": "First Name",
+        "SUSSI ID": "Student ID"
+    },
+                              inplace=True,
+                              errors="raise")
+    student_details_df["Student Email Address"] = student_details_df[
+        "Student ID"] + email_domain
     student_details_df["Surname"] = student_details_df["Surname"].str.title()
 
     # get class details and create class tags
     def class_selector(class_string):
-        match = re.match(class_regex,  class_string)
+        match = re.match(class_regex, class_string)
         if match:
             class_code = match.group()
             return class_code
         # else
         return None
+
     student_enrolment_df = pd.read_csv(student_enrolment_file)
-    student_enrolment_df["Class Name"] = student_enrolment_df["Section SIS ID"].apply(class_selector)
-    student_enrolment_df.dropna(subset=["Class Name"],  inplace=True)
-    student_enrolment_df.rename(columns={"SIS ID":"Student ID"}, inplace=True)
+    student_enrolment_df["Class Name"] = student_enrolment_df[
+        "Section SIS ID"].apply(class_selector)
+    student_enrolment_df.dropna(subset=["Class Name"], inplace=True)
+    student_enrolment_df.rename(columns={"SIS ID": "Student ID"}, inplace=True)
 
     # add teacher IDs
     teacher_roster_df = pd.read_csv(teacher_roster_file)
-    teacher_roster_df.rename(columns={"SIS ID":"Teacher ID"}, inplace=True)
-    student_enrolment_df = student_enrolment_df.merge(teacher_roster_df, on="Section SIS ID")
+    teacher_roster_df.rename(columns={"SIS ID": "Teacher ID"}, inplace=True)
+    student_enrolment_df = student_enrolment_df.merge(teacher_roster_df,
+                                                      on="Section SIS ID")
 
     # merge with student details and enrolments
-    student_enrolment_df = student_details_df.merge(student_enrolment_df[["Student ID","Class Name", "Teacher ID"]], on="Student ID")
+    student_enrolment_df = student_details_df.merge(
+        student_enrolment_df[["Student ID", "Class Name", "Teacher ID"]],
+        on="Student ID")
 
-    student_enrolment_df.to_csv(destination_file,  index=False)
-                                
+    student_enrolment_df.to_csv(destination_file, index=False)

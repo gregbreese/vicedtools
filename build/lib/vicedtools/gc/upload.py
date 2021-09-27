@@ -171,7 +171,7 @@ def upload_reports_summary(source_file: str, table_id: str,
         table_id: The bigquery table ID of the student details table.
         bucket: The name of the GC storage bucket.
     '''
-    
+
     blob_name = "reports/reports_summary.csv"
     uri = "gs://" + bucket + "/" + blob_name
     upload_blob(bucket, source_file, blob_name)
