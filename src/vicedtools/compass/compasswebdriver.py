@@ -65,6 +65,21 @@ class CompassWebDriver(webdriver.Firefox):
 
         authenticator.authenticate(self)
 
+    def set_download_dir(self, directory: str) -> None:
+        """Sets the download directory.
+        
+        Args:
+            directory: The new download path.
+        """
+        self.command_executor._commands["SET_CONTEXT"] = (
+            "POST", "/session/$sessionId/moz/context")
+        self.execute("SET_CONTEXT", {"context": "chrome"})
+        self.execute_script(
+            """
+            Services.prefs.setStringPref('browser.download.dir', arguments[0]);
+            """, directory)
+        self.execute("SET_CONTEXT", {"context": "content"})
+
 
 class CompassAuthenticator(Protocol):
     """An abstract class for generic Compass Authenticator objects."""
@@ -96,6 +111,7 @@ class CompassBrowserCookieAuthenticator(CompassAuthenticator):
     def authenticate(self, driver: CompassWebDriver):
         cj = browser_cookie3.firefox(domain_name=driver.school_code +
                                      '.compass.education')
+        driver.get("https://" + driver.school_code + '.compass.education/')
         for c in cj:
             cookie_dict = {
                 'name': c.name,

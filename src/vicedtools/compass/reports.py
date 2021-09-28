@@ -185,7 +185,7 @@ class Reports:
         # unpivot progress report items
         temp_df = temp_df.melt(
             id_vars=["StudentCode", "ClassCode", "TeacherCode"],
-            value_vars=progress_report_items,
+            value_vars=[x for x in progress_report_items if x in temp_df.columns],
             var_name="ResultName",
             value_name="ResultGrade")
 
@@ -197,7 +197,7 @@ class Reports:
             else:
                 raise ValueError("Could not determine year from filename.")
         if not term:
-            term_pattern = "(?:[Tt][Ee][Rr][A-Za-z ]*)(?P<term>[12])"
+            term_pattern = "(?:[Tt][Ee][Rr][A-Za-z ]*)(?P<term>[1234])"
             m = re.search(term_pattern, filename)
             if m:
                 term = m.group('term')

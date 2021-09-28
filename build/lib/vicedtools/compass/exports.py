@@ -20,9 +20,12 @@ import glob
 import os
 import requests
 import time
+import zipfile
 
 from selenium.common.exceptions import NoSuchElementException
-import zipfile
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from vicedtools.compass.compasswebdriver import CompassWebDriver
 
@@ -53,23 +56,28 @@ def export_sds(driver: CompassWebDriver,
         append_date: If True, append today's date to the filenames in
             yyyy-mm-dd format.
     '''
-    driver.set_preference("browser.download.dir", download_path)
+    driver.set_download_dir(download_path)
 
     # download Microsoft SDS export
     driver.get("https://" + driver.school_code +
                ".compass.education/Learn/Subjects.aspx")
-    time.sleep(3)
-    export_menu = driver.find_element_by_id("button-1020")
-    export_menu.click()
-    time.sleep(3)
-    export_menu = driver.find_element_by_id("menuitem-1025-itemEl")
-    export_menu.click()
-    time.sleep(3)
-    submit_button = driver.find_element_by_id("button-1103")
-    submit_button.click()
-    time.sleep(3)
-    yes_button = driver.find_element_by_id("button-1120")
-    yes_button.click()
+    # Export menu
+    WebDriverWait(driver,
+                  20).until(EC.element_to_be_clickable(
+                      (By.ID, "button-1020"))).click()
+    # Export menu item
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.ID, "menuitem-1025-itemEl"))).click()
+    # Submit button
+    WebDriverWait(driver,
+                  20).until(EC.element_to_be_clickable(
+                      (By.ID, "button-1103"))).click()
+    # Yes button
+    WebDriverWait(driver,
+                  20).until(EC.element_to_be_clickable(
+                      (By.ID, "button-1120"))).click()
+
+    # TODO: Poll to see when download is done
     time.sleep(download_wait)
 
     files = glob.glob(download_path +
@@ -143,11 +151,12 @@ def discover_academic_years(driver: CompassWebDriver) -> list(str):
         "https://" + driver.school_code +
         ".compass.education/Communicate/LearningTasksAdministration.aspx")
     # Open Reports tab
-    button = driver.find_element_by_id("tab-1101-btnIconEl")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.ID, "tab-1101-btnIconEl"))).click()
     # Open dropdown menu
-    button = driver.find_element_by_id("ext-gen1188")
-    button.click()
+    WebDriverWait(driver,
+                  20).until(EC.element_to_be_clickable(
+                      (By.ID, "ext-gen1188"))).click()
     # Get dropdown menu items
     items = driver.find_elements_by_class_name("x-boundlist-item")
     academic_years = [item.text for item in items]
@@ -173,23 +182,25 @@ def export_learning_tasks(driver: CompassWebDriver,
                         windows.
         academic_year: Which Compass academic year to download the export for.
     """
-    driver.set_preference("browser.download.dir", download_path)
+    driver.set_download_dir(download_path)
     driver.get(
         "https://" + driver.school_code +
         ".compass.education/Communicate/LearningTasksAdministration.aspx")
     # Open Reports tab
-    button = driver.find_element_by_id("tab-1101-btnIconEl")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.ID, "tab-1101-btnIconEl"))).click()
     # Open dropdown menu
-    button = driver.find_element_by_id("ext-gen1188")
-    button.click()
+    WebDriverWait(driver,
+                  20).until(EC.element_to_be_clickable(
+                      (By.ID, "ext-gen1188"))).click()
     # select the academic year
-    button = driver.find_element_by_xpath("//*[contains(text(),'" +
-                                          academic_year + "')]")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH,
+             "//*[contains(text(),'" + academic_year + "')]"))).click()
     # Press export button
-    button = driver.find_element_by_id("button-1061-btnInnerEl")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.ID, "button-1061-btnInnerEl"))).click()
     for _i in range(600):  # 10 minutes
         time.sleep(1)
         try:
@@ -203,9 +214,12 @@ def export_learning_tasks(driver: CompassWebDriver,
             break
 
 
+# TODO: Get cycles not on first page
 def discover_progress_report_cycles(driver: CompassWebDriver,
                                     published_only: bool = True) -> list(str):
     """Discovers the available progress report cycles.
+
+    Currently only discovers cycles on first page.
 
     Args:
         driver: An instance of CompassWebDriver
@@ -219,8 +233,9 @@ def discover_progress_report_cycles(driver: CompassWebDriver,
     driver.get("https://" + driver.school_code +
                ".compass.education/Organise/Reporting/GPA/Default.aspx")
     # open cycles tab
-    button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//*[contains(text(),'Cycles')]"))).click()
     # all published progress reports
     if published_only:
         elements = driver.find_elements_by_xpath(
@@ -247,29 +262,35 @@ def export_progress_report(driver: CompassWebDriver,
         download_path: The directory to save the export. Must use \\ slashes in 
                         windows.
     """
-    driver.set_preference("browser.download.dir", download_path)
+    driver.set_download_dir(download_path)
     # open progress reports page
     driver.get("https://" + driver.school_code +
                ".compass.education/Organise/Reporting/GPA/Default.aspx")
     # open cycles tab
-    button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
-    button.click()
+    #button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
+    #button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//*[contains(text(),'Cycles')]"))).click()
     # open selected cycle
-    link = driver.find_element_by_xpath("//td/div/a[contains(text(), '" +
-                                        cycle + "')]")
-    link.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH,
+             "//td/div/a[contains(text(), '" + cycle + "')]"))).click()
     # export link
-    link = driver.find_element_by_link_text("Export results to CSV")
-    link.click()
-    # Export button
-    button = driver.find_element_by_xpath(
-        "//a/span/span/span[contains(text(),'Export')]")
-    button.click()
-    # Confirmation OK button
-    button = driver.find_element_by_xpath(
-        "//a/span/span/span[contains(text(),'OK')]")
-    button.click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.LINK_TEXT, "Export results to CSV"))).click()
 
+    # Export button
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH,
+             "//a/span/span/span[contains(text(),'Export')]"))).click()
+    # Confirmation OK button
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a/span/span/span[contains(text(),'OK')]"))).click()
     for _i in range(600):  # 10 minutes
         time.sleep(1)
         try:
@@ -326,7 +347,7 @@ def export_report_cycle(driver: CompassWebDriver,
         download_path: The directory to save the export. Must use \\ slashes in 
                         windows.
     """
-    driver.set_preference("browser.download.dir", download_path)
+    driver.set_download_dir(download_path)
 
     driver.get("https://" + driver.school_code +
                ".compass.education/Organise/Reporting/Cycles.aspx")
@@ -339,14 +360,18 @@ def export_report_cycle(driver: CompassWebDriver,
             row.find_element_by_xpath("./td[2]/div/a").click()
             break
     # export all results
-    menu = driver.find_element_by_xpath("//*[@id='button-1076-btnWrap']")
-    menu.click()
-    all_results_item = driver.find_element_by_xpath(
-        "//*[@id='menuitem-1084-textEl']")
-    all_results_item.click()
-    ok_button = driver.find_element_by_xpath(
-        "//a/span/span/span[contains(text(),'OK')]")
-    ok_button.click()
+    # menu
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//*[@id='button-1076-btnWrap']"))).click()
+    # all results item
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//*[@id='menuitem-1084-textEl']"))).click()
+    # ok button
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a/span/span/span[contains(text(),'OK')]"))).click()
     # wait for download
     for _i in range(600):  # 10 minutes
         time.sleep(1)
