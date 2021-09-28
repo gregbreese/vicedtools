@@ -7,4 +7,3 @@ numpy
 pandas
 seaborn
 selenium
-zipfile
