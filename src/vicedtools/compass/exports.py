@@ -11,7 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Functions for automating the export of data from Compass."""
+"""Functions for automating the export of data from Compass.
+
+Deprecated, functions have been rolled into the CompassWebDriver class."""
 
 from __future__ import annotations
 
@@ -20,6 +22,7 @@ import glob
 import os
 import requests
 import time
+import warnings
 import zipfile
 
 from selenium.common.exceptions import NoSuchElementException
@@ -56,6 +59,7 @@ def export_sds(driver: CompassWebDriver,
         append_date: If True, append today's date to the filenames in
             yyyy-mm-dd format.
     '''
+    warnings.warn("Deprecated. Use driver.export_sds().", DeprecationWarning)
     driver.set_download_dir(download_path)
 
     # download Microsoft SDS export
@@ -118,6 +122,7 @@ def export_student_details(driver: CompassWebDriver,
         driver: An instance of CompassWebDriver
         download_path: The file path to save the csv export, including filename.
     '''
+    warnings.warn("Deprecated. Use driver.export_student_details().", DeprecationWarning)
     headers = {
         "User-Agent":
             "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
@@ -147,6 +152,8 @@ def discover_academic_years(driver: CompassWebDriver) -> list(str):
     Returns:
         A list of the names of each academic year.
     """
+    warnings.warn("Deprecated. Use driver.discover_academic_years().", DeprecationWarning)
+
     driver.get(
         "https://" + driver.school_code +
         ".compass.education/Communicate/LearningTasksAdministration.aspx")
@@ -182,6 +189,8 @@ def export_learning_tasks(driver: CompassWebDriver,
                         windows.
         academic_year: Which Compass academic year to download the export for.
     """
+    warnings.warn("Deprecated. Use driver.export_learning_tasks().", DeprecationWarning)
+
     driver.set_download_dir(download_path)
     driver.get(
         "https://" + driver.school_code +
@@ -229,6 +238,8 @@ def discover_progress_report_cycles(driver: CompassWebDriver,
     Returns:
         A list of the names of each progress report cyle.
     """
+    warnings.warn("Deprecated. Use driver.discover_progress_report_cycles().", DeprecationWarning)
+
     # open progress reports page
     driver.get("https://" + driver.school_code +
                ".compass.education/Organise/Reporting/GPA/Default.aspx")
@@ -262,6 +273,8 @@ def export_progress_report(driver: CompassWebDriver,
         download_path: The directory to save the export. Must use \\ slashes in 
                         windows.
     """
+    warnings.warn("Deprecated. Use driver.export_progress_report().", DeprecationWarning)
+
     driver.set_download_dir(download_path)
     # open progress reports page
     driver.get("https://" + driver.school_code +
@@ -316,6 +329,8 @@ def discover_report_cycles(driver: CompassWebDriver,
     Returns:
         A list of the names of each report cyle.
     """
+    warnings.warn("Deprecated. Use driver.discover_report_cycles().", DeprecationWarning)
+
     # open reports page
     driver.get("https://" + driver.school_code +
                ".compass.education/Organise/Reporting/Cycles.aspx")
@@ -347,6 +362,8 @@ def export_report_cycle(driver: CompassWebDriver,
         download_path: The directory to save the export. Must use \\ slashes in 
                         windows.
     """
+    warnings.warn("Deprecated. Use driver.export_report_cycle().", DeprecationWarning)
+
     driver.set_download_dir(download_path)
 
     driver.get("https://" + driver.school_code +
