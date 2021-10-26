@@ -119,8 +119,12 @@ class VASSWebDriver(webdriver.Ie):
         
         Args:
             iedriver_path: The path to geckodriver.exe
-            auth: If 'kwargs' will use the username, password and grid layout
-                provided as keyword arguments.
+            username: The username to login with
+            password: The password to login with
+            grid_password: The grid password to login with. A sequence of
+                tuples, each tuple being the grid coordinate of the next
+                password character. Must be given in top-> bottom, left->
+                right order.
 
         Returns:
             An instance of selenium.webdriver.ie with authentication to
@@ -362,7 +366,9 @@ class VASSWebDriver(webdriver.Ie):
                     'innerHTML')
                 root = ET.fromstring(data.strip())
                 max_score = root.get("MaxScore")
-                params = {'Max Score': max_score}
+                siar = root.get("SIAR")
+                siar_max_score = root.get("SIARMaxScore")
+                params = {'Max Score': max_score,  "SIAR": siar, "SIAR Max Score":siar_max_score}
                 for child in root.iter('param'):
                     params[child.attrib['name']] = child.attrib['value']
                 del params['Students Assessed Elsewhere']
@@ -389,7 +395,7 @@ class VASSWebDriver(webdriver.Ie):
                 subject_names[unit] = m.group('name')
         df["Unit Code"] = df["Unit"].str[:4]
         df["Unit Name"] = df["Unit"].map(subject_names)
-        df.drop(columns=["SIARScore", "Unit"], inplace=True)
+        #df.drop(["Unit"], inplace=True)
         df.drop_duplicates(inplace=True)
         df.rename(columns={
             "CandNum": "Student Number",
