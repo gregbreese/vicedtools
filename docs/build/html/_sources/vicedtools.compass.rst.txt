@@ -4,18 +4,18 @@ vicedtools.compass package
 Submodules
 ----------
 
-vicedtools.compass.exports module
----------------------------------
+vicedtools.compass.compasswebdriver module
+------------------------------------------
 
-.. automodule:: vicedtools.compass.exports
+.. automodule:: vicedtools.compass.compasswebdriver
    :members:
    :undoc-members:
    :show-inheritance:
 
-vicedtools.compass.learningtasks module
----------------------------------------
+vicedtools.compass.exports module
+---------------------------------
 
-.. automodule:: vicedtools.compass.learningtasks
+.. automodule:: vicedtools.compass.exports
    :members:
    :undoc-members:
    :show-inheritance:

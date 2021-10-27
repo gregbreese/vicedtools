@@ -1,1 +1,1 @@
-from vicedtools import acer, compass, gc
+from vicedtools import acer, compass, gc, vce

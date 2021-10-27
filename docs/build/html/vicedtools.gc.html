@@ -87,19 +87,21 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">vicedtools</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="vicedtools.html">vicedtools package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="vicedtools.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.acer.html">vicedtools.acer package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.gc package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gwsc.html">vicedtools.gwsc package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.grok">vicedtools.grok module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.educationperfect">vicedtools.educationperfect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-grok-module">vicedtools.grok module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.naplan">vicedtools.naplan module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.sportstrak">vicedtools.sportstrak module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-sportstrak-module">vicedtools.sportstrak module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools">Module contents</a></li>
 </ul>
 </li>
@@ -153,7 +155,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="modules.html">src</a> &raquo;</li>
+          <li><a href="modules.html">vicedtools</a> &raquo;</li>
         
           <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
         
@@ -245,13 +247,9 @@ E.g. “your-project.your_dataset.your_table_name</p></li>
 <dt id="vicedtools.gc.upload.upload_reports">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_reports</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_reports" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a reports table in bigquery.</p>
-<dl class="simple">
-<dt>Takes a reports csv as produced from</dt><dd><p>vicedtools.compass.Reports.saveReports(source_file)</p>
-</dd>
-<dt>and uploads it under</dt><dd><p>./reports/reports.csv</p>
-</dd>
-</dl>
-<p>in the given GCS bucket.</p>
+<p>Takes a reports csv as produced from
+vicedtools.compass.Reports.saveReports(source_file) and uploads it under
+./reports/reports.csv in the given GCS bucket.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -267,13 +265,9 @@ E.g. “your-project.your_dataset.your_table_name</p></li>
 <dt id="vicedtools.gc.upload.upload_reports_summary">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_reports_summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_reports_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a reports summary table in bigquery.</p>
-<dl class="simple">
-<dt>Takes a reports csv as produced from</dt><dd><p>vicedtools.compass.Reports.saveSummary(source_file)</p>
-</dd>
-<dt>and uploads it under</dt><dd><p>./reports/reports.csv</p>
-</dd>
-</dl>
-<p>in the given GCS bucket.</p>
+<p>Takes a reports csv as produced from
+vicedtools.compass.Reports.saveSummary(source_file) and uploads it under
+./reports/reports.csv in the given GCS bucket.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -289,13 +283,9 @@ E.g. “your-project.your_dataset.your_table_name</p></li>
 <dt id="vicedtools.gc.upload.upload_student_details">
 <code class="sig-prename descclassname">vicedtools.gc.upload.</code><code class="sig-name descname">upload_student_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gc.upload.upload_student_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a students details table in bigquery.</p>
-<dl class="simple">
-<dt>Takes a student details csv file as produced from</dt><dd><p>vicedtools.gc.format.create_student_details_gc_csv(…)</p>
-</dd>
-<dt>and uploads to under</dt><dd><p>./student details/student details.csv</p>
-</dd>
-</dl>
-<p>in the given GCS bucket.</p>
+<p>Takes a student details csv file as produced from
+vicedtools.gc.format.create_student_details_gc_csv(…) and uploads to
+under ./student details/student details.csv in the given GCS bucket.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

@@ -87,19 +87,21 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">vicedtools</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="vicedtools.html">vicedtools package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="vicedtools.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.acer package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gc.html">vicedtools.gc package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gwsc.html">vicedtools.gwsc package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.grok">vicedtools.grok module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.educationperfect">vicedtools.educationperfect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-grok-module">vicedtools.grok module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.naplan">vicedtools.naplan module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.sportstrak">vicedtools.sportstrak module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-sportstrak-module">vicedtools.sportstrak module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools">Module contents</a></li>
 </ul>
 </li>
@@ -153,7 +155,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="modules.html">src</a> &raquo;</li>
+          <li><a href="modules.html">vicedtools</a> &raquo;</li>
         
           <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
         
@@ -197,7 +199,7 @@
 <dd class="field-odd"><p><strong>class_string</strong> – a class code string</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas Series containing two times, “Maths”/”English” and the class code.</p>
+<dd class="field-even"><p>A pandas Series containing two items, “Maths”/”English” and the class code.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -263,6 +265,8 @@ particular test.</p>
 <dd><p>A pandas DataFrame containing the test results.</p>
 </dd></dl>
 
+<p>Initialises PATResults with the given arguments.</p>
+<p>Mostly intended for use by the provided factory methods.</p>
 <dl class="py method">
 <dt id="vicedtools.acer.patresults.PATResults.addGroupReport">
 <code class="sig-name descname">addGroupReport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResults.addGroupReport" title="Permalink to this definition">¶</a></dt>
@@ -320,6 +324,7 @@ Each key refers to another dict that contains PATResults instances
 indexed by their test number as a string.</p>
 </dd></dl>
 
+<p>Inits an empty PATResultsCollection.</p>
 <dl class="py method">
 <dt id="vicedtools.acer.patresults.PATResultsCollection.addResults">
 <code class="sig-name descname">addResults</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">patresults</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResultsCollection.addResults" title="Permalink to this definition">¶</a></dt>
@@ -512,10 +517,7 @@ higher scale scores.</p>
 <dd><p>Creates item analysis charts for all tests and questions results.</p>
 <p>Creates a chart for each question in each PAT test found in the provided
 PATResultsCollection and saves each chart as a .png.
-Files are saved using the format</p>
-<blockquote>
-<div><p>“[save_path][Reading/Maths] test [test number] question [question number].png”</p>
-</div></blockquote>
+Files are saved using the format “[save_path][Reading/Maths] test [test number] question [question number].png”</p>
 <dl class="simple">
 <dt>Example usage:</dt><dd><p>results = group_reports_to_patresults(path_to_group_reports)
 item_analysis_charts(results)</p>
@@ -555,16 +557,16 @@ bins. Otherwise, these students are exluded from the plot.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>‘Student v Question’: A qualitative description of the relative</dt><dd><p>scale score of the students compared to the item.</p>
+<dd class="field-even"><p><dl>
+<dt>A pandas DataFrame with these columns.</dt><dd><dl class="simple">
+<dt>’Student v Question’: A qualitative description of the relative</dt><dd><p>scale score of the students compared to the item.</p>
 </dd>
 </dl>
 <p>’Response’: ‘A’, ‘B’, ‘C’, ‘D’, ‘E’, or ‘✓’.
 ‘Percentage of responses’: as float</p>
-</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>A pandas DataFrame with these columns</p>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>

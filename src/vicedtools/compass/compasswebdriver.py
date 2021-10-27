@@ -24,10 +24,9 @@ import time
 from typing import Protocol
 import zipfile
 
-
 import browser_cookie3
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, JavascriptException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -75,12 +74,13 @@ class CompassWebDriver(webdriver.Firefox):
             self, executable_path=geckodriver_path, firefox_profile=profile)
 
         authenticator.authenticate(self)
+        self.download_path = download_path
 
-    def set_download_dir(self, directory: str) -> None:
+    def set_download_dir(self, path: str) -> None:
         """Sets the download directory.
         
         Args:
-            directory: The new download path.
+            path: The new download path.
         """
         self.command_executor._commands["SET_CONTEXT"] = (
             "POST", "/session/$sessionId/moz/context")
@@ -88,13 +88,28 @@ class CompassWebDriver(webdriver.Firefox):
         self.execute_script(
             """
             Services.prefs.setStringPref('browser.download.dir', arguments[0]);
-            """, directory)
+            """, path)
         self.execute("SET_CONTEXT", {"context": "content"})
+        self.download_path = path
 
-    def export_sds(self,
-               download_path: str = ".\\",
-               download_wait: int = 10 * 60,
-               append_date: bool = False) -> None:
+    def getDownLoadedFileName(self):
+        """Gets the filename of the most recently downloaded file."""
+        self.get("about:downloads")
+        try:
+            downloads = WebDriverWait(self, 10).until(
+                EC.presence_of_all_elements_located(
+                    (By.CLASS_NAME, "downloadTarget")))
+        except TimeoutException:
+            raise NoRecentDownloadError("There were no downloaded files.")
+
+        filename = downloads[0].get_attribute('value')
+        return filename
+
+    def export_sds(
+            self,
+            download_path: str = ".",
+            download_wait: int = 1200,  # 20 minutes
+            append_date: bool = False) -> None:
         '''Exports class enrolment and teacher information from Compass.
 
         Downloads the Microsoft SDS export from Compass using Selenium and the
@@ -109,49 +124,36 @@ class CompassWebDriver(webdriver.Firefox):
             Section.csv: contains class id information
 
         Args:
-            download_path: The directory to save the export. Must use \\ slashes in 
-                            windows.
+            download_path: The directory to save the export.
             download_wait: Optional; the amount of time to wait for Compass to 
                 generate the export, default 10 mins.
             append_date: If True, append today's date to the filenames in
                 yyyy-mm-dd format.
         '''
+        download_path = os.path.normpath(download_path)
         self.set_download_dir(download_path)
 
         # download Microsoft SDS export
         self.get("https://" + self.school_code +
-                ".compass.education/Learn/Subjects.aspx")
+                 ".compass.education/Learn/Subjects.aspx")
         # Export menu
-        WebDriverWait(self,
-                    20).until(EC.element_to_be_clickable(
-                        (By.ID, "button-1020"))).click()
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable((By.ID, "button-1020"))).click()
         # Export menu item
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "menuitem-1025-itemEl"))).click()
+            EC.element_to_be_clickable(
+                (By.ID, "menuitem-1025-itemEl"))).click()
         # Submit button
-        WebDriverWait(self,
-                    20).until(EC.element_to_be_clickable(
-                        (By.ID, "button-1103"))).click()
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable((By.ID, "button-1103"))).click()
         # Yes button
-        WebDriverWait(self,
-                    20).until(EC.element_to_be_clickable(
-                        (By.ID, "button-1120"))).click()
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable((By.ID, "button-1120"))).click()
 
         # TODO: Poll to see when download is done
         time.sleep(download_wait)
-
-        files = glob.glob(download_path +
-                        "\\Bulk SDS SCV Download - Generated - *.zip")
-        # newest_time = datetime.min
-        # file_to_extract = ""
-        # for file in files:
-        #     pattern = r'Bulk SDS SCV Download - Generated - (?P<date>[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}[APM]{2}).zip'
-        #     m = re.search(pattern, file)
-        #     date = m.group('date')
-        #     dt = datetime.strptime(date,"%Y-%m-%d_%I%M%p")
-        #     if dt > newest_time:
-        #         file_to_extract = file
-        file_to_extract = files[0]
+        filename = self.getDownLoadedFileName()
+        file_to_extract = os.path.join(download_path, filename)
         contents = [
             "StudentEnrollment.csv", "Teacher.csv", "TeacherRoster.csv",
             "Section.csv"
@@ -166,15 +168,22 @@ class CompassWebDriver(webdriver.Firefox):
                     info.filename = new_filename
                     zip_ref.extract(new_filename, path=download_path)
                 else:
-                    zip_ref.extract(file_to_extract, path=download_path)
+                    zip_ref.extract(content, path=download_path)
         os.remove(file_to_extract)
 
     def export_student_details(self,
-                           download_path: str = "student details.csv") -> None:
+                               download_path: str = "student details.csv",
+                               detailed: bool = False) -> None:
         '''Exports student details from Compass.
+
+        The basic export includes student codes, name, gender, year level and
+        form group. It only includes current students.
+        The detailed export also includes DOB, VCAA code, VSN, and school 
+        house. It includes students who have exited.
 
         Args:
             download_path: The file path to save the csv export, including filename.
+            detailed: Whether to perform a detailed student details export.
         '''
         headers = {
             "User-Agent":
@@ -187,10 +196,12 @@ class CompassWebDriver(webdriver.Firefox):
             c = {cookie['name']: cookie['value']}
             s.cookies.update(c)
         # request student details file
-        r = s.get(
-            "https://" + self.school_code +
-            ".compass.education/Services/FileDownload/CsvRequestHandler?type=38")
-        with open(download_path, "xb") as f:
+        if detailed:
+            url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=37"
+        else:
+            url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=38"
+        r = s.get(url)
+        with open(download_path, "wb") as f:
             f.write(r.content)
 
     def discover_academic_years(self) -> list(str):
@@ -205,20 +216,31 @@ class CompassWebDriver(webdriver.Firefox):
             "https://" + self.school_code +
             ".compass.education/Communicate/LearningTasksAdministration.aspx")
         # Open Reports tab
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "tab-1101-btnIconEl"))).click()
+        reports_tabs = self.execute_script("""
+            return Array.prototype.slice.call(document.getElementsByClassName("x-tab"))
+                .filter(function (x) { return x.textContent === "Reports"; });
+            """)
+        if len(reports_tabs) == 1:
+            reports_tabs[0].click()
+        else:
+            raise CompassElementSelectionError("Could not select Reports tab.")
         # Open dropdown menu
-        WebDriverWait(self,
-                    20).until(EC.element_to_be_clickable(
-                        (By.ID, "ext-gen1188"))).click()
+        panel_element = WebDriverWait(self, 20).until(
+            EC.presence_of_element_located((
+                By.XPATH,
+                "//span[contains(text(),'Academic Year Export (CSV)')]/../../../../../.."
+            )))  #menu panel
+        panel_element.find_element_by_class_name(
+            'x-form-trigger').click()  # dropdown menu
+
         # Get dropdown menu items
         items = self.find_elements_by_class_name("x-boundlist-item")
         academic_years = [item.text for item in items]
         return academic_years
 
     def export_learning_tasks(self,
-                          academic_year: str,
-                          download_path: str = ".\\") -> None:
+                              academic_year: str,
+                              download_path: str = ".\\") -> None:
         """Exports all learning tasks data from Compass.
         
         Downloads the Learning Tasks exports from Compass using Selenium and the
@@ -239,21 +261,44 @@ class CompassWebDriver(webdriver.Firefox):
             "https://" + self.school_code +
             ".compass.education/Communicate/LearningTasksAdministration.aspx")
         # Open Reports tab
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "tab-1101-btnIconEl"))).click()
+        reports_tabs = self.execute_script("""
+            return Array.prototype.slice.call(document.getElementsByClassName("x-tab"))
+                .filter(function (x) { return x.textContent === "Reports"; });
+            """)
+        if len(reports_tabs) == 1:
+            reports_tabs[0].click()
+        else:
+            raise CompassElementSelectionError("Could not select Reports tab.")
+
         # Open dropdown menu
-        WebDriverWait(self,
-                    20).until(EC.element_to_be_clickable(
-                        (By.ID, "ext-gen1188"))).click()
+        panel_element = WebDriverWait(self, 20).until(
+            EC.presence_of_element_located((
+                By.XPATH,
+                "//span[contains(text(),'Academic Year Export (CSV)')]/../../../../../.."
+            )))  #menu panel
+        panel_element.find_element_by_class_name(
+            'x-form-trigger').click()  # dropdown menu
+
         # select the academic year
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable(
-                (By.XPATH,
-                "//*[contains(text(),'" + academic_year + "')]"))).click()
+        menu_items = self.execute_script("""
+            return Array.prototype.slice.call(document.getElementsByClassName("x-boundlist-item"))
+                .filter(function (x) { return x.textContent === '""" +
+                                         academic_year + """'; });
+            """)
+        if len(menu_items) == 1:
+            menu_items[0].click()
+        else:
+            raise CompassElementSelectionError(
+                f"Could not select academic year '{academic_year}' from menu.")
+
         # Press export button
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "button-1061-btnInnerEl"))).click()
-        for _i in range(600):  # 10 minutes
+        panel_element.find_element_by_xpath("//span[text()='Export']").click()
+        # Confirm OK
+        alert_window = WebDriverWait(self, 20).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "x-window")))
+        alert_window.find_element_by_xpath(
+            "//span[text()='OK']").click()  # OK button
+        for _i in range(1200):  # 20 minutes
             time.sleep(1)
             try:
                 # Get cancel button
@@ -267,7 +312,8 @@ class CompassWebDriver(webdriver.Firefox):
 
     # TODO: Get cycles not on first page
     def discover_progress_report_cycles(self,
-                                        published_only: bool = True) -> list(str):
+                                        published_only: bool = True
+                                       ) -> list(str):
         """Discovers the available progress report cycles.
 
         Currently only discovers cycles on first page.
@@ -281,26 +327,32 @@ class CompassWebDriver(webdriver.Firefox):
         """
         # open progress reports page
         self.get("https://" + self.school_code +
-                ".compass.education/Organise/Reporting/GPA/Default.aspx")
+                 ".compass.education/Organise/Reporting/GPA/Default.aspx")
         # open cycles tab
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
                 (By.XPATH, "//*[contains(text(),'Cycles')]"))).click()
         # all published progress reports
         if published_only:
-            elements = self.find_elements_by_xpath(
-                "//table/tbody/tr/td/div[contains(text(),'Published To All')]/parent::*/parent::*/child::td[1]/div/a"
-            )
+            elements = WebDriverWait(self, 20).until(
+                EC.presence_of_all_elements_located((
+                    By.XPATH,
+                    "//table/tbody/tr/td/div[contains(text(),'Published To All')]/parent::*/parent::*/child::td[1]/div/a"
+                )))
         else:
-            elements = self.find_elements_by_xpath(
-                "//table/tbody/tr/td/div/parent::*/parent::*/child::td[1]/div/a")
+            elements = WebDriverWait(self, 20).until(
+                EC.presence_of_all_elements_located((
+                    By.XPATH,
+                    "//table/tbody/tr/td/div/parent::*/parent::*/child::td[1]/div/a"
+                )))
+
         progress_report_cycles = [e.text for e in elements]
 
         return progress_report_cycles
 
     def export_progress_report(self,
-                           cycle: str,
-                           download_path: str = ".\\") -> None:
+                               cycle: str,
+                               download_path: str = ".\\") -> None:
         """Export progress report data.
         
         Data is saved as "[download_path]/[cycle].csv"
@@ -313,7 +365,7 @@ class CompassWebDriver(webdriver.Firefox):
         self.set_download_dir(download_path)
         # open progress reports page
         self.get("https://" + self.school_code +
-                ".compass.education/Organise/Reporting/GPA/Default.aspx")
+                 ".compass.education/Organise/Reporting/GPA/Default.aspx")
         # open cycles tab
         #button = driver.find_element_by_xpath("//*[contains(text(),'Cycles')]")
         #button.click()
@@ -324,7 +376,7 @@ class CompassWebDriver(webdriver.Firefox):
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
                 (By.XPATH,
-                "//td/div/a[contains(text(), '" + cycle + "')]"))).click()
+                 "//td/div/a[contains(text(), '" + cycle + "')]"))).click()
         # export link
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
@@ -334,12 +386,13 @@ class CompassWebDriver(webdriver.Firefox):
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
                 (By.XPATH,
-                "//a/span/span/span[contains(text(),'Export')]"))).click()
+                 "//a/span/span/span[contains(text(),'Export')]"))).click()
         # Confirmation OK button
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//a/span/span/span[contains(text(),'OK')]"))).click()
-        for _i in range(600):  # 10 minutes
+                (By.XPATH,
+                 "//a/span/span/span[contains(text(),'OK')]"))).click()
+        for _i in range(1200):  # 20 minutes
             time.sleep(1)
             try:
                 # Get cancel button
@@ -352,7 +405,7 @@ class CompassWebDriver(webdriver.Firefox):
                 break
 
     def discover_report_cycles(self,
-                           published_only: bool = True) -> list(tuple(str)):
+                               published_only: bool = True) -> list(tuple(str)):
         """Discovers the available report cycles.
 
         Args:
@@ -360,23 +413,27 @@ class CompassWebDriver(webdriver.Firefox):
                 access.
 
         Returns:
-            A list of the names of each report cyle.
+            A list of the (year,name) pairs for each report cyle.
         """
         # open reports page
         self.get("https://" + self.school_code +
-                ".compass.education/Organise/Reporting/Cycles.aspx")
-
+                 ".compass.education/Organise/Reporting/Cycles.aspx")
+        rows = WebDriverWait(self, 20).until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH, "//div/div[3]/div/table/tbody/tr")))
         rows = self.find_elements_by_xpath("//div/div[3]/div/table/tbody/tr")
         cycles = []
         for row in rows:
             published_to_students = row.find_element_by_xpath("./td[5]").text
-            if not published_only or published_to_students == "Yes":
+            report_style = row.find_element_by_xpath("./td[3]").text
+            if ((not published_only) or
+                (published_to_students == "Yes")) and (report_style
+                                                       == "Writer"):
                 year = row.find_element_by_xpath("./td[1]").text
                 name = row.find_element_by_xpath("./td[2]").text
                 cycles.append((year, name))
 
         return cycles
-
 
     def export_report_cycle(self,
                             year: str,
@@ -393,16 +450,25 @@ class CompassWebDriver(webdriver.Firefox):
                             windows.
         """
         self.set_download_dir(download_path)
+        try:
+            previous_download = self.getDownLoadedFileName()
+        except NoRecentDownloadError:
+            previous_download = None
 
         self.get("https://" + self.school_code +
-                ".compass.education/Organise/Reporting/Cycles.aspx")
+                 ".compass.education/Organise/Reporting/Cycles.aspx")
         # open cycle config page
-        rows = self.find_elements_by_xpath("//div/div[3]/div/table/tbody/tr")
+        rows = WebDriverWait(self, 20).until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH, "//div/div[3]/div/table/tbody/tr")))
         for row in rows:
             row_year = row.find_element_by_xpath("./td[1]").text
             row_title = row.find_element_by_xpath("./td[2]").text
             if (row_year == year) and (row_title == title):
-                row.find_element_by_xpath("./td[2]/div/a").click()
+                try:
+                    row.find_element_by_xpath("./td[2]/div/a").click()
+                except NoSuchElementException:
+                    return
                 break
         # export all results
         # menu
@@ -416,9 +482,10 @@ class CompassWebDriver(webdriver.Firefox):
         # ok button
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//a/span/span/span[contains(text(),'OK')]"))).click()
+                (By.XPATH,
+                 "//a/span/span/span[contains(text(),'OK')]"))).click()
         # wait for download
-        for _i in range(600):  # 10 minutes
+        for _i in range(1200):  # 20 minutes
             time.sleep(1)
             try:
                 # Get cancel button
@@ -429,6 +496,21 @@ class CompassWebDriver(webdriver.Firefox):
                     "//*[contains(text(),'Close')]")
                 button.click()
                 break
+        file_name = self.getDownLoadedFileName()
+        #TODO: Consider clearing browser download history. Would required
+        # deleting from places.sqlite in profile folder.
+        # Profile folder can be found using driver.capabilities['moz:profile']
+        if file_name != previous_download:  # confirm a new file was actually downloaded
+            source_path = os.path.join(download_path, file_name)
+            rename_path = os.path.join(download_path,
+                                       f"SemesterReports-{year}-{title}.csv")
+            if os.path.exists(rename_path):
+                os.remove(rename_path)
+            os.rename(source_path, rename_path)
+        else:
+            raise CompassDownloadFailedError(
+                f"Download of reports for Year:{year} and Title:{title} failed."
+            )
 
 
 class CompassAuthenticator(Protocol):
@@ -471,3 +553,18 @@ class CompassBrowserCookieAuthenticator(CompassAuthenticator):
                 'path': c.path
             }
             driver.add_cookie(cookie_dict)
+
+
+class CompassElementSelectionError(Exception):
+    """Raised when an expected user interface element is not found."""
+    pass
+
+
+class NoRecentDownloadError(Exception):
+    """Raised if there is no most recent download to return."""
+    pass
+
+
+class CompassDownloadFailedError(Exception):
+    """Raised a Compass download fails for some reason."""
+    pass
