@@ -15,12 +15,35 @@
 
 Aggregates data from Learning Tasks, Reports and Progress reports exports.
 """
-
 from __future__ import annotations
+
 import re
 from typing import Callable
 
 import pandas as pd
+from pandas.errors import EmptyDataError
+
+
+def class_code_parser(class_code: str, pattern: str) -> str:
+    """A default class code to subject code parser.
+
+    Assumes that class codes contain their corresponding subject code.
+    
+    Args:
+        class_code: The class code.
+        pattern: A regex pattern that matches subject codes to a named group
+            called 'code'.
+
+    Returns:
+        The subject code string.
+    """
+    m = re.search(pattern, class_code)
+    if m:
+        subject_code = m.group('code')
+        return subject_code
+    else:
+        print(class_code + " class code not found")
+        return ""
 
 
 class Reports:
@@ -54,8 +77,13 @@ class Reports:
                           grade_dtype: pd.api.types.CategoricalDtype = None,
                           replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass reports export."""
-        temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
-        temp_df = temp_df[temp_df["AssessmentType"] == "Work Habits"]
+        try:
+            temp_df = pd.read_csv(filename,
+                                  na_values=None,
+                                  keep_default_na=False)
+        except EmptyDataError:
+            return Reports()
+        temp_df = temp_df.loc[(temp_df["AssessmentType"] == "Work Habits"), :]
 
         if not year:
             # attempt to determine year from filename
@@ -115,12 +143,16 @@ class Reports:
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass Learning Tasks export."""
-
-        temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
-        temp_df = temp_df[temp_df["IsIncludedInReport"]]
-        temp_df = temp_df[temp_df["ComponentType"] != "Comment"]
-        temp_df = temp_df[temp_df["ReportCycleName"].isin(
-            ["Semester One", "Semester Two"])]
+        try:
+            temp_df = pd.read_csv(filename,
+                                  na_values=None,
+                                  keep_default_na=False)
+        except EmptyDataError:
+            return Reports()
+        temp_df = temp_df.loc[temp_df["IsIncludedInReport"], :]
+        temp_df = temp_df.loc[(temp_df["ComponentType"] != "Comment"), :]
+        temp_df = temp_df.loc[temp_df["ReportCycleName"].
+                              isin(["Semester One", "Semester Two"]), :]
 
         if (not year):
             # attempt to determine year from filename
@@ -134,7 +166,8 @@ class Reports:
         temp_df["Year"] = year
         temp_df["Time"] = temp_df.apply(
             lambda x: cls._semesterDateMapper(x["Year"], x["ReportCycleName"]),
-            axis=1)
+            axis=1,
+            result_type='reduce')
         temp_df['Time'] = pd.to_datetime(temp_df['Time'])
 
         temp_df["Type"] = "Academic"  # differentiate from work habits
@@ -173,8 +206,12 @@ class Reports:
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass progress reports export."""
-
-        temp_df = pd.read_csv(filename, na_values=None, keep_default_na=False)
+        try:
+            temp_df = pd.read_csv(filename,
+                                  na_values=None,
+                                  keep_default_na=False)
+        except EmptyDataError:
+            return Reports()
         temp_df.rename(columns={
             "Id": "StudentCode",
             "Subject": "ClassCode",
@@ -185,7 +222,9 @@ class Reports:
         # unpivot progress report items
         temp_df = temp_df.melt(
             id_vars=["StudentCode", "ClassCode", "TeacherCode"],
-            value_vars=[x for x in progress_report_items if x in temp_df.columns],
+            value_vars=[
+                x for x in progress_report_items if x in temp_df.columns
+            ],
             var_name="ResultName",
             value_name="ResultGrade")
 
@@ -326,11 +365,24 @@ class Reports:
 
     def importSubjectsData(self,
                            subjects_file: str,
-                           class_code_parser: Callable[[str, str], str],
+                           class_code_parser: Callable[[str, str],
+                                                       str] = class_code_parser,
                            replace_values: dict[str, dict] = None) -> None:
         """Adds subject metadata from a separate csv file.
         
         Expects a csv with columns 'SubjectCode', 'LearningArea', 'SubjectName'.
+
+        Args:
+            subjects_file: The path to the csv file containing the subjects
+                metadata.
+            class_code_parser: A function that takes the class code, a regex
+                pattern to recognise the subject code and returns the subject
+                code.
+            replace_values: A dictionary to be passed to DataFrame.replace().
+                Keys are columns and values are dictionaries containing 
+                remappings for values in that column. Can be used to
+                standardise things where your school has changed the name of a
+                subject over time or has changed their grading system.
         """
 
         subjects_df = pd.read_csv(subjects_file)
