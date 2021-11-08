@@ -105,7 +105,6 @@ def current_frame(driver: WebDriver) -> str:
             """)
 
 
-# TODO: Update time.sleep() calls to smart waits.
 class VASSWebDriver(webdriver.Ie):
 
     def __init__(self,
@@ -144,40 +143,34 @@ class VASSWebDriver(webdriver.Ie):
         self.launch_window = self.current_window_handle
         # login to VASS
         self.get("https://www.vass.vic.edu.au/login/")
-        time.sleep(2)
-        login_link = WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.NAME, "boslogin")))
-        click_with_retry(login_link, lambda: find_window(self, "Login To VASS"))
-        time.sleep(1)
-        handle = find_window(self, "Login To VASS")
-        self.switch_to.window(handle)
-        self.main_window = self.current_window_handle
+        current_handles = self.window_handles
+
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable((By.NAME, "boslogin"))).click()
+        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
+        main_window = find_window(self, f"Login To VASS")
+        self.switch_to.window(main_window)
+        self.main_window = self.main_window
         # username/password auth
-        username_field = self.find_element_by_name("username")
-        username_field.send_keys(username)
-        password_field = self.find_element_by_name("password")
-        password_field.send_keys(password)
-        login_button = self.find_element_by_xpath(
-            "//input[contains(@name, 'Login')]")
-        login_button.click()
-        time.sleep(3)
+        self.find_element_by_name("username").send_keys(username)
+        self.find_element_by_name("password").send_keys(password)
+        self.find_element_by_xpath("//input[contains(@name, 'Login')]").click()
         # password grid auth
-        # TODO: review this as it's very slow
-        elements = self.find_elements_by_xpath(
-            "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")
+        elements = WebDriverWait(self, 20).until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH,
+                 "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")))
         grid_values = {}
-        for e in elements:
+        for e in elements:  # TODO: review this loop as it's very slow
             grid_values[(e.get_attribute("ColumnNum"),
                          e.get_attribute("RowNum"))] = e.get_attribute("value")
         grid_password_characters = "".join(
             [grid_values[i] for i in grid_password])
-        password_field = self.find_element_by_xpath(
-            "//input[contains(@name, 'PassCode')]")
-        password_field.send_keys(grid_password_characters)
-        accept_button = self.find_element_by_xpath(
-            "//input[contains(@name, 'AcceptButton')]")
-        accept_button.click()
-        time.sleep(2)
+        self.find_element_by_xpath("//input[contains(@name, 'PassCode')]"
+                                  ).send_keys(grid_password_characters)
+        self.find_element_by_xpath(
+            "//input[contains(@name, 'AcceptButton')]").click()
+        WebDriverWait(self, 20).until(EC.title_contains("VASS - "))
         pattern = "VASS - (?P<school>[A-Za-z ]+) - Year (?P<year>[0-9]{4})"
         m = re.match(pattern, self.title)
         if m:
@@ -199,29 +192,23 @@ class VASSWebDriver(webdriver.Ie):
                 self, "//*[contains(text(),'Change Year')]"))
         self.switch_to.parent_frame()
         self.switch_to.frame('main')
-        menu_item = self.find_element_by_xpath(
-            "//*[contains(text(),'Change Year')]")
-        menu_item.click()
-        time.sleep(2)
+        current_handles = self.window_handles
+
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//*[contains(text(),'Change Year')]"))).click()
+        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         for handle in self.window_handles:
             self.switch_to.window(handle)
             if self.title == "Change Code/Year":
                 break
-        tries = 1
-        while (tries < 4) and (self.title != "Change Code/Year"):
-            for handle in self.window_handles:
-                self.switch_to.window(handle)
-                if self.title == "Change Code/Year":
-                    break
-            time.sleep(0.5)
-            tries += 1
         self.switch_to.frame('VASSFrame')
         year_field = self.find_element_by_name("Year")
         year_field.send_keys(year)
         continue_button = self.find_element_by_xpath("//input[@type='submit']")
         continue_button.click()
         self.switch_to.window(self.main_window)
-        time.sleep(1)
+        self.year = year
 
     def external_results(self, file_name):
         """Saves the student external results (study scores) to a csv.
@@ -289,14 +276,16 @@ class VASSWebDriver(webdriver.Ie):
         self.switch_to.frame('main')
         menu_item = self.find_element_by_id("item7_3_1")  # GAT Summary
         self.execute_script("arguments[0].click();", menu_item)
-        time.sleep(2)
-        button = self.find_element_by_xpath(
-            "//input[(@name='btnRunReport') and (@type='submit')]"
-        )  # Run report
-        button.click()
-        time.sleep(3)
-        main_window = self.window_handles[1]  # fix
-        gat_window = self.window_handles[2]  # fix
+        current_handles = self.window_handles
+        # run report
+        WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable(
+                (By.XPATH,
+                 "//input[(@name='btnRunReport') and (@type='submit')]"
+                ))).click()
+        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
+        gat_window = find_window(
+            self, f"GAT Results Summary for {self.school} - {self.year}")
         self.switch_to.window(gat_window)
         students = []
         while (True):
@@ -368,7 +357,11 @@ class VASSWebDriver(webdriver.Ie):
                 max_score = root.get("MaxScore")
                 siar = root.get("SIAR")
                 siar_max_score = root.get("SIARMaxScore")
-                params = {'Max Score': max_score,  "SIAR": siar, "SIAR Max Score":siar_max_score}
+                params = {
+                    'Max Score': max_score,
+                    "SIAR": siar,
+                    "SIAR Max Score": siar_max_score
+                }
                 for child in root.iter('param'):
                     params[child.attrib['name']] = child.attrib['value']
                 del params['Students Assessed Elsewhere']
