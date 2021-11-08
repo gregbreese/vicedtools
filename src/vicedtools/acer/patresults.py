@@ -93,7 +93,7 @@ class PATResults:
         self.results = results
 
     @classmethod
-    def fromGroupReport(cls, filename: str) -> PATResults:
+    def from_group_report(cls, filename: str) -> PATResults:
         """Creates a PATResults instance from a single group report.
         
         Args:
@@ -115,7 +115,7 @@ class PATResults:
                                               format="%d-%m-%Y %H:%M:%S")
         return cls(test, number, question_scales, temp_df)
 
-    def addGroupReport(self, filename: str) -> None:
+    def add_group_report(self, filename: str) -> None:
         """Adds the data from a group report file to this instance.
 
         The test (Reading/Maths) and test number must match those of the group
@@ -127,7 +127,7 @@ class PATResults:
         Raises:
             ValueError: Group report test and number do not match.
         """
-        temp = PATResults.fromGroupReport(filename)
+        temp = PATResults.from_group_report(filename)
         if (self.test == temp.test) and (self.number == temp.number):
             self.results = pd.concat([self.results, temp.results],
                                      ignore_index=True)
@@ -251,7 +251,7 @@ class PATResultsCollection:
         """Inits an empty PATResultsCollection."""
         self.tests = {"Maths": {}, "Reading": {}}
 
-    def addResults(self, patresults: PATResults) -> None:
+    def add_results(self, patresults: PATResults) -> None:
         '''Adds a PATResults to the collection.
         
         Args:
@@ -265,7 +265,7 @@ class PATResultsCollection:
         else:
             self.tests[test][number] = patresults
 
-    def getResults(self, test: str, number: str) -> pd.DataFrame:
+    def get_results(self, test: str, number: str) -> pd.DataFrame:
         '''Returns the PATResults for a particular test and number.
         
         Args:
@@ -278,7 +278,7 @@ class PATResultsCollection:
         '''
         return self.tests[test][number]
 
-    def exportScores(self, recent: bool = False) -> pd.DataFrame:
+    def export_scores(self, recent: bool = False) -> pd.DataFrame:
         '''Exports all PAT scores as a single DataFrame.
         
         Args:
@@ -303,15 +303,17 @@ class PATResultsCollection:
                 temp = self.tests[test][number].results[results_columns].copy()
                 temp['Test'] = test
                 temp['Number'] = number
-                temp['Score category'] = temp.apply(lambda x: score_categoriser(
-                    test, x['Year level (at time of test)'], x["Scale"]),
-                                                    axis=1)
                 temp['Completed'] = pd.to_datetime(temp['Completed'],
                                                    format="%d-%m-%Y %H:%M:%S")
+                temp['Score category'] = temp.apply(lambda x: score_categoriser(
+                    test, x['Year level (at time of test)'], x['Completed'], x[
+                        "Scale"]),
+                                                    axis=1)
+
                 export = pd.concat([export, temp], ignore_index=True)
         if recent:
             export.sort_values("Completed", ascending=False, inplace=True)
-            export.drop_duplicates(subset="Username", inplace=True)
+            export.drop_duplicates(subset=["Username", "Test"], inplace=True)
         return export
 
     def scores(self) -> pd.DataFrame:
@@ -327,7 +329,7 @@ class PATResultsCollection:
         return scores
 
 
-def score_categoriser(test: str, year_level: str, date: datetime,
+def score_categoriser(test: str, year_level: str, datetime_completed: datetime,
                       score: float) -> str:
     '''Returns a qualitative description of a PAT testing result.
 
@@ -376,7 +378,7 @@ def score_categoriser(test: str, year_level: str, date: datetime,
     }
     # expect year_level as "Year 7"
     year_level_num = int(year_level[5:])
-    if date.month <= 4:
+    if datetime_completed.month <= 4:
         year_level_num -= 1
     if year_level_num > 10:
         year_level_num = 10
@@ -410,6 +412,6 @@ def group_reports_to_patresults(path: str,
     for filename in filenames:
         if is_group_report_file(filename):
             print(filename)
-            temp = PATResults.fromGroupReport(filename)
-            results.addResults(temp)
+            temp = PATResults.from_group_report(filename)
+            results.add_results(temp)
     return results
