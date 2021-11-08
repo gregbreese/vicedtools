@@ -30,7 +30,7 @@ def learning_tasks_result_mapper(result):
         return 0.91
     if result == "Outstanding":
         return 1.0
-    return np.nan
+    return float('nan')
 
 
 def work_habits_result_mapper(result):
@@ -66,7 +66,7 @@ progress_report_items = [
 ]
 
 
-def class_code_parser(class_code, pattern_string):
+def gwsc_class_code_parser(class_code, pattern_string):
     m = re.search(pattern_string, class_code)
     if m:
         subject_code = m.group('code')

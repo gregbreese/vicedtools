@@ -20,5 +20,4 @@ from vicedtools.compass.exports import (
     discover_academic_years, discover_progress_report_cycles,
     discover_report_cycles, export_learning_tasks, export_progress_report,
     export_report_cycle, export_sds, export_student_details)
-from vicedtools.compass.reports import Reports
-from vicedtools.compass.automation import export_all_reports
+from vicedtools.compass.reports import Reports, class_code_parser
