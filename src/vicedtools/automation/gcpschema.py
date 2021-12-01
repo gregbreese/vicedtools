@@ -23,6 +23,7 @@ STUDENT_DETAILS_SCHEMA = [
     bigquery.SchemaField("YearLevel", "STRING"),
     bigquery.SchemaField("HomeGroup", "STRING"),
     bigquery.SchemaField("Status", "STRING"),
+    bigquery.SchemaField("DateOfBirth","DATE")
 ]
 STUDENT_DETAILS_CLUSTERING_FIELDS = [
     "Status", "StudentCode", "YearLevel", "Gender"
