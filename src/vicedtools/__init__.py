@@ -1,1 +1,1 @@
-from vicedtools import acer, compass, gc, vce
+from vicedtools import acer, automation, compass, gc, vce

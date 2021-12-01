@@ -20,7 +20,7 @@ from typing import Callable
 import os
 
 import pandas as pd
-from compass.reports import class_code_parser
+from vicedtools.compass.reports import class_code_parser
 
 from vicedtools.compass import (CompassWebDriver, CompassDownloadFailedError,
                                 Reports, class_code_parser)

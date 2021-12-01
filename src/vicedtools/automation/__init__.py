@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vicedtools.automation.compass import export_compass_reports
+from vicedtools.automation.compass import export_reports
 from vicedtools.automation.gcp import upload_to_bigquery
 from vicedtools.automation.gcpschema import (
     STUDENT_DETAILS_SCHEMA, STUDENT_DETAILS_CLUSTERING_FIELDS, REPORTS_SCHEMA,
