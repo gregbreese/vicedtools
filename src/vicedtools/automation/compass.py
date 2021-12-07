@@ -142,11 +142,11 @@ def upload_reports_to_gcp(
 
     reports = Reports()
 
-    learning_task_dir = os.path.join(root_dir, learning_tasks_folder)
-    reports_dir = os.path.join(root_dir, reports_folder)
-    progress_reports_dir = os.path.join(root_dir, progress_reports_folder)
+    learning_task_files = os.path.join(root_dir, learning_tasks_folder, "*.csv")
+    reports_files = os.path.join(root_dir, reports_folder, "*.csv")
+    progress_reports_files = os.path.join(root_dir, progress_reports_folder, "*.csv")
 
-    files = glob.glob(learning_task_dir + "*.csv")
+    files = glob.glob(learning_task_files)
     for filename in files:
         print("importing ", filename)
         reports.addLearningTasksExport(
@@ -155,7 +155,7 @@ def upload_reports_to_gcp(
             replace_values=replace_values,
             grade_score_mapper=learning_tasks_result_mapper)
 
-    files = glob.glob(reports_dir + "*.csv")
+    files = glob.glob(reports_files)
     for filename in files:
         print("importing ", filename)
         reports.addReportsExport(filename,
@@ -163,7 +163,7 @@ def upload_reports_to_gcp(
                                  replace_values=replace_values,
                                  grade_score_mapper=work_habits_result_mapper)
 
-    files = glob.glob(progress_reports_dir + "*.csv")
+    files = glob.glob(progress_reports_files)
     for filename in files:
         print("importing ", filename)
         reports.addProgressReportsExport(
