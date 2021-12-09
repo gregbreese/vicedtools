@@ -143,14 +143,16 @@ class VASSWebDriver(webdriver.Ie):
         self.launch_window = self.current_window_handle
         # login to VASS
         self.get("https://www.vass.vic.edu.au/login/")
-        current_handles = self.window_handles
 
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.NAME, "boslogin"))).click()
-        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
-        main_window = find_window(self, f"Login To VASS")
-        self.switch_to.window(main_window)
-        self.main_window = self.main_window
+        time.sleep(2)
+        login_link = WebDriverWait(self, 20).until(
+            EC.element_to_be_clickable((By.NAME, "boslogin")))
+        click_with_retry(login_link, lambda: find_window(self, "Login To VASS"))
+        time.sleep(1)
+        handle = find_window(self, "Login To VASS")
+        self.switch_to.window(handle)
+        self.main_window = self.current_window_handle
+        
         # username/password auth
         self.find_element_by_name("username").send_keys(username)
         self.find_element_by_name("password").send_keys(password)
