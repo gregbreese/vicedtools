@@ -42,7 +42,7 @@ REPORTS_SCHEMA = [
     bigquery.SchemaField("LearningArea", "STRING"),
     bigquery.SchemaField("TeacherCode", "STRING")
 ]
-REPORTS_CLUSTERING_FIELDS = ["StudentCode", "Time", "LearningArea", "Type"]
+REPORTS_CLUSTERING_FIELDS = ["StudentCode", "Type", "LearningArea", "Time" ]
 
 REPORTS_SUMMARY_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),

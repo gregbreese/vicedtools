@@ -23,7 +23,7 @@ import xml.etree.ElementTree as ET
 
 import pandas as pd
 from selenium import webdriver
-from selenium.common.exceptions import ElementNotInteractableException, TimeoutException
+from selenium.common.exceptions import ElementNotInteractableException, NoSuchElementException, StaleElementReferenceException, TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -277,14 +277,22 @@ class VASSWebDriver(webdriver.Ie):
         self.switch_to.default_content()
         self.switch_to.frame('main')
         menu_item = self.find_element_by_id("item7_3_1")  # GAT Summary
-        self.execute_script("arguments[0].click();", menu_item)
+        try:
+            self.execute_script("arguments[0].click();", menu_item)
+        except TimeoutException:
+            pass
         current_handles = self.window_handles
         # run report
-        WebDriverWait(self, 20).until(
+        WebDriverWait(self, 30).until(
             EC.element_to_be_clickable(
                 (By.XPATH,
                  "//input[(@name='btnRunReport') and (@type='submit')]"
-                ))).click()
+                )))
+        button = self.find_element_by_xpath("//input[(@name='btnRunReport') and (@type='submit')]")
+        try:
+            self.execute_script("arguments[0].click();", button)
+        except TimeoutException:
+            pass
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         gat_window = find_window(
             self, f"GAT Results Summary for {self.school} - {self.year}")
@@ -292,7 +300,8 @@ class VASSWebDriver(webdriver.Ie):
         students = []
         while (True):
             self.switch_to.frame('VASSFrame')
-            data = self.find_element_by_id("reportData").get_attribute(
+            report_data = WebDriverWait(self, 30 ).until(EC.presence_of_element_located((By.ID, 'reportData')))
+            data = report_data.get_attribute(
                 'innerHTML')
             root = ET.fromstring(data.strip())
             for child in root.iter('student'):
@@ -304,6 +313,7 @@ class VASSWebDriver(webdriver.Ie):
             except ElementNotInteractableException:
                 break
             self.switch_to.parent_frame()
+            time.sleep(0.1)
         self.switch_to.parent_frame()
         self.switch_to.frame('VASSTop')
         self.find_element_by_id("idClose").click()
