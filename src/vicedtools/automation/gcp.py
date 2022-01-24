@@ -19,7 +19,9 @@ from google.cloud import storage
 from google.cloud import bigquery
 
 from vicedtools.automation.gcpschema import (
-    STUDENT_DETAILS_SCHEMA, STUDENT_DETAILS_CLUSTERING_FIELDS, REPORTS_SCHEMA,
+    STUDENT_DETAILS_SCHEMA, STUDENT_DETAILS_CLUSTERING_FIELDS, 
+    STUDENT_CLASS_RELATIONSHIPS_SCHEMA, REPORTS_SCHEMA,
+    STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
     REPORTS_CLUSTERING_FIELDS, REPORTS_SUMMARY_SCHEMA,
     REPORTS_SUMMARY_CLUSTERING_FIELDS, NAPLAN_SCHEMA, NAPLAN_CLUSTERING_FIELDS,
     GAT_SCHEMA, GAT_CLUSTERING_FIELDS)
@@ -94,7 +96,7 @@ def delete_blob(bucket_name: str, blob_name: str) -> None:
     blob.delete()
 
 
-def upload_to_bigquery(source_file: str,
+def upload_csv_to_bigquery(source_file: str,
                        schema: dict[bigquery.SchemaField],
                        clustering_fields: list[str],
                        table_id: str,

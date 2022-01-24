@@ -29,6 +29,15 @@ STUDENT_DETAILS_CLUSTERING_FIELDS = [
     "Status", "StudentCode", "YearLevel", "Gender"
 ]
 
+STUDENT_CLASS_RELATIONSHIPS_SCHEMA = [
+    bigquery.SchemaField("ClassGroupCode", "STRING"),
+    bigquery.SchemaField("StudentCode", "STRING")
+    ]
+
+STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS = [
+    "ClassGroupCode", "StudentCode"
+]
+
 REPORTS_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),
     bigquery.SchemaField("ClassCode", "STRING"),
