@@ -138,20 +138,31 @@ class CompassWebDriver(webdriver.Firefox):
                  ".compass.education/Learn/Subjects.aspx")
         # Export menu
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "button-1020"))).click()
+            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Exports')]"))).click()
         # Export menu item
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
-                (By.ID, "menuitem-1025-itemEl"))).click()
+                (By.XPATH, "//span[contains(text(),'Microsoft SDS Export')]"))).click()
         # Submit button
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "button-1103"))).click()
+            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Download')]"))).click()
         # Yes button
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.ID, "button-1120"))).click()
+            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'OK')]"))).click()
 
-        # TODO: Poll to see when download is done
-        time.sleep(download_wait)
+        # Poll to see when download is done
+        for _i in range(download_wait):  # 20 minutes
+            time.sleep(1)
+            try:
+                # Get cancel button
+                button = self.find_element_by_xpath(
+                    "//*[contains(text(),'Cancel')]")
+            except NoSuchElementException:
+                close_buttons = self.find_elements_by_xpath(
+                    "//span[contains(text(),'Close')]")
+                close_buttons[-1].click()
+                break
+
         filename = self.getDownLoadedFileName()
         file_to_extract = os.path.join(download_path, filename)
         contents = [
