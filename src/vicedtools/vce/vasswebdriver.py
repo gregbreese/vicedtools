@@ -239,8 +239,37 @@ class VASSWebDriver(webdriver.Ie):
                          skiprows=1)
         df.to_csv(file_name, index=False)
 
-    def personal_details_summary(self, file_name):
-        """Saves the student personal details summary to a csv.
+    def school_program_summary(self, file_name: str, report: str="vce"):
+        """Saves the school program summary to a csv file.
+        
+        Args:
+            file_name: The file name to save the data to.
+            report: "vce", "vet" or "vcal"
+        """
+        base_url = "https://www.vass.vic.edu.au/schoolprog/reports/SchoolProgramSummary/SchoolProgramSummary.vass?TeacherNum=&UnitLevel=0&Semester=0&ReportSelection="
+        url = base_url + report
+        s = requests.session()
+        # copy cookies from selenium session
+        for cookie in self.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
+        # request student details file
+        r = s.get(url)
+        names = [
+            "Unit Code", "Unit Name", "Teacher Code", "Teacher Name",
+            "Semester", "Class Code", "Class Size", "Time Block"
+        ]
+        df = pd.read_csv(StringIO(r.content.decode('utf-8')),
+                         sep="|",
+                         names=names,
+                         skiprows=1,
+                         skipfooter=1,
+                         engine='python')
+        df.fillna("", inplace=True)
+        df.to_csv(file_name, index=False)
+
+    def personal_details_summary(self, file_name: str):
+        """Saves the student personal details summary to a csv file.
         
         Args:
             file_name: The file name to save the data to.
