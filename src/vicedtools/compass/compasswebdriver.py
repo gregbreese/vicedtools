@@ -151,7 +151,7 @@ class CompassWebDriver(webdriver.Firefox):
             EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'OK')]"))).click()
 
         # Poll to see when download is done
-        for _i in range(download_wait):  # 20 minutes
+        for _i in range(download_wait):
             time.sleep(1)
             try:
                 # Get cancel button
@@ -198,7 +198,7 @@ class CompassWebDriver(webdriver.Firefox):
         '''
         headers = {
             "User-Agent":
-                "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0"
         }
         s = requests.session()
         s.headers.update(headers)
