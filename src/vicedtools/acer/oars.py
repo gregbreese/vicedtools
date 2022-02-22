@@ -28,7 +28,6 @@ import browser_cookie3
 import numpy as np
 import pandas as pd
 
-
 # Todo: Transition from only adding maths/english class codes to adding all
 # relevant class codes as tags from the student enrolment data
 
@@ -168,44 +167,51 @@ def student_imports(student_details_file: str, student_enrolment_file: str,
 
 class OARSAuthenticator(Protocol):
     """An abstract class for generic OARS authenticators."""
+
     @abstractmethod
     def authenticate(self, session: OARSSession):
         raise NotImplementedError
 
+
 class OARSFirefoxCookieAuthenaticator(OARSAuthenticator):
     """An OARS authenaticator that gets login details from the local Firefox installation."""
-    def authenticate(self, s:OARSSession):
+
+    def authenticate(self, s: OARSSession):
         cj = browser_cookie3.firefox(domain_name='oars.acer.edu.au')
 
         for cookie in cj:
             c = {cookie.name: cookie.value}
             s.cookies.update(c)
 
+
 class OARSAuthenticateError(Exception):
     """Raised if an error occurs related to OARS authentication."""
     pass
+
 
 class TestNotFoundError(Exception):
     """Raised if an OARS test id or name is not found."""
     pass
 
+
 class FormNotFoundError(Exception):
     """Raised if an OARS form id or name is not found."""
     pass
-        
+
 
 class SecurityTokenParser(HTMLParser):
     """Extracts the OARS security token from a page."""
+
     def handle_data(self, data):
         if 'oarsData' in data:
             data = json.loads(data[22:])
             self.security_token = data['securityToken']
-                
+
 
 class OARSSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from OARS."""
 
-    def __init__(self, school:str, authenticator: OARSAuthenticator):
+    def __init__(self, school: str, authenticator: OARSAuthenticator):
         """Creates a requests Session with OARS authentication completed.
         
         Args:
@@ -228,7 +234,7 @@ class OARSSession(requests.sessions.Session):
 
         self._get_test_metadata()
         self._get_scale_constructs()
-        
+
     def _get_test_metadata(self):
         """Downloads test metadata from OARS."""
         url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getTests/"
@@ -237,7 +243,7 @@ class OARSSession(requests.sessions.Session):
             self.tests = r.json()
         except json.JSONDecodeError:
             raise OARSAuthenticateError()
-            
+
     def _get_scale_constructs(self):
         """Downloads scale constructs from OARS."""
         self.scale_constructs = {}
@@ -250,26 +256,27 @@ class OARSSession(requests.sessions.Session):
                     self.scale_constructs[scale_id] = r.json()
                 except JSONDecodeError:
                     raise OARSAuthenticateError()
-                
-    def get_test_from_id(self,test_id: str) -> dict:
+
+    def get_test_from_id(self, test_id: str) -> dict:
         """Gets a test's metadata.
         
         Args:
             test_id: The testId of the test to locate.
             
         Returns:
-            A dictionary containing metadata about the particular test
+            A dictionary containing metadata about the particular test.
         """
         for t in self.tests:
             if t['testId'] == test_id:
                 return t
         raise TestNotFoundError()
-        
-    def get_test_from_name(self,test_name: str) -> dict:
+
+    def get_test_from_name(self, test_name: str) -> dict:
         """Gets a test's metadata.
         
         Args:
-            test_name: The name of the test to locate. E.g. "PAT Maths 4th Edition"
+            test_name: The name of the test to locate. 
+                E.g. "PAT Maths 4th Edition"
             
         Returns:
             A dictionary containing metadata about the particular test
@@ -278,12 +285,13 @@ class OARSSession(requests.sessions.Session):
             if t['name'] == test_name:
                 return t
         raise TestNotFoundError()
-            
-    def get_test_id_from_name(self,test_name: str) -> str:
+
+    def get_test_id_from_name(self, test_name: str) -> str:
         """Gets a test's id from its name.
         
         Args:
-            test_name: The name of the test to locate. E.g "PAT Maths 4th Edition"
+            test_name: The name of the test to locate. 
+                E.g "PAT Maths 4th Edition"
             
         Returns:
             The id string for the test.
@@ -292,8 +300,8 @@ class OARSSession(requests.sessions.Session):
             if t['name'] == test_name:
                 return t['testId']
         raise TestNotFoundError()
-            
-    def get_form_id_from_name(self,test_id: str,form_name: str) -> str:
+
+    def get_form_id_from_name(self, test_id: str, form_name: str) -> str:
         """Gets a form's id from its name.
         
         Args:
@@ -308,14 +316,16 @@ class OARSSession(requests.sessions.Session):
             if f["name"] == form_name:
                 return f["formId"]
         raise FormNotFoundError()
-        
-    def get_pat_results(self, test_name: str, form_name: str, from_date: str, to_date: str) -> list[dict]:
+
+    def get_pat_results(self, test_name: str, form_name: str, from_date: str,
+                        to_date: str) -> list[dict]:
         """Downloads the results for a single PAT test.
         
         Args:
             test_name: The name of the test. E.g. "PAT Maths 4th Edition"
             form_name: The form to download. E.g. "PAT Maths Test 6"
-            from_date: The start date to download results for in dd-mm-yyyy format.
+            from_date: The start date to download results for in 
+                dd-mm-yyyy format.
             to_date: The end date to download results for in dd-mm-yyyy format.
             
         Returns:
@@ -333,25 +343,28 @@ class OARSSession(requests.sessions.Session):
 
         r = self.get(ids_url)
         ids = r.json()
-        
+
         sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
         sittings_url = sittings_url.replace(" ", "%20")
-        
+
         sittings = []
-        for i in range(0,len(ids[test_id][form_id]),100):
-            payload = {'ids':ids[test_id][form_id][i:i+100],
-                      'security_token':self.security_token}
+        for i in range(0, len(ids[test_id][form_id]), 100):
+            payload = {
+                'ids': ids[test_id][form_id][i:i + 100],
+                'security_token': self.security_token
+            }
             r = self.post(sittings_url, json=payload)
             sittings += r.json()
         return sittings
-    
+
     def get_all_pat_sittings(self, from_date: str, to_date: str) -> list[dict]:
         """Downloads the results for all PAT sittings between the given dates.
         
         Includes both PAT Maths 4th Edition and PAT Reading 5th Edition.
         
         Args:
-            from_date: The start date to download results for in dd-mm-yyyy format.
+            from_date: The start date to download results for in 
+                dd-mm-yyyy format.
             to_date: The end date to download results for in dd-mm-yyyy format.
             
         Returns:
@@ -382,13 +395,14 @@ class OARSSession(requests.sessions.Session):
                     sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
                     sittings_url = sittings_url.replace(" ", "%20")
 
-                    for i in range(0,len(ids[test_id][form_id]),100):
-                        payload = {'ids':ids[test_id][form_id][i:i+100],
-                                  'security_token':self.security_token}
+                    for i in range(0, len(ids[test_id][form_id]), 100):
+                        payload = {
+                            'ids': ids[test_id][form_id][i:i + 100],
+                            'security_token': self.security_token
+                        }
                         r = self.post(sittings_url, json=payload)
                         sittings += r.json()
         return sittings
-
 
 
 def year_level_at_time_of_test(year_levels: dict, time_of_test: int) -> str:
@@ -397,20 +411,21 @@ def year_level_at_time_of_test(year_levels: dict, time_of_test: int) -> str:
             return yr['value']
     return ""
 
+
 def extract_response(response: dict) -> str:
     if response['class'] == 'correct':
         return '✓'
     else:
         return response['key']
 
-    
+
 class PATSittings(list):
     """A class for storing PAT sitting results."""
-    
+
     def __init__(self, sittings, test_metadata):
         super().__init__(sittings)
         self.test_metadata = test_metadata
-    
+
     def _extract_sitting(self, sitting):
         data = {}
         data['Given name'] = sitting['given_name']
@@ -425,10 +440,12 @@ class PATSittings(list):
             data['Unique ID'] = ""
         data['Username'] = sitting['username']
         data['Gender'] = sitting['gender'].title()
-        data['DOB'] = datetime.strptime(str(sitting['dob']),"%Y%m%d")
+        data['DOB'] = datetime.strptime(str(sitting['dob']), "%Y%m%d")
         data['Year level (current)'] = sitting['yearLevel']['current']
-        data['Year level (at time of test)'] = year_level_at_time_of_test(sitting['yearLevel'], sitting['sitting']['updated'])
-        data['Completed'] = datetime.strptime(time.ctime(sitting['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
+        data['Year level (at time of test)'] = year_level_at_time_of_test(
+            sitting['yearLevel'], sitting['sitting']['updated'])
+        data['Completed'] = datetime.strptime(
+            time.ctime(sitting['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
         data['Active tags'] = ""
         data['Inactive tags'] = ""
         for key, value in sitting['responses'].items():
@@ -453,8 +470,8 @@ class PATSittings(list):
         data['Test form'] = form_name
 
         return data
-    
-    def extract_sittings(self)-> list:
+
+    def extract_sittings(self) -> list:
         data = []
         for sitting in self:
             data.append(self._extract_sitting(sitting))
