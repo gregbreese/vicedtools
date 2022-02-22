@@ -17,7 +17,6 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from datetime import datetime
-import glob
 import os
 import requests
 import time
