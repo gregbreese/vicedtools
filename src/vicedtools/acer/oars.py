@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from collections import abc
 from datetime import datetime
 from html.parser import HTMLParser
 import json
@@ -240,7 +241,7 @@ class OARSSession(requests.sessions.Session):
         url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getTests/"
         r = self.get(url)
         try:
-            self.tests = r.json()
+            self.tests = PATTests(r.json())
         except json.JSONDecodeError:
             raise OARSAuthenticateError()
 
@@ -254,68 +255,8 @@ class OARSSession(requests.sessions.Session):
                 r = self.get(url)
                 try:
                     self.scale_constructs[scale_id] = r.json()
-                except JSONDecodeError:
+                except json.JSONDecodeError:
                     raise OARSAuthenticateError()
-
-    def get_test_from_id(self, test_id: str) -> dict:
-        """Gets a test's metadata.
-        
-        Args:
-            test_id: The testId of the test to locate.
-            
-        Returns:
-            A dictionary containing metadata about the particular test.
-        """
-        for t in self.tests:
-            if t['testId'] == test_id:
-                return t
-        raise TestNotFoundError()
-
-    def get_test_from_name(self, test_name: str) -> dict:
-        """Gets a test's metadata.
-        
-        Args:
-            test_name: The name of the test to locate. 
-                E.g. "PAT Maths 4th Edition"
-            
-        Returns:
-            A dictionary containing metadata about the particular test
-        """
-        for t in self.tests:
-            if t['name'] == test_name:
-                return t
-        raise TestNotFoundError()
-
-    def get_test_id_from_name(self, test_name: str) -> str:
-        """Gets a test's id from its name.
-        
-        Args:
-            test_name: The name of the test to locate. 
-                E.g "PAT Maths 4th Edition"
-            
-        Returns:
-            The id string for the test.
-        """
-        for t in self.tests:
-            if t['name'] == test_name:
-                return t['testId']
-        raise TestNotFoundError()
-
-    def get_form_id_from_name(self, test_id: str, form_name: str) -> str:
-        """Gets a form's id from its name.
-        
-        Args:
-            test_id: The testId of the test containing the form.
-            form_name: The name of the form. E.g. "PAT Maths Test 6"
-            
-        Returns:
-            A dictionary containing metadata about the particular test
-        """
-        test = self.get_test_from_id(test_id)
-        for f in test['forms']:
-            if f["name"] == form_name:
-                return f["formId"]
-        raise FormNotFoundError()
 
     def get_pat_results(self, test_name: str, form_name: str, from_date: str,
                         to_date: str) -> list[dict]:
@@ -331,28 +272,24 @@ class OARSSession(requests.sessions.Session):
         Returns:
             A list of test sittings.
         """
-        test_id = self.get_test_id_from_name(test_name)
-        form_id = self.get_form_id_from_name(test_id, form_name)
-        for test in self.tests:
-            if test['testId'] == test_id:
-                scale_id = test['scale_id']
-                break
+        test = self.tests.get_test_from_name(test_name)
+        test_id = test["id"]
+        form_id = test.get_form_id_from_name(form_name)
+        scale_id = test["scale_id"]
         scale_slug = self.scale_constructs[scale_id]['slug']
         ids_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingIdsByTestForm/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
         ids_url = ids_url.replace(" ", "%20")
 
         r = self.get(ids_url)
         ids = r.json()
-
+        
         sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
         sittings_url = sittings_url.replace(" ", "%20")
-
+        
         sittings = []
-        for i in range(0, len(ids[test_id][form_id]), 100):
-            payload = {
-                'ids': ids[test_id][form_id][i:i + 100],
-                'security_token': self.security_token
-            }
+        for i in range(0,len(ids[test_id][form_id]),100):
+            payload = {'ids':ids[test_id][form_id][i:i+100],
+                      'security_token':self.security_token}
             r = self.post(sittings_url, json=payload)
             sittings += r.json()
         return sittings
@@ -375,7 +312,7 @@ class OARSSession(requests.sessions.Session):
         sittings = []
 
         for test_name in test_names:
-            test = self.get_test_from_name(test_name)
+            test = self.tests.get_test_from_name(test_name)
             test_id = test['testId']
             scale_id = test['scale_id']
             scale_slug = self.scale_constructs[scale_id]['slug']
@@ -395,14 +332,13 @@ class OARSSession(requests.sessions.Session):
                     sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
                     sittings_url = sittings_url.replace(" ", "%20")
 
-                    for i in range(0, len(ids[test_id][form_id]), 100):
-                        payload = {
-                            'ids': ids[test_id][form_id][i:i + 100],
-                            'security_token': self.security_token
-                        }
+                    for i in range(0,len(ids[test_id][form_id]),100):
+                        payload = {'ids':ids[test_id][form_id][i:i+100],
+                                  'security_token':self.security_token}
                         r = self.post(sittings_url, json=payload)
                         sittings += r.json()
         return sittings
+    
 
 
 def year_level_at_time_of_test(year_levels: dict, time_of_test: int) -> str:
@@ -411,68 +347,186 @@ def year_level_at_time_of_test(year_levels: dict, time_of_test: int) -> str:
             return yr['value']
     return ""
 
-
 def extract_response(response: dict) -> str:
     if response['class'] == 'correct':
         return '✓'
     else:
         return response['key']
 
+    
+class PATTests(list):
+    """A class for storing metadata for PAT Tests."""
+    
+    def __init__(self, tests: list[dict]):
+        if isinstance(PATTests, tests):
+            return tests
+        if isinstance(tests, abc.Sequence):
+            super().__init__([PATTest(i) for i in tests])
+        else:
+            raise TypeError(f"Unsupported type: {type(tests)}")
+        
+        
+    def get_test_from_id(self, test_id: str) -> PATTest:
+        """Gets a test's metadata.
+        
+        Args:
+            test_id: The testId of the test to locate.
+            
+        Returns:
+            A PATTest containing metadata about the particular test.
+        """
+        for t in self:
+            if t['testId'] == test_id:
+                return t
+        raise TestNotFoundError()
 
-class PATSittings(list):
-    """A class for storing PAT sitting results."""
+    def get_test_from_name(self, test_name: str) -> PATTest:
+        """Gets a test's metadata.
+        
+        Args:
+            test_name: The name of the test to locate. 
+                E.g. "PAT Maths 4th Edition"
+            
+        Returns:
+            A PATTest containing metadata about the particular test
+        """
+        for t in self:
+            if t['name'] == test_name:
+                return t
+        raise TestNotFoundError()
 
-    def __init__(self, sittings, test_metadata):
-        super().__init__(sittings)
-        self.test_metadata = test_metadata
+    def get_id_from_name(self, test_name: str) -> str:
+        """Gets a test's id from its name.
+        
+        Args:
+            test_name: The name of the test to locate. 
+                E.g "PAT Maths 4th Edition"
+            
+        Returns:
+            The id string for the test.
+        """
+        for t in self:
+            if t['name'] == test_name:
+                return t['testId']
+        raise TestNotFoundError()
+        
+    def get_name_from_id(self, test_id: str) -> str:
+        """Gets a test's name from its id.
+        
+        Args:
+            test_id: The id of the test to locate. 
+            
+        Returns:
+            The name ofr the test. E.g "PAT Maths 4th Edition"
+        """
+        for t in self:
+            if t['id'] == test_id:
+                return t['name']
+        raise TestNotFoundError()
+        
+    
+class PATTest(dict):
+    """A class for storing metadata for a PAT Test"""
+    def __init__(self, test):
+        super().__init__(test)
+        
+    def get_form_id_from_name(self, form_name: str) -> str:
+        """Gets a form's id from its name.
+        
+        Args:
+            form_name: The name of the form. E.g. "PAT Maths Test 6"
+            
+        Returns:
+            The id of the form.
+        """
+        for f in self['forms']:
+            if f["name"] == form_name:
+                return f["formId"]
+        raise FormNotFoundError()
 
-    def _extract_sitting(self, sitting):
+    def get_form_name_from_id(self, form_id: str) -> str:
+        """Gets a form's name from it's id.
+        
+        Args:
+            form_id: The id of the form
+            
+        Returns:
+            The name of the form. E.g. "PAT Maths Test 6"
+        """
+        for f in self['forms']:
+            if f["id"] == form_id:
+                return f["name"]
+        raise FormNotFoundError()
+
+class PATSitting(dict):
+    """A class for storing a PAT sitting result."""
+        
+    def group_report(self, tests: PATTests) -> dict:
+        """Returns the data provided in a PAT group report export for this sitting."""
         data = {}
-        data['Given name'] = sitting['given_name']
         try:
-            data['Middle names'] = sitting['middle_name']
-        except KeyError:
-            data['Middle names'] = ""
-        data['Family name'] = sitting['family_name']
-        try:
-            data['Unique ID'] = sitting['unique_id']
+            data['Unique ID'] = self['unique_id']
         except KeyError:
             data['Unique ID'] = ""
-        data['Username'] = sitting['username']
-        data['Gender'] = sitting['gender'].title()
-        data['DOB'] = datetime.strptime(str(sitting['dob']), "%Y%m%d")
-        data['Year level (current)'] = sitting['yearLevel']['current']
-        data['Year level (at time of test)'] = year_level_at_time_of_test(
-            sitting['yearLevel'], sitting['sitting']['updated'])
-        data['Completed'] = datetime.strptime(
-            time.ctime(sitting['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
+        data['Family name'] = self['family_name']
+        data['Given name'] = self['given_name']
+        try:
+            data['Middle names'] = self['middle_name']
+        except KeyError:
+            data['Middle names'] = ""
+        data['Username'] = self['username']
+        data['DOB'] = datetime.strptime(str(self['dob']),"%Y%m%d")
+        data['Gender'] = self['gender'].title()
+        data['Completed'] = datetime.strptime(time.ctime(self['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
+        data['Year level (current)'] = self['yearLevel']['current']
+        data['Year level (at time of test)'] = year_level_at_time_of_test(self['yearLevel'], self['sitting']['updated'])
         data['Active tags'] = ""
         data['Inactive tags'] = ""
-        for key, value in sitting['responses'].items():
+        for key, value in self['responses'].items():
             data[key] = extract_response(value)
-        data['Score'] = sitting['score']['score']
-        data['Scale'] = sitting['score']['scale']
-        data['Score'] = sitting['score']['score']
-        data['Stanine'] = sitting['score']['norms'][1]['stanine']
-        data['Percentile'] = sitting['score']['norms'][1]['percentile']
+        data['Score'] = self['score']['score']
+        data['Scale'] = self['score']['scale']
+        data['Score'] = self['score']['score']
+        data['Stanine'] = self['score']['norms'][1]['stanine']
+        data['Percentile'] = self['score']['norms'][1]['percentile']
 
-        test_id = sitting['sitting']['test_id']
-        form_id = sitting['sitting']['form_id']
-        for test in self.test_metadata:
-            if test['testId'] == test_id:
-                test_name = test['name']
-                for form in test['forms']:
-                    if form['formId'] == form_id:
-                        form_name = form['name']
-                        break
-                break
+        test_id = self['sitting']['test_id']
+        form_id = self['sitting']['form_id']
+        test_name = tests.get_name_from_id(test_id)
+        form_name = tests.get_test_from_id(test_id).get_form_name_from_id(form_id)
         data['Test'] = test_name
         data['Test form'] = form_name
 
         return data
-
-    def extract_sittings(self) -> list:
+    
+    
+class PATSittings(list):
+    """A class for storing PAT sitting results."""
+    
+    def __init__(self, sittings: list[dict]):
+        if isinstance(sittings, PATSittings):
+            return sittings
+        if isinstance(sittings, abc.Sequence):
+            super().__init__([PATSitting(i) for i in sittings])
+        else:
+            raise TypeError(f"Unsupported type: {type(sittings)}")
+    
+    def group_report(self, tests, test_name, form_name)-> list:
+        """Extracts data for the preparation of a group report spreadsheet.
+        
+        Args:
+            tests: A PATTests instance containing the relevant test metadata.
+            test_name: The name of the test to export. E.g. "PAT Maths 4th Edition"
+            form_name: The name of the form to export. E.g. "PAT Maths Test 6"
+            
+        Returns:
+            A list of dictionaries containing the relevant columns for each sitting.
+        """
+        test_id = tests.get_id_from_name(test_name)
+        form_id = tests.get_test_from_name(test_name).get_form_id_from_name(form_name)
         data = []
         for sitting in self:
-            data.append(self._extract_sitting(sitting))
+            if sitting["sitting"]["test_id"] == test_id and sitting["sitting"]["form_id"] == form_id:
+                data.append(sitting.group_report(tests))
         return data
+        
