@@ -8,9 +8,11 @@ Subpackages
    :maxdepth: 4
 
    vicedtools.acer
+   vicedtools.automation
    vicedtools.compass
    vicedtools.gc
    vicedtools.gwsc
+   vicedtools.naplan
    vicedtools.vce
 
 Submodules
@@ -24,29 +26,6 @@ vicedtools.educationperfect module
    :undoc-members:
    :show-inheritance:
 
-vicedtools.grok module
-----------------------
-
-.. automodule:: vicedtools.grok
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-vicedtools.naplan module
-------------------------
-
-.. automodule:: vicedtools.naplan
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-vicedtools.sportstrak module
-----------------------------
-
-.. automodule:: vicedtools.sportstrak
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Module contents
 ---------------

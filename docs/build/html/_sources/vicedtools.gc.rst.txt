@@ -12,13 +12,6 @@ vicedtools.gc.format module
    :undoc-members:
    :show-inheritance:
 
-vicedtools.gc.upload module
----------------------------
-
-.. automodule:: vicedtools.gc.upload
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Module contents
 ---------------
