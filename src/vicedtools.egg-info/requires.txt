@@ -1,4 +1,5 @@
 browser_cookie3
+bs4
 demjson
 google-cloud-bigquery
 google-cloud-storage

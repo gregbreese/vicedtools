@@ -1,10 +1,9 @@
 Metadata-Version: 2.1
 Name: vicedtools
-Version: 0.0.4.1
+Version: 0.0.5.1
 Summary: A collection of tools for school data in Victorian schools.
 Home-page: https://github.com/gregbreese/vicedtools
 Author: Greg Breese
-Author-email: gbr@gwsc.vic.edu.au
 License: UNKNOWN
 Project-URL: Bug Tracker, https://github.com/gregbreese/vicedtools/issues
 Platform: UNKNOWN
@@ -20,12 +19,14 @@ License-File: LICENSE
 
 This is a collection of utility tools for working with school data in Victorian schools.
 
-It currently includes tools for:
+The utilities have been designed to be state-less. Where tools have been created to export data then they have been designed to work with the native export formats provided by the relevant sites so that processing functions also integrate with existing data stores.
 
-* automating the exporting of data from Compass
-* creating import spreadsheets for OARS
-* uploading data to Google Cloud storage and bigquery for use with Data Studio
-* combining multiple PAT group reports
-* creating item analysis charts for PAT data
+Currently includes tools for:
+
+- automating the exporting of data from Compass
+- tools for working with ACER's OARS site
+- extracting NAPLAN data from the SSSR data.js file
+- exporting data from VCAA's VASS site
+- uploading data to Google Cloud storage and BigQuery for use with Data Studio
 
 

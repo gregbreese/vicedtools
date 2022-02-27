@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 
 # Build
-build/
+/build
+
+#Sphinx build
+/docs/build
 
 # gwsc specific
 **/gwsc
