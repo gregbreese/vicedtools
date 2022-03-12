@@ -375,6 +375,36 @@ class OARSSession(requests.sessions.Session):
 
         return PATItems(r.json())
 
+    def get_candidates(self, enrolled: int = 1) -> PATCandidates:
+        """Gets candidate data.
+        
+        Args:
+            enrolled: 0 for unenrolled students, 1 for enrolled students and
+                2 for pre-enrolled students.
+        
+        Returns:
+            An instance of PATCandidates.
+        """
+
+        ids_url = f"https://oars.acer.edu.au/api/{self.school}/candidates/getCandidateIds?enrolled={enrolled}"
+        r = self.get(ids_url)
+        ids = r.json()
+
+        candidates = []
+        if ids:
+            candidates_url = f"https://oars.acer.edu.au/api/{self.school}/candidates/getCandidatesByIds/"
+            for i in range(0, len(ids), 50):
+                payload = {
+                    'extraFields': ['password_visible'],
+                    'ids': ids[i:i + 50],
+                    'security_token': self.security_token,
+                    'withForms': 'true'
+                }
+                r = self.post(candidates_url, json=payload)
+                candidates += r.json()
+
+        return PATCandidates(candidates)
+
 
 def year_level_at_time_of_test(year_levels: dict, time_of_test: int) -> str:
     for yr in year_levels['history']:
@@ -394,7 +424,7 @@ class PATTests(list):
     """A class for storing metadata for PAT Tests."""
 
     def __init__(self, tests: list[dict]):
-        if isinstance(PATTests, tests):
+        if isinstance(tests, PATTests):
             return tests
         if isinstance(tests, abc.Sequence):
             super().__init__([PATTest(i) for i in tests])
@@ -577,7 +607,7 @@ class PATItems(list):
     """A class for storing metadata for PAT items."""
 
     def __init__(self, items: list[dict]):
-        if isinstance(PATItems, items):
+        if isinstance(items, PATItems):
             return items
         if isinstance(items, abc.Sequence):
             super().__init__([PATItem(i) for i in items])
@@ -604,3 +634,108 @@ class PATItem(dict):
         data['Strand'] = self['classification']
         data['Question difficulty'] = self['difficulty']
         return data
+
+
+class PATCandidates(list):
+    """A class for storing metadata for PAT candidates."""
+
+    def __init__(self, candidates: list[dict]):
+        if isinstance(candidates, PATCandidates):
+            return candidates
+        if isinstance(candidates, abc.Sequence):
+            super().__init__([PATCandidate(i) for i in candidates])
+        else:
+            raise TypeError(f"Unsupported type: {type(candidates)}")
+
+    def student_details_export(self,
+                               include_sittings: bool = False) -> pd.DataFrame:
+        """Extracts the student details data export from the candidates.
+        
+        Columns match the export provided by OARS.
+        
+        Args:
+            include_tests: If true, adds an additional column listing any incomplete sittings.
+        
+        Returns:
+            A pandas DataFrame with the student details table.
+        """
+        rows = [c.student_details_export(include_sittings) for c in self]
+        data = pd.DataFrame.from_records(rows)
+        return data
+
+    def sitting_status_export(self) -> pd.DataFrame:
+        """Extracts the sitting information from the candiates.
+        
+        Provides the completion status of all assigned sittings.
+        
+        Returns:
+            A pandas DataFrame with the sitting details.
+        """
+        rows = []
+        for sitting in self:
+            rows += sitting.get_sitting_status()
+        data = pd.DataFrame.from_records(rows)
+        return data
+
+
+class PATCandidate(dict):
+    """A class for storing metadata for a PAT candidate."""
+
+    def __init__(self, item):
+        super().__init__(item)
+
+    def student_details_export(self, include_sittings: bool = False):
+        row = {}
+        row["System ID"] = self['id']
+        row["Family name"] = self['family_name']
+        row["Given name"] = self['given_name']
+        try:
+            row["Middle names"] = self['middle_name']
+        except KeyError:
+            row["Middle names"] = ""
+        row["Username"] = self['username']
+        row["Password"] = self['plaintext_password']
+        row["Date of birth"] = self['dobString']
+        row["Gender"] = self['gender'].title()
+        row["Tags"] = ",".join([t['name'] for t in self['tags']])
+        row['Unique ID'] = self['unique_id']
+        if self["enrolled"] == 1:
+            row["Enrolled"] = 'enrolled'
+        elif self['enrolled'] == 0:
+            row["Enrolled"] = 'unenrolled'
+        else:
+            row['enrolled'] = 'pre-enrolled'
+        row["Year level"] = self['year']
+        row["School year"] = self['currentSchoolYearLabel']
+        if include_sittings:
+            incomplete = []
+            for sitting in self['sittings']:
+                if not sitting["completed"]:
+                    incomplete.append(
+                        f"{sitting['test_name']} {sitting['form_name']}")
+            row["Incomplete tests"] = ",".join(incomplete)
+        return row
+
+    def get_sitting_status(self):
+        rows = []
+        for sitting in self['sittings']:
+            row = {}
+            row["System ID"] = self['id']
+            row["Family name"] = self['family_name']
+            row["Given name"] = self['given_name']
+            row["Username"] = self['username']
+            row["Tests"] = sitting['test_name']
+            row["Form"] = sitting['form_name']
+            row["Assigned date"] = datetime.strptime(
+                time.ctime(sitting['created']),
+                "%a %b %d %H:%M:%S %Y").strftime("%d-%m-%Y")
+            if sitting["completed"]:
+                row["Status"] = "Completed"
+                row["Completed date"] = datetime.strptime(
+                    time.ctime(sitting['created']),
+                    "%a %b %d %H:%M:%S %Y").strftime("%d-%m-%Y")
+            else:
+                row["Status"] = "Incomplete"
+                row["Completed date"] = ""
+            rows.append(row)
+        return rows

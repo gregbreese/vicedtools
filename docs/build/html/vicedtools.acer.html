@@ -261,6 +261,21 @@ dd-mm-yyyy format.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="vicedtools.acer.oars.OARSSession.get_candidates">
+<code class="sig-name descname">get_candidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">enrolled</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.OARSSession.get_candidates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets candidate data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>enrolled</strong> – 0 for unenrolled students, 1 for enrolled students and
+2 for pre-enrolled students.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of PATCandidates.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="vicedtools.acer.oars.OARSSession.get_items">
 <code class="sig-name descname">get_items</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_id</span></em>, <em class="sig-param"><span class="n">form_id</span></em>, <em class="sig-param"><span class="n">sitting_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.OARSSession.get_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets PAT Item metadata.</p>
@@ -292,6 +307,57 @@ dd-mm-yyyy format.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list of test sittings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="vicedtools.acer.oars.PATCandidate">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oars.</code><code class="sig-name descname">PATCandidate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>A class for storing metadata for a PAT candidate.</p>
+<dl class="py method">
+<dt id="vicedtools.acer.oars.PATCandidate.get_sitting_status">
+<code class="sig-name descname">get_sitting_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidate.get_sitting_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oars.PATCandidate.student_details_export">
+<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidate.student_details_export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="vicedtools.acer.oars.PATCandidates">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oars.</code><code class="sig-name descname">PATCandidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>A class for storing metadata for PAT candidates.</p>
+<dl class="py method">
+<dt id="vicedtools.acer.oars.PATCandidates.sitting_status_export">
+<code class="sig-name descname">sitting_status_export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidates.sitting_status_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the sitting information from the candiates.</p>
+<p>Provides the completion status of all assigned sittings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas DataFrame with the sitting details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oars.PATCandidates.student_details_export">
+<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.PATCandidates.student_details_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the student details data export from the candidates.</p>
+<p>Columns match the export provided by OARS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>include_tests</strong> – If true, adds an additional column listing any incomplete sittings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas DataFrame with the student details table.</p>
 </dd>
 </dl>
 </dd></dl>
