@@ -24,15 +24,16 @@ from vicedtools.compass.reports import class_code_parser
 
 from vicedtools.compass import (CompassWebDriver, CompassDownloadFailedError,
                                 Reports, class_code_parser)
-from vicedtools.automation.gcp import (upload_csv_to_bigquery, 
-                                       STUDENT_DETAILS_SCHEMA, 
-                                       STUDENT_DETAILS_CLUSTERING_FIELDS, 
-                                       STUDENT_CLASS_RELATIONSHIPS_SCHEMA,
-                                       STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
-                                       REPORTS_SCHEMA,
-                                       REPORTS_CLUSTERING_FIELDS,
-                                       REPORTS_SUMMARY_SCHEMA,
-                                       REPORTS_SUMMARY_CLUSTERING_FIELDS)
+from vicedtools.gcp import (upload_csv_to_bigquery, 
+                            STUDENT_DETAILS_SCHEMA, 
+                            STUDENT_DETAILS_CLUSTERING_FIELDS, 
+                            STUDENT_CLASS_RELATIONSHIPS_SCHEMA,
+                            STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
+                            REPORTS_SCHEMA,
+                            REPORTS_CLUSTERING_FIELDS,
+                            REPORTS_SUMMARY_SCHEMA,
+                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
+                            )
 
 
 def export_students(driver: CompassWebDriver,
@@ -42,7 +43,7 @@ def export_students(driver: CompassWebDriver,
                     student_class_relationships_folder: str = "student class relationships"):
     
     """Exports available student details and class data from Compass.
-    
+       
     Args:
         driver: An instance of CompassWebDriver
         root_dir: The root directory to download the reports into
@@ -72,7 +73,7 @@ def export_students(driver: CompassWebDriver,
     # student class relationships
     driver.export_sds(student_class_relationships_path)
 
-def upload_students_to_gcp(
+def upload_students_to_bq(
     student_details_table_id: str,
     student_class_relationships_table_id: str,
     bucket: str,
@@ -227,7 +228,7 @@ def export_reports(driver: CompassWebDriver,
                                           download_path=progress_reports_path)
 
 
-def upload_reports_to_gcp(
+def upload_reports_to_bq(
     reports_table_id: str,
     reports_summary_table_id: str,
     bucket: str,

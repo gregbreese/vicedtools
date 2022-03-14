@@ -10,12 +10,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vicedtools.automation.compass import export_reports
-from vicedtools.automation.gcp import upload_csv_to_bigquery
-from vicedtools.automation.gcpschema import (
-    STUDENT_DETAILS_SCHEMA, STUDENT_DETAILS_CLUSTERING_FIELDS, 
-    STUDENT_CLASS_RELATIONSHIPS_SCHEMA, 
-    STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS, REPORTS_SCHEMA,
-    REPORTS_CLUSTERING_FIELDS, REPORTS_SUMMARY_SCHEMA,
-    REPORTS_SUMMARY_CLUSTERING_FIELDS, NAPLAN_SCHEMA, NAPLAN_CLUSTERING_FIELDS,
-    GAT_SCHEMA, GAT_CLUSTERING_FIELDS)
+from vicedtools.workflows.compass import export_reports, upload_reports_to_bq, export_students, upload_students_to_bq
