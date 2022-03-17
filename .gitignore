@@ -7,3 +7,7 @@ __pycache__/
 
 # gwsc specific
 **/gwsc
+**/workflows/config.py
+
+
+geckodriver.log

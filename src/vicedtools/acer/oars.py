@@ -29,6 +29,8 @@ import browser_cookie3
 import numpy as np
 import pandas as pd
 
+from vicedtools.acer import score_categoriser
+
 # Todo: Transition from only adding maths/english class codes to adding all
 # relevant class codes as tags from the student enrolment data
 
@@ -359,7 +361,7 @@ class OARSSession(requests.sessions.Session):
         scale_id = test['scale_id']
         scale_slug = self.scale_constructs[scale_id]['slug']
         form_name = test.get_form_name_from_id(form_id)
-        from_date = '27-02-2022'
+        from_date = '27-02-2022' # dates dont matter
         to_date = '27-02-2022'
 
         url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportItemsData/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
@@ -569,6 +571,39 @@ class PATSitting(dict):
 
         return data
 
+    def summary(self, tests: PATTests) -> dict:
+        """Extracts a summary of the results.
+        
+        Args:
+            tests: An instance of PATTests containing the relevant test metadata.
+        
+        Returns:
+            A dictionary containing the summary.
+        """
+        test_name_stub = {"PAT Maths 4th Edition": "Maths",
+                          "PAT Reading 5th Edition": "Reading",
+                          "PAT Maths Adaptive": "Maths",
+                          "PAT Reading Adaptive": "Reading",
+                          "eWrite": "eWrite"}
+
+        test_id = self['sitting']['test_id']
+        form_id = self['sitting']['form_id']
+        test = tests.get_test_from_id(test_id)
+        test_name = test['name']
+        form_name = test.get_form_name_from_id(form_id)
+
+        data = {}
+        data['Username'] = self['username']
+        data['Completed'] = datetime.strptime(
+            time.ctime(self['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
+        data['Year level (at time of test)'] = "Year " + year_level_at_time_of_test(
+                self['yearLevel'], self['sitting']['updated'])
+        data['Test'] = test_name_stub[test_name]
+        data['Test form'] = form_name
+        data['Scale'] = self['score']['scale']
+        data['Score category'] = score_categoriser(data['Test'], data['Year level (at time of test)'], data['Completed'], data['Scale'])
+
+        return data
 
 class PATSittings(list):
     """A class for storing PAT sitting results."""
@@ -581,7 +616,7 @@ class PATSittings(list):
         else:
             raise TypeError(f"Unsupported type: {type(sittings)}")
 
-    def group_report(self, tests, test_name, form_name) -> list:
+    def group_report(self, tests: PATTests, test_name: str, form_name: str) -> list:
         """Extracts data for the preparation of a group report spreadsheet.
         
         Args:
@@ -602,6 +637,22 @@ class PATSittings(list):
                 data.append(sitting.group_report(tests))
         return data
 
+    def summary(self, tests: PATTests, recent_only: bool = False) -> pd.DataFrame:
+        """Extracts a basic summary of results.
+        
+        Args:
+            tests: A PATTests instance containing the relevant test metadata.
+            recent_only: If True, only give the most recent result for each student.
+        
+        Returns:
+            A pandas DataFrame with the summary.
+        """
+        rows = [s.summary(tests) for s in self]
+        df = pd.DataFrame.from_records(rows)
+        if recent_only:
+            df.sort_values("Completed", ascending=False, inplace=True)
+            df.drop_duplicates(subset=["Username", "Test"], inplace=True)
+        return df
 
 class PATItems(list):
     """A class for storing metadata for PAT items."""

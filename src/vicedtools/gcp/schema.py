@@ -29,12 +29,12 @@ STUDENT_DETAILS_CLUSTERING_FIELDS = [
     "Status", "StudentCode", "YearLevel", "Gender"
 ]
 
-STUDENT_CLASS_RELATIONSHIPS_SCHEMA = [
+STUDENT_ENROLMENTS_SCHEMA = [
     bigquery.SchemaField("ClassGroupCode", "STRING"),
     bigquery.SchemaField("StudentCode", "STRING")
     ]
 
-STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS = [
+STUDENT_ENROLMENTS_CLUSTERING_FIELDS = [
     "ClassGroupCode", "StudentCode"
 ]
 
@@ -105,3 +105,33 @@ GAT_SCHEMA = [
     bigquery.SchemaField("stdMST", "FLOAT"),
 ]
 GAT_CLUSTERING_FIELDS = ["candNum", "Year", "incomplete"]
+
+PAT_SCORES_SCHEMA = [
+    bigquery.SchemaField("StudentCode", "STRING"),
+    bigquery.SchemaField("Date", "DATETIME"),
+    bigquery.SchemaField("YearLevel", "STRING"),
+    bigquery.SchemaField("Test", "STRING"),
+    bigquery.SchemaField("TestForm", "STRING"),
+    bigquery.SchemaField("Scale", "FLOAT"),
+    bigquery.SchemaField("ScoreCategory", "STRING"),
+    ]
+PAT_SCORES_CLUSTERING_FIELDS = [
+    "Test", "StudentCode", "Date", "YearLevel"
+]
+
+PAT_MOST_RECENT_SCHEMA = [
+    bigquery.SchemaField("StudentCode", "STRING"),
+    bigquery.SchemaField("MathsDate", "DATETIME"),
+    bigquery.SchemaField("ReadingDate", "DATETIME"),
+    bigquery.SchemaField("MathsYearLevel", "STRING"),
+    bigquery.SchemaField("ReadingYearLevel", "STRING"),
+    bigquery.SchemaField("MathsTestForm", "STRING"),
+    bigquery.SchemaField("ReadingTestForm", "STRING"),
+    bigquery.SchemaField("MathsScale", "FLOAT"),
+    bigquery.SchemaField("ReadingScale", "FLOAT"),
+    bigquery.SchemaField("MathsScoreCategory", "STRING"),
+    bigquery.SchemaField("ReadingScoreCategory", "STRING")
+    ]
+PAT_MOST_RECENT_CLUSTERING_FIELDS = [
+    "StudentCode"
+]

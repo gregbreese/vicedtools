@@ -13,8 +13,8 @@
 # limitations under the License.
 
 from vicedtools.compass.compasswebdriver import (
-    CompassWebDriver, CompassCLIAuthenticator,
-    CompassBrowserCookieAuthenticator, CompassElementSelectionError,
+    CompassWebDriver, CompassAuthenticator, CompassCLIAuthenticator,
+    CompassFirefoxCookieAuthenticator, CompassElementSelectionError,
     CompassDownloadFailedError)
 from vicedtools.compass.exports import (
     discover_academic_years, discover_progress_report_cycles,

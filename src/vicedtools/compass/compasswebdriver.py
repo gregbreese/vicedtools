@@ -547,7 +547,7 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         submit_button.click()
 
 
-class CompassBrowserCookieAuthenticator(CompassAuthenticator):
+class CompassFirefoxCookieAuthenticator(CompassAuthenticator):
     """A Compass Authenticator that gets login details from local Firefox cookies."""
 
     def authenticate(self, driver: CompassWebDriver):

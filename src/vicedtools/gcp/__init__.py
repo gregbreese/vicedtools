@@ -16,8 +16,8 @@ from vicedtools.gcp.api import upload_csv_to_bigquery
 from vicedtools.gcp.format import create_student_details_gc_csv
 from vicedtools.gcp.schema import (STUDENT_DETAILS_SCHEMA, 
                             STUDENT_DETAILS_CLUSTERING_FIELDS, 
-                            STUDENT_CLASS_RELATIONSHIPS_SCHEMA,
-                            STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
+                            STUDENT_ENROLMENTS_SCHEMA,
+                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
                             REPORTS_SCHEMA,
                             REPORTS_CLUSTERING_FIELDS,
                             REPORTS_SUMMARY_SCHEMA,
@@ -25,4 +25,8 @@ from vicedtools.gcp.schema import (STUDENT_DETAILS_SCHEMA,
                             NAPLAN_SCHEMA,
                             NAPLAN_CLUSTERING_FIELDS,
                             GAT_SCHEMA,
-                            GAT_CLUSTERING_FIELDS)
+                            GAT_CLUSTERING_FIELDS,
+                            PAT_SCORES_SCHEMA,
+                            PAT_SCORES_CLUSTERING_FIELDS,
+                            PAT_MOST_RECENT_SCHEMA,
+                            PAT_MOST_RECENT_CLUSTERING_FIELDS)

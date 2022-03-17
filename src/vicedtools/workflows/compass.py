@@ -27,8 +27,8 @@ from vicedtools.compass import (CompassWebDriver, CompassDownloadFailedError,
 from vicedtools.gcp import (upload_csv_to_bigquery, 
                             STUDENT_DETAILS_SCHEMA, 
                             STUDENT_DETAILS_CLUSTERING_FIELDS, 
-                            STUDENT_CLASS_RELATIONSHIPS_SCHEMA,
-                            STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
+                            STUDENT_ENROLMENTS_SCHEMA,
+                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
                             REPORTS_SCHEMA,
                             REPORTS_CLUSTERING_FIELDS,
                             REPORTS_SUMMARY_SCHEMA,
@@ -157,8 +157,8 @@ def upload_students_to_bq(
     columns = ["ClassGroupCode", "StudentCode"]
     student_enrollment_df[columns].to_csv(temp_file, index=False)
     
-    upload_csv_to_bigquery(temp_file, STUDENT_CLASS_RELATIONSHIPS_SCHEMA,
-                           STUDENT_CLASS_RELATIONSHIPS_CLUSTERING_FIELDS,
+    upload_csv_to_bigquery(temp_file, STUDENT_ENROLMENTS_SCHEMA,
+                           STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
                            student_class_relationships_table_id, bucket)
     os.remove(temp_file)
 
