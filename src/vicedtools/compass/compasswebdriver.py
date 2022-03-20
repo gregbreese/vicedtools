@@ -214,6 +214,32 @@ class CompassWebDriver(webdriver.Firefox):
         with open(download_path, "wb") as f:
             f.write(r.content)
 
+    def export_student_household_information(self,
+                               download_path: str = "student household information.csv") -> None:
+        '''Exports student household information from Compass.
+
+        The basic export includes student address, parent names and parent contact details.
+
+        Args:
+            download_path: The file path to save the csv export, including filename.
+        '''
+        headers = {
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0"
+        }
+        s = requests.session()
+        s.headers.update(headers)
+        # copy cookies from selenium session
+        for cookie in self.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
+        # request student details file
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=14"
+        r = s.get(url)
+        with open(download_path, "wb") as f:
+            f.write(r.content)
+
+
     def discover_academic_years(self) -> list(str):
         """Discovers the academic years that exist in Compass.
         

@@ -24,7 +24,9 @@ from vicedtools.acer.patresults import RESPONSE_DTYPE, PATResults, PATResultsCol
 
 def question_summary(pat_results: PATResults,
                      question: str,
-                     open_ended=False) -> pd.DataFrame:
+                     open_ended=False,
+                     from_date = None,
+                     to_date = None) -> pd.DataFrame:
     '''Creates an item analysis summary for a PAT item.
 
     Groups the students by their scale score and then for each group determines
@@ -52,7 +54,17 @@ def question_summary(pat_results: PATResults,
             'Percentage of responses': as float
     '''
     q_difficulty = pat_results.question_scales[question]
-    summary_df = pat_results.results[["Scale", question]].copy()
+    if from_date and to_date:
+        rows = (pat_results.results["Completed"] > from_date) & (pat_results.results["Completed"] < to_date)
+        summary_df = pat_results.results.loc[rows,["Scale", question]].copy()
+    elif from_date:
+        rows = (pat_results.results["Completed"] > from_date)
+        summary_df = pat_results.results.loc[rows,["Scale", question]].copy()
+    elif to_date:
+        rows = (pat_results.results["Completed"] < to_date)
+        summary_df = pat_results.results.loc[rows,["Scale", question]].copy()
+    else:
+        summary_df = pat_results.results[["Scale", question]].copy()
     summary_df["Scale delta"] = summary_df["Scale"] - q_difficulty
     delta_mean = summary_df["Scale delta"].mean()
     if len(summary_df) > 500:
@@ -131,7 +143,7 @@ def question_summary(pat_results: PATResults,
 
 
 def item_analysis_plot(pat_results: PATResults,
-                       question: str) -> tuple[plt.Figure, plt.Axes]:
+                       question: str, from_date=None, to_date=None) -> tuple[plt.Figure, plt.Axes]:
     '''Creates an item analysis plot for a single PAT question.
     
     Compares the expected performance of students on an item, based on their
@@ -146,7 +158,7 @@ def item_analysis_plot(pat_results: PATResults,
     Returns:
         f, ax: the matplotlib figure and axes for the plot
     '''
-    grouped_df = question_summary(pat_results, question)
+    grouped_df = question_summary(pat_results, question, from_date=from_date, to_date=to_date)
 
     figure_width = len(grouped_df["Student vs Question"].dtype.categories) + 1
     f, ax = plt.subplots(figsize=(figure_width, 4))
@@ -179,7 +191,7 @@ def item_analysis_plot(pat_results: PATResults,
 
 def item_analysis_plots(results: PATResultsCollection,
                         save_path: str = "",
-                        verbose: bool = True) -> None:
+                        verbose: bool = True, from_date = None, to_date = None) -> None:
     '''Creates item analysis charts for all tests and questions results.
     
     Creates a chart for each question in each PAT test found in the provided
@@ -200,12 +212,21 @@ def item_analysis_plots(results: PATResultsCollection,
     for test in results.tests:
         for number in results.tests[test]:
             for question in results.tests[test][number].question_scales:
-                if verbose:
-                    print("Generating graph for " + test + ", Test " +
-                          str(number) + ", Question " + question)
-                filename = (save_path + test + " test " + number +
-                            " question " + question + ".png")
-                f, ax = item_analysis_plot(results.tests[test][number],
-                                           question)
-                f.savefig(filename, dpi=150, facecolor="white")
-                plt.close(f)
+                if from_date and to_date:
+                    rows = sum((results.tests[test][number].results["Completed"] < to_date) & (results.tests[test][number].results["Completed"] > from_date))
+                elif from_date:
+                    rows = sum(results.tests[test][number].results["Completed"] > from_date)
+                elif to_date:
+                    rows = sum(results.tests[test][number].results["Completed"] < to_date)
+                else:
+                    rows = len(results.tests[test][number].results)
+                if rows > 3:
+                    if verbose:
+                        print("Generating graph for " + test + ", Test " +
+                            str(number) + ", Question " + question)
+                    filename = (save_path + test + " test " + number +
+                                " question " + question + ".png")
+                    f, ax = item_analysis_plot(results.tests[test][number],
+                                            question, from_date = from_date, to_date = to_date)
+                    f.savefig(filename, dpi=150, facecolor="white")
+                    plt.close(f)

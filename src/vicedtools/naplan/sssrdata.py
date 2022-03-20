@@ -33,7 +33,7 @@ class SSSRdata:
         questions: A DataFrame containing metadata about NAPLAN test questions.
         responses: A DataFrame containing the individual item responses for
             all students.
-            bands: A DataFrame containing band cutoff metadata for each test.
+        bands: A DataFrame containing band cutoff metadata for each test.
     """
 
     def __init__(self, js_file: str):
@@ -84,7 +84,7 @@ class SSSRdata:
         self.responses['correctScore'] = self.responses['correct'].apply(
             lambda a: 1 if a else 0)
 
-    def download_exemplar_images(self, path):
+    def download_exemplar_images(self, path: str):
         """Downloads the images for exemplar test items to the given path.
         
         Attempts to download all test items. Skips items that have already been

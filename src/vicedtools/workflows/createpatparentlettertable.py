@@ -1,0 +1,104 @@
+# Copyright 2021 VicEdTools authors
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Executable script for creating an xlsx for mailmerging a parent letter with PAT results."""
+
+import datetime
+import os
+
+import pandas as pd
+
+def create_pat_parent_letter_table(student_details_file: str, 
+                                   student_household_information_file: str, 
+                                   pat_scores_file: str):
+    student_details = pd.read_csv(student_details_file)
+    household_information = pd.read_csv(student_household_information_file)
+    pat_scores = pd.read_csv(pat_scores_file)
+
+    student_details.rename(columns={"SUSSI ID":"StudentCode"}, inplace=True)
+    student_details_columns = ["StudentCode", "Preferred Name", "Last Name", "Year Level"]
+    student_details = student_details[student_details_columns]
+    student_details["Last Name"] = student_details["Last Name"].str.title()
+
+    household_information.rename(columns={"Student SUSSI ID":"StudentCode"}, inplace=True)
+    household_information_columns = ["StudentCode", "HouseHoldTitle", "Adult 1 Email"]
+    household_information = household_information[household_information_columns]
+
+    pat_scores.rename(columns={"Username":"StudentCode"}, inplace=True)
+    pat_scores["Completed"] = pd.to_datetime(pat_scores["Completed"])
+    # only scores from past 6 months
+    pat_scores = pat_scores.loc[pat_scores["Completed"] + datetime.timedelta(weeks=26) > datetime.datetime.today()]
+
+    # get only most recent result for each test
+    pat_scores.sort_values("Completed", ascending=False, inplace=True)
+    pat_scores.drop_duplicates(subset=["StudentCode", "Test"], inplace=True)
+
+    pat_score_columns = ["StudentCode", "Completed", "Test", "Score category"]
+    pat_scores = pat_scores[pat_score_columns]
+
+    naplan_goal = {"Very low":"At National Standard",
+                   "Low":"Above National Standard",
+                   "Average":"Above National Standard",
+                   "High":"Well Above National Standard",
+                   "Very high":"Well Above National Standard"}
+    pat_scores["NAPLAN goal"] = pat_scores["Score category"].replace(naplan_goal) 
+
+    category_rename = {"Very low":"Well below expected level",
+                       "Low":"Below expected level",
+                       "Average":"At expected level",
+                       "High":"Above expected level",
+                       "Very high":"Well above expected level"}
+    pat_scores["Score category"].replace(category_rename, inplace=True)
+
+    pat_scores_wide = pat_scores.pivot(index="StudentCode", columns="Test")
+    pat_scores_wide.columns = [f"{b} {a}" for (a,b) in pat_scores_wide.columns]
+    pat_scores_wide.reset_index(inplace=True)
+
+    merged = pd.merge(student_details, household_information, on="StudentCode")
+    merged = pd.merge(merged, pat_scores_wide, on="StudentCode")
+
+    # fill missing values
+    for col in ["Maths Completed","Reading Completed"]:
+        merged[col].fillna("No test completed", inplace=True)
+    for col in ["Maths Score category","Reading Score category", "Maths NAPLAN goal", "Reading NAPLAN goal"]:
+        merged[col].fillna("N/a", inplace=True) 
+    
+
+    save_path = os.path.join(os.path.dirname(pat_scores_file), "parent letter mail merge.csv")
+    merged.to_csv(save_path, index=False)
+
+if __name__ == "__main__":
+    from config import (root_dir, 
+                        compass_folder, 
+                        student_details_folder,
+                        student_details_csv,
+                        student_household_information_csv,
+                        oars_folder)
+    if not os.path.exists(root_dir):
+        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
+
+    oars_dir = os.path.join(root_dir, oars_folder)
+    if not os.path.exists(oars_dir):
+        raise FileNotFoundError(f"{oars_dir} does not exist as a directory.")
+    pat_scores_file = os.path.join(oars_dir, "pat scores.csv")
+
+    compass_dir = os.path.join(root_dir, compass_folder)
+    if not os.path.exists(compass_dir):
+        os.mkdir(compass_dir)
+    student_details_dir = os.path.join(compass_dir, student_details_folder)
+    if not os.path.exists(student_details_dir):
+        os.mkdir(student_details_dir)
+    student_household_information_file = os.path.join(student_details_dir, student_household_information_csv)
+    student_details_file = os.path.join(student_details_dir, student_details_csv)
+
+    create_pat_parent_letter_table(student_details_file, student_household_information_file, pat_scores_file)

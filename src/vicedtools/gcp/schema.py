@@ -68,7 +68,7 @@ REPORTS_SUMMARY_CLUSTERING_FIELDS = [
     "StudentCode", "Time", "LearningArea", "TeacherCode"
 ]
 
-NAPLAN_SCHEMA = [
+NAPLAN_OUTCOMES_SCHEMA = [
     bigquery.SchemaField("APS_Year", "STRING"),
     bigquery.SchemaField("Reporting_Test", "STRING"),
     bigquery.SchemaField("First_Name", "STRING"),
@@ -88,7 +88,7 @@ NAPLAN_SCHEMA = [
     bigquery.SchemaField("Reporting_School_Name", "STRING"),
     bigquery.SchemaField("Cases_ID", "STRING"),
 ]
-NAPLAN_CLUSTERING_FIELDS = ["APS_Year", "Reporting_Test", "Cases_ID", "Gender"]
+NAPLAN_OUTCOMES_CLUSTERING_FIELDS = ["APS_Year", "Reporting_Test", "Cases_ID", "Gender"]
 
 GAT_SCHEMA = [
     bigquery.SchemaField("Year", "STRING"),

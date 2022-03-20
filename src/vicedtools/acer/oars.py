@@ -377,6 +377,31 @@ class OARSSession(requests.sessions.Session):
 
         return PATItems(r.json())
 
+    def get_all_items(self, tests: PATTests) -> pd.DataFrame:
+        items = []
+        for test in tests:
+            for form in test['forms']:
+                test_id = test['id']
+                test_name = test['name']
+                form_id = form['id']
+                form_name = form['name']
+                
+                url = f"https://oars.acer.edu.au/api/{self.school}/survey-reports/getItems?test_id={test_id}&form_id={form_id}&limitFields[]=metadata"
+                r = self.post(url)
+
+                form_items = r.json()['itemSet']
+                for i in form_items:
+                    i.pop('metadata')
+                temp_df = pd.DataFrame.from_records(form_items)
+                temp_df['test_name'] = test_name
+                temp_df['form_name'] = form_name
+                temp_df['test_id'] = test_id
+                temp_df['form_id'] = form_id 
+                items.append(temp_df)
+        items_df = pd.concat(items)
+        return items_df
+
+
     def get_candidates(self, enrolled: int = 1) -> PATCandidates:
         """Gets candidate data.
         
