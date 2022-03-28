@@ -549,6 +549,49 @@ class CompassWebDriver(webdriver.Firefox):
             )
 
 
+    def export_all_reports(self, 
+                           learning_tasks_dir: str = "./learning tasks", 
+                           reports_dir: str = "./reports", 
+                           progress_reports_dir: str = "./progress reports"):
+        """Exports available reports data from Compass.
+        
+        Attempts to download all learning task, report and progress report data
+        from Compass. Will skip already downloaded data.
+
+        Args:
+            learning_tasks_dir: The directory to save learning tasks data to
+            reports_dir: The directory to save reports data to
+            progress_reports_dir: THe directory to save progress reports data to
+        """
+        for dir in [learning_tasks_dir, reports_dir, progress_reports_dir]:
+            if not os.path.exists(dir):
+                raise FileNotFoundError(f"{dir} does not exist as root directory.")
+            if not os.path.isdir(dir):
+                raise NotADirectoryError(f"{dir} is not a directory.")
+            
+        # learning task
+        academic_years = self.discover_academic_years()
+        for academic_year in academic_years:
+            if not os.path.exists(os.path.join(learning_tasks_dir, f"LearningTasks-{academic_year}.csv")):
+                self.export_learning_tasks(academic_year,
+                                            download_path=learning_tasks_dir)
+    
+        # reports
+        report_cycles = self.discover_report_cycles()
+        for year, name in report_cycles:
+            if not os.path.exists(os.path.join(reports_dir, f"SemesterReports-{year}-{name}.csv")):
+                try:
+                    self.export_report_cycle(year, name, download_path=reports_dir)
+                except CompassDownloadFailedError:
+                    print(f"Reports export failed for {year} {name}.")
+
+        # progress reports
+        progress_report_cycles = self.discover_progress_report_cycles()
+        for cycle in progress_report_cycles:
+            if not os.path.exists(os.path.join(progress_reports_dir, f"{cycle}.csv")):
+                self.export_progress_report(cycle, download_path=progress_reports_dir)
+
+
 class CompassAuthenticator(Protocol):
     """An abstract class for generic Compass Authenticator objects."""
 
