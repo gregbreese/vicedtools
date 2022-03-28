@@ -18,6 +18,7 @@ import os
 
 from vicedtools.acer.oars import OARSSession
 
+
 def export_oars_students(school_code, authenticator, export_dir):
     """Exports OARS student data and saves it in candidates.json.
 
@@ -33,10 +34,9 @@ def export_oars_students(school_code, authenticator, export_dir):
     with open(export_file, 'w') as f:
         json.dump(candidates, f)
 
+
 if __name__ == "__main__":
-    from config import (root_dir,
-                        oars_folder,
-                        oars_authenticator,
+    from config import (root_dir, oars_folder, oars_authenticator,
                         oars_school_code)
 
     if not os.path.exists(root_dir):

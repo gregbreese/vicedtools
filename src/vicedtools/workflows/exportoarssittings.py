@@ -20,7 +20,12 @@ import sys
 
 from vicedtools.acer.oars import OARSAuthenticator, OARSSession
 
-def export_oars_sittings(from_date: str, to_date: str, school_code: str, authenticator: OARSAuthenticator, export_dir: str = "."):
+
+def export_oars_sittings(from_date: str,
+                         to_date: str,
+                         school_code: str,
+                         authenticator: OARSAuthenticator,
+                         export_dir: str = "."):
     """Exports completed PAT Sittings and saves them in sittings.json.
 
     Args:
@@ -31,12 +36,14 @@ def export_oars_sittings(from_date: str, to_date: str, school_code: str, authent
         authenticator: An instance of OARSAuthenticator.
         export_dir: The directory to save the sittings data in.
     """
-    export_file = os.path.join(export_dir, f"sittings {from_date} {to_date}.json")
+    export_file = os.path.join(export_dir,
+                               f"sittings {from_date} {to_date}.json")
 
     s = OARSSession(school_code, authenticator)
     sittings = s.get_all_pat_sittings(from_date, to_date)
     with open(export_file, 'w') as f:
         json.dump(sittings, f)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -46,7 +53,8 @@ if __name__ == "__main__":
         sys.exit(2)
     from_date = sys.argv[1]
     to_date = sys.argv[2]
-    if to_date[2] != "-" or to_date[5] != "-" or from_date[2] != "-" or from_date[5] != "-":
+    if to_date[2] != "-" or to_date[5] != "-" or from_date[
+            2] != "-" or from_date[5] != "-":
         print("Dates must be formatted as dd-mm-yyyy")
         sys.exit(2)
     try:
@@ -56,11 +64,8 @@ if __name__ == "__main__":
         print("Dates must be formatted as dd-mm-yyyy")
         sys.exit(2)
 
-    from config import (root_dir,
-                        oars_folder,
-                        sittings_folder,
-                        oars_authenticator,
-                        oars_school_code)
+    from config import (root_dir, oars_folder, sittings_folder,
+                        oars_authenticator, oars_school_code)
 
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
@@ -73,4 +78,5 @@ if __name__ == "__main__":
     if not os.path.exists(sittings_dir):
         os.mkdir(sittings_dir)
 
-    export_oars_sittings(from_date, to_date, oars_school_code, oars_authenticator, sittings_dir)
+    export_oars_sittings(from_date, to_date, oars_school_code,
+                         oars_authenticator, sittings_dir)

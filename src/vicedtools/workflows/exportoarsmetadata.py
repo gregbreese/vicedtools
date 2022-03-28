@@ -18,6 +18,7 @@ import os
 
 from vicedtools.acer.oars import OARSSession
 
+
 def export_oars_metadata(school_code, authenticator, export_dir):
     """Exports PAT test metadata.
     
@@ -39,10 +40,9 @@ def export_oars_metadata(school_code, authenticator, export_dir):
     with open(scale_constructs_file, 'w') as f:
         json.dump(s.scale_constructs, f)
 
+
 if __name__ == "__main__":
-    from config import (root_dir,
-                        oars_folder,
-                        oars_authenticator,
+    from config import (root_dir, oars_folder, oars_authenticator,
                         oars_school_code)
 
     if not os.path.exists(root_dir):
@@ -52,5 +52,5 @@ if __name__ == "__main__":
     oars_dir = os.path.join(root_dir, oars_folder)
     if not os.path.exists(oars_dir):
         os.mkdir(oars_dir)
-    
+
     export_oars_metadata(oars_school_code, oars_authenticator, oars_dir)

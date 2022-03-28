@@ -19,7 +19,10 @@ import pandas as pd
 
 from vicedtools.compass import CompassWebDriver, CompassAuthenticator
 
-def export_compass_students(gecko_path: str, school_code: str, authenticator: CompassAuthenticator,  file_name: str):
+
+def export_compass_students(gecko_path: str, school_code: str,
+                            authenticator: CompassAuthenticator,
+                            file_name: str):
     """Exports student details from Compass.
 
     Args:
@@ -34,14 +37,10 @@ def export_compass_students(gecko_path: str, school_code: str, authenticator: Co
 
 
 if __name__ == "__main__":
-    from config import (root_dir, 
-                        compass_folder, 
-                        student_details_folder,
-                        student_details_csv,
-                        gecko_path, 
-                        compass_authenticator,
+    from config import (root_dir, compass_folder, student_details_folder,
+                        student_details_csv, gecko_path, compass_authenticator,
                         compass_school_code)
-    
+
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
     if not os.path.isdir(root_dir):
@@ -52,6 +51,8 @@ if __name__ == "__main__":
     student_details_dir = os.path.join(compass_dir, student_details_folder)
     if not os.path.exists(student_details_dir):
         os.mkdir(student_details_dir)
-    student_details_file = os.path.join(student_details_dir, student_details_csv)
+    student_details_file = os.path.join(student_details_dir,
+                                        student_details_csv)
 
-    export_compass_students(gecko_path, compass_school_code, compass_authenticator, student_details_file)
+    export_compass_students(gecko_path, compass_school_code,
+                            compass_authenticator, student_details_file)

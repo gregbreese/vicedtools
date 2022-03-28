@@ -47,9 +47,7 @@ def pat_sittings_to_scores(oars_dir: str, sittings_folder: str = "sittings"):
 
 
 if __name__ == "__main__":
-    from config import (root_dir,
-                        oars_folder,
-                        sittings_folder)
+    from config import (root_dir, oars_folder, sittings_folder)
 
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
@@ -57,4 +55,3 @@ if __name__ == "__main__":
     if not os.path.exists(oars_dir):
         raise FileNotFoundError(f"{oars_dir} does not exist as a directory.")
     pat_sittings_to_scores(oars_dir, sittings_folder)
-

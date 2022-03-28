@@ -19,7 +19,9 @@ import pandas as pd
 
 from vicedtools.compass import CompassWebDriver, CompassAuthenticator
 
-def export_compass_sds(gecko_path: str, school_code: str, authenticator: CompassAuthenticator,  export_dir: str):
+
+def export_compass_sds(gecko_path: str, school_code: str,
+                       authenticator: CompassAuthenticator, export_dir: str):
     """Exports student details from Compass.
 
     Args:
@@ -34,12 +36,8 @@ def export_compass_sds(gecko_path: str, school_code: str, authenticator: Compass
 
 
 if __name__ == "__main__":
-    from config import (root_dir, 
-                        compass_folder, 
-                        sds_folder,
-                        gecko_path, 
-                        compass_authenticator,
-                        compass_school_code)
+    from config import (root_dir, compass_folder, sds_folder, gecko_path,
+                        compass_authenticator, compass_school_code)
 
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
@@ -52,5 +50,5 @@ if __name__ == "__main__":
     if not os.path.exists(sds_dir):
         os.mkdir(sds_dir)
 
-    export_compass_sds(gecko_path, compass_school_code, compass_authenticator, sds_dir)
-
+    export_compass_sds(gecko_path, compass_school_code, compass_authenticator,
+                       sds_dir)

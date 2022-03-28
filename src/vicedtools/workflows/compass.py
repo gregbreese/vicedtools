@@ -24,24 +24,26 @@ from vicedtools.compass.reports import class_code_parser
 
 from vicedtools.compass import (CompassWebDriver, CompassDownloadFailedError,
                                 Reports, class_code_parser)
-from vicedtools.gcp import (upload_csv_to_bigquery, 
-                            STUDENT_DETAILS_SCHEMA, 
-                            STUDENT_DETAILS_CLUSTERING_FIELDS, 
-                            STUDENT_ENROLMENTS_SCHEMA,
-                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
-                            REPORTS_SCHEMA,
-                            REPORTS_CLUSTERING_FIELDS,
-                            REPORTS_SUMMARY_SCHEMA,
-                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
-                            )
+from vicedtools.gcp import (
+    upload_csv_to_bigquery,
+    STUDENT_DETAILS_SCHEMA,
+    STUDENT_DETAILS_CLUSTERING_FIELDS,
+    STUDENT_ENROLMENTS_SCHEMA,
+    STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
+    REPORTS_SCHEMA,
+    REPORTS_CLUSTERING_FIELDS,
+    REPORTS_SUMMARY_SCHEMA,
+    REPORTS_SUMMARY_CLUSTERING_FIELDS,
+)
 
 
-def export_students(driver: CompassWebDriver,
-                    root_dir: str,
-                    student_details_folder: str = "student details",
-                    student_details_file: str = "student details.csv",
-                    student_class_relationships_folder: str = "student class relationships"):
-    
+def export_students(
+        driver: CompassWebDriver,
+        root_dir: str,
+        student_details_folder: str = "student details",
+        student_details_file: str = "student details.csv",
+        student_class_relationships_folder: str = "student class relationships"
+):
     """Exports available student details and class data from Compass.
        
     Args:
@@ -58,7 +60,8 @@ def export_students(driver: CompassWebDriver,
         raise NotADirectoryError(f"{root_dir} is not a directory.")
 
     student_details_path = os.path.join(root_dir, student_details_folder)
-    student_class_relationships_path = os.path.join(root_dir, student_class_relationships_folder)
+    student_class_relationships_path = os.path.join(
+        root_dir, student_class_relationships_folder)
 
     paths = [student_details_path, student_class_relationships_path]
     for path in paths:
@@ -67,21 +70,23 @@ def export_students(driver: CompassWebDriver,
             os.mkdir(path)
 
     # student details
-    student_details_file = os.path.join(student_details_path, student_details_file)
+    student_details_file = os.path.join(student_details_path,
+                                        student_details_file)
     driver.export_student_details(student_details_file, detailed=True)
-    
+
     # student class relationships
     driver.export_sds(student_class_relationships_path)
 
+
 def upload_students_to_bq(
-    student_details_table_id: str,
-    student_class_relationships_table_id: str,
-    bucket: str,
-    root_dir: str,
-    student_details_folder: str = "student details",
-    student_details_file: str = "student details.csv",
-    student_class_relationships_folder: str = "student class relationships"):
-    
+        student_details_table_id: str,
+        student_class_relationships_table_id: str,
+        bucket: str,
+        root_dir: str,
+        student_details_folder: str = "student details",
+        student_details_file: str = "student details.csv",
+        student_class_relationships_folder: str = "student class relationships"
+):
     """Uploads student details and class data to BigQuery.
     
     Designed to integrate with vicedtools.automation.compass.export_students(),
@@ -102,11 +107,15 @@ def upload_students_to_bq(
             where the SDS export has been downloaded and expanded into.
     """
     # student details
-    student_details_file = os.path.join(root_dir, student_details_folder, student_details_file)
+    student_details_file = os.path.join(root_dir, student_details_folder,
+                                        student_details_file)
     temp_file = os.path.join(root_dir, student_details_folder, "temp.csv")
-    
-    details_df = pd.read_csv(student_details_file, keep_default_na=False, dtype=str)
-    details_df = details_df[details_df["Status"].isin(["Active", "Left"])].copy()
+
+    details_df = pd.read_csv(student_details_file,
+                             keep_default_na=False,
+                             dtype=str)
+    details_df = details_df[details_df["Status"].isin(["Active",
+                                                       "Left"])].copy()
     details_df.rename(columns={
         "SUSSI ID": "StudentCode",
         "First Name": "FirstName",
@@ -117,12 +126,13 @@ def upload_students_to_bq(
         "Date of birth": "DateOfBirth"
     },
                       inplace=True)
-    
+
     details_df["Surname"] = details_df["Surname"].str.title()
     details_df["FirstName"] = details_df["FirstName"].str.title()
     details_df["PrefName"] = details_df["PrefName"].str.title()
-    
-    details_df["DateOfBirth"] = pd.to_datetime(details_df["DateOfBirth"], format="%d/%m/%Y")
+
+    details_df["DateOfBirth"] = pd.to_datetime(details_df["DateOfBirth"],
+                                               format="%d/%m/%Y")
 
     def year_level_number(yr_lvl_str):
         if yr_lvl_str:
@@ -130,6 +140,7 @@ def upload_students_to_bq(
             return int(digits)
         else:
             return ""
+
     details_df["YearLevel"] = details_df["YearLevel"].apply(year_level_number)
 
     columns = [
@@ -138,25 +149,29 @@ def upload_students_to_bq(
     ]
     details_df[columns].to_csv(temp_file, index=False)
 
-    upload_csv_to_bigquery(temp_file, STUDENT_DETAILS_SCHEMA, 
-                       STUDENT_DETAILS_CLUSTERING_FIELDS,
-                       student_details_table_id, bucket)
+    upload_csv_to_bigquery(temp_file, STUDENT_DETAILS_SCHEMA,
+                           STUDENT_DETAILS_CLUSTERING_FIELDS,
+                           student_details_table_id, bucket)
     os.remove(temp_file)
 
-        
     # student class relationships
-    student_class_relationships_file = os.path.join(root_dir, student_class_relationships_folder, "StudentEnrollment.csv")
-    temp_file = os.path.join(root_dir, student_class_relationships_folder, "temp.csv")
-    
+    student_class_relationships_file = os.path.join(
+        root_dir, student_class_relationships_folder, "StudentEnrollment.csv")
+    temp_file = os.path.join(root_dir, student_class_relationships_folder,
+                             "temp.csv")
+
     student_enrollment_df = pd.read_csv(student_class_relationships_file)
     student_enrollment_df.rename(columns={
         "SIS ID": "StudentCode",
-    }, inplace=True)
-    
-    student_enrollment_df[['ClassGroupCode','Cycle']] = student_enrollment_df['Section SIS ID'].str.split('-',expand=True)
+    },
+                                 inplace=True)
+
+    student_enrollment_df[[
+        'ClassGroupCode', 'Cycle'
+    ]] = student_enrollment_df['Section SIS ID'].str.split('-', expand=True)
     columns = ["ClassGroupCode", "StudentCode"]
     student_enrollment_df[columns].to_csv(temp_file, index=False)
-    
+
     upload_csv_to_bigquery(temp_file, STUDENT_ENROLMENTS_SCHEMA,
                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
                            student_class_relationships_table_id, bucket)
@@ -277,7 +292,8 @@ def upload_reports_to_bq(
 
     learning_task_files = os.path.join(root_dir, learning_tasks_folder, "*.csv")
     reports_files = os.path.join(root_dir, reports_folder, "*.csv")
-    progress_reports_files = os.path.join(root_dir, progress_reports_folder, "*.csv")
+    progress_reports_files = os.path.join(root_dir, progress_reports_folder,
+                                          "*.csv")
 
     files = glob.glob(learning_task_files)
     for filename in files:
@@ -317,8 +333,8 @@ def upload_reports_to_bq(
     reports.saveReports(reports_file)
     reports.saveSummary(summary_file)
 
-    upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA, REPORTS_CLUSTERING_FIELDS,
-                       reports_table_id, bucket)
+    upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA,
+                           REPORTS_CLUSTERING_FIELDS, reports_table_id, bucket)
     upload_csv_to_bigquery(summary_file, REPORTS_SUMMARY_SCHEMA,
-                       REPORTS_SUMMARY_CLUSTERING_FIELDS,
-                       reports_summary_table_id, bucket)
+                           REPORTS_SUMMARY_CLUSTERING_FIELDS,
+                           reports_summary_table_id, bucket)

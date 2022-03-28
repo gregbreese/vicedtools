@@ -20,6 +20,7 @@ root_dir = "."
 
 # compass
 from vicedtools.compass import CompassFirefoxCookieAuthenticator
+
 compass_authenticator = CompassFirefoxCookieAuthenticator()
 compass_school_code = "abcsc-vic"
 compass_folder = "compass exports"
@@ -29,6 +30,7 @@ sds_folder = "SDS export"
 
 # oars
 from vicedtools.acer import OARSFirefoxCookieAuthenaticator
+
 oars_authenticator = OARSFirefoxCookieAuthenaticator()
 oars_school_code = "abc-secondary-college"
 oars_folder = "OARS exports"
@@ -40,4 +42,3 @@ student_enrolments_table_id = "abc-school-data.student_details.student_enrolment
 pat_scores_table_id = "abc-school-data.student_results.pat_scores"
 pat_most_recent_table_id = "abc-school-data.student_results.pat_most_recent"
 bucket = "abc-bucket"
-

@@ -17,12 +17,11 @@ import os
 
 import pandas as pd
 
-from vicedtools.gcp import (upload_csv_to_bigquery,
-                            PAT_SCORES_SCHEMA,
+from vicedtools.gcp import (upload_csv_to_bigquery, PAT_SCORES_SCHEMA,
                             PAT_SCORES_CLUSTERING_FIELDS)
 
 
-def pat_scores_to_bq(table_id: str, bucket: str, scores_file:str):
+def pat_scores_to_bq(table_id: str, bucket: str, scores_file: str):
     """Imports student details to BQ from Compass student details export.
     
     Args:
@@ -32,11 +31,13 @@ def pat_scores_to_bq(table_id: str, bucket: str, scores_file:str):
     """
     temp_file = os.path.join(os.path.dirname(scores_file), "temp.csv")
 
-    column_rename = {"Username":"StudentCode", 
-                    "Completed":"Date", 
-                    "Year level (at time of test)":"YearLevel",
-                    "Test form": "TestForm",
-                    "Score category":"ScoreCategory"}
+    column_rename = {
+        "Username": "StudentCode",
+        "Completed": "Date",
+        "Year level (at time of test)": "YearLevel",
+        "Test form": "TestForm",
+        "Score category": "ScoreCategory"
+    }
     df = pd.read_csv(scores_file)
     df.rename(columns=column_rename, inplace=True)
     df.to_csv(temp_file, index=False)
@@ -44,11 +45,9 @@ def pat_scores_to_bq(table_id: str, bucket: str, scores_file:str):
                            PAT_SCORES_CLUSTERING_FIELDS, table_id, bucket)
     os.remove(temp_file)
 
+
 if __name__ == "__main__":
-    from config import (root_dir,
-                        oars_folder,
-                        pat_scores_table_id,
-                        bucket)
+    from config import (root_dir, oars_folder, pat_scores_table_id, bucket)
 
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
