@@ -58,6 +58,10 @@ if __name__ == "__main__":
     if not os.path.exists(learning_tasks_dir):
         os.mkdir(learning_tasks_dir)
 
+    export_filename = os.path.join(learning_tasks_dir, f"LearningTasks-{academic_year}.csv")
+    if os.path.exists(export_filename):
+        os.remove(export_filename)
+
     export_compass_learning_tasks(gecko_path, compass_school_code,
                                   compass_authenticator, learning_tasks_dir,
                                   academic_year)
