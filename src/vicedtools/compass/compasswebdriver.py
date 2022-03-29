@@ -294,8 +294,7 @@ class CompassWebDriver(webdriver.Firefox):
         """
         self.set_download_dir(download_path)
         self.get(
-            "https://" + self.school_code +
-            ".compass.education/Communicate/LearningTasksAdministration.aspx")
+            f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx")
         # Open Reports tab
         reports_tabs = self.execute_script("""
             return Array.prototype.slice.call(document.getElementsByClassName("x-tab"))
@@ -507,14 +506,15 @@ class CompassWebDriver(webdriver.Firefox):
                     return
                 break
         # export all results
-        # menu
+        # open menu 
+        es = WebDriverWait(self, 20).until(
+            EC.presence_of_all_elements_located(
+                (By.XPATH, "//span[contains(text(),'Exports')]")))
+        es[1].click() # export button
+        # all results dropdown item
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//*[@id='button-1076-btnWrap']"))).click()
-        # all results item
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//*[@id='menuitem-1084-textEl']"))).click()
+            EC.presence_of_element_located(
+                (By.XPATH, "//span[contains(text(),'All Results')]"))).click()
         # ok button
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
