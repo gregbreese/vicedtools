@@ -21,7 +21,7 @@ from vicedtools.compass import CompassWebDriver, CompassAuthenticator
 
 def export_compass_progress_reports(gecko_path: str, school_code: str,
                                     authenticator: CompassAuthenticator,
-                                    reports_dir: str, year: str, title: str):
+                                    progress_reports_dir: str, cycle: str):
     """Exports a single Compass reports cycle.
 
     Args:
@@ -37,7 +37,7 @@ def export_compass_progress_reports(gecko_path: str, school_code: str,
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 2:
         print("Received arguments were: ", sys.argv[1:])
         print('Requires one argument: cycle')
         sys.exit(2)
