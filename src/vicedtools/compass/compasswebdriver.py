@@ -137,17 +137,21 @@ class CompassWebDriver(webdriver.Firefox):
                  ".compass.education/Learn/Subjects.aspx")
         # Export menu
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Exports')]"))).click()
+            EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(text(),'Exports')]"))).click()
         # Export menu item
         WebDriverWait(self, 20).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//span[contains(text(),'Microsoft SDS Export')]"))).click()
+                (By.XPATH,
+                 "//span[contains(text(),'Microsoft SDS Export')]"))).click()
         # Submit button
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'Download')]"))).click()
+            EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(text(),'Download')]"))).click()
         # Yes button
         WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//span[contains(text(),'OK')]"))).click()
+            EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(text(),'OK')]"))).click()
 
         # Poll to see when download is done
         for _i in range(download_wait):
@@ -214,8 +218,9 @@ class CompassWebDriver(webdriver.Firefox):
         with open(download_path, "wb") as f:
             f.write(r.content)
 
-    def export_student_household_information(self,
-                               download_path: str = "student household information.csv") -> None:
+    def export_student_household_information(
+            self,
+            download_path: str = "student household information.csv") -> None:
         '''Exports student household information from Compass.
 
         The basic export includes student address, parent names and parent contact details.
@@ -238,7 +243,6 @@ class CompassWebDriver(webdriver.Firefox):
         r = s.get(url)
         with open(download_path, "wb") as f:
             f.write(r.content)
-
 
     def discover_academic_years(self) -> list(str):
         """Discovers the academic years that exist in Compass.
@@ -294,7 +298,8 @@ class CompassWebDriver(webdriver.Firefox):
         """
         self.set_download_dir(download_path)
         self.get(
-            f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx")
+            f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx"
+        )
         # Open Reports tab
         reports_tabs = self.execute_script("""
             return Array.prototype.slice.call(document.getElementsByClassName("x-tab"))
@@ -506,11 +511,11 @@ class CompassWebDriver(webdriver.Firefox):
                     return
                 break
         # export all results
-        # open menu 
+        # open menu
         es = WebDriverWait(self, 20).until(
             EC.presence_of_all_elements_located(
                 (By.XPATH, "//span[contains(text(),'Exports')]")))
-        es[1].click() # export button
+        es[1].click()  # export button
         # all results dropdown item
         WebDriverWait(self, 20).until(
             EC.presence_of_element_located(
@@ -548,10 +553,9 @@ class CompassWebDriver(webdriver.Firefox):
                 f"Download of reports for Year:{year} and Title:{title} failed."
             )
 
-
-    def export_all_reports(self, 
-                           learning_tasks_dir: str = "./learning tasks", 
-                           reports_dir: str = "./reports", 
+    def export_all_reports(self,
+                           learning_tasks_dir: str = "./learning tasks",
+                           reports_dir: str = "./reports",
                            progress_reports_dir: str = "./progress reports"):
         """Exports available reports data from Compass.
         
@@ -565,31 +569,40 @@ class CompassWebDriver(webdriver.Firefox):
         """
         for dir in [learning_tasks_dir, reports_dir, progress_reports_dir]:
             if not os.path.exists(dir):
-                raise FileNotFoundError(f"{dir} does not exist as root directory.")
+                raise FileNotFoundError(
+                    f"{dir} does not exist as root directory.")
             if not os.path.isdir(dir):
                 raise NotADirectoryError(f"{dir} is not a directory.")
-            
+
         # learning task
         academic_years = self.discover_academic_years()
         for academic_year in academic_years:
-            if not os.path.exists(os.path.join(learning_tasks_dir, f"LearningTasks-{academic_year}.csv")):
+            if not os.path.exists(
+                    os.path.join(learning_tasks_dir,
+                                 f"LearningTasks-{academic_year}.csv")):
                 self.export_learning_tasks(academic_year,
-                                            download_path=learning_tasks_dir)
-    
+                                           download_path=learning_tasks_dir)
+
         # reports
         report_cycles = self.discover_report_cycles()
         for year, name in report_cycles:
-            if not os.path.exists(os.path.join(reports_dir, f"SemesterReports-{year}-{name}.csv")):
+            if not os.path.exists(
+                    os.path.join(reports_dir,
+                                 f"SemesterReports-{year}-{name}.csv")):
                 try:
-                    self.export_report_cycle(year, name, download_path=reports_dir)
+                    self.export_report_cycle(year,
+                                             name,
+                                             download_path=reports_dir)
                 except CompassDownloadFailedError:
                     print(f"Reports export failed for {year} {name}.")
 
         # progress reports
         progress_report_cycles = self.discover_progress_report_cycles()
         for cycle in progress_report_cycles:
-            if not os.path.exists(os.path.join(progress_reports_dir, f"{cycle}.csv")):
-                self.export_progress_report(cycle, download_path=progress_reports_dir)
+            if not os.path.exists(
+                    os.path.join(progress_reports_dir, f"{cycle}.csv")):
+                self.export_progress_report(cycle,
+                                            download_path=progress_reports_dir)
 
 
 class CompassAuthenticator(Protocol):
