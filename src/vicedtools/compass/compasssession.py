@@ -16,11 +16,13 @@
 from __future__ import annotations
 
 from abc import abstractmethod
+from datetime import datetime
 import os
 import re
 import requests
 import time
 from typing import Protocol
+import zipfile
 
 import browser_cookie3
 
@@ -38,7 +40,7 @@ class CompassAuthenticator(Protocol):
         raise NotImplementedError
 
 
-class CompassFirefoxCookieAuthenaticator(CompassAuthenticator):
+class CompassFirefoxCookieAuthenticator(CompassAuthenticator):
     """A Compass authenaticator that gets login details from the local Firefox installation."""
 
     def authenticate(self, s: CompassSession):
@@ -73,7 +75,8 @@ class CompassSession(requests.sessions.Session):
         authenticator.authenticate(self)
         self.school_code = school_code
 
-    def long_running_file_request(self, request_payload: str, save_dir: str):
+    def long_running_file_request(self, request_payload: str,
+                                  save_dir: str) -> str:
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
@@ -85,7 +88,7 @@ class CompassSession(requests.sessions.Session):
         else:
             raise ValueError("Unexpected Compass response.")
         # poll for status
-        poll_url = f"https://{self.school_code}.education/Services/LongRunningFileRequest.svc/PollTaskStatus"
+        poll_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/PollTaskStatus"
         payload = {"guid": guid}
         r = self.post(poll_url, json=payload)
         data = r.json()
@@ -112,6 +115,7 @@ class CompassSession(requests.sessions.Session):
         save_path = os.path.join(save_dir, file_name)
         with open(save_path, "wb") as f:
             f.write(r.content)
+        return save_path
 
     def export_progress_reports(self, cycle_id: int, cycle_name: str,
                                 save_dir: str):
@@ -178,3 +182,82 @@ class CompassSession(requests.sessions.Session):
             new_groups = r.json()['d']
             groups += new_groups
         return groups
+
+    def export_student_details(self,
+                               file_name: str = "student details.csv",
+                               detailed: bool = False) -> None:
+        '''Exports student details from Compass.
+
+        The basic export includes student codes, name, gender, year level and
+        form group. It only includes current students.
+        The detailed export also includes DOB, VCAA code, VSN, and school 
+        house. It includes students who have exited.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+            detailed: Whether to perform a detailed student details export.
+        '''
+        if detailed:
+            url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=37"
+        else:
+            url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=38"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
+    def export_student_household_information(
+            self, file_name: str = "student household information.csv") -> None:
+        '''Exports student household information from Compass.
+
+        The basic export includes student address, parent names and parent contact details.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=14"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
+    def export_sds(self,
+                   save_dir: str = ".",
+                   academic_group: int = -1,
+                   append_date: bool = False):
+        '''Exports class enrolment and teacher information from Compass.
+
+        Downloads the Microsoft SDS export from Compass.
+        
+        Requires access to SDS Export rights in the Subjects and Classes page.
+
+        Will save four files in the provided path:
+            StudentEnrollment.csv: contains student->class mappings
+            Teacher.csv: contains teacher id information
+            TeacherRoster.csv: contains teacher->class mappings
+            Section.csv: contains class id information
+
+        Args:
+            save_dir: The directory to save the export.
+            academic_group: The academic group (e.g. the year) to download the export 
+                for, defaults to the current active group.
+            append_date: If True, append today's date to the filenames in
+                yyyy-mm-dd format.
+        '''
+        payload = f'{{"type":"77","parameters":"{{\\"schoolSisId\\":\\"1\\",\\"studentSisId\\":1,\\"studentUsername\\":1,\\"teacherUsername\\":1,\\"sectionSisId\\":1,\\"sectionName\\":1,\\"academicGroup\\":{academic_group}}}"}}'
+        archive_file_name = self.long_running_file_request(payload, save_dir)
+        # unpack archive
+        contents = [
+            "StudentEnrollment.csv", "Teacher.csv", "TeacherRoster.csv",
+            "Section.csv"
+        ]
+        with zipfile.ZipFile(archive_file_name, 'r') as zip_ref:
+            for content in contents:
+                if append_date:
+                    today = datetime.today().strftime('%Y-%m-%d')
+                    parts = content.split('.')
+                    new_filename = parts[0] + " " + today + "." + parts[1]
+                    info = zip_ref.get_info(content)
+                    info.filename = new_filename
+                    zip_ref.extract(new_filename, path=save_dir)
+                else:
+                    zip_ref.extract(content, path=save_dir)
+        os.remove(archive_file_name)
