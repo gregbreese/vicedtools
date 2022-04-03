@@ -193,9 +193,17 @@ class CompassSession(requests.sessions.Session):
         payload = f'{{"type":"47","parameters":"{{\\"academicYearId\\":{academic_year_id},\\"academicYearName\\":\\"{academic_year_name}\\"}}"}}'
         self.long_running_file_request(payload, save_dir)
 
-    def export_reports(self, cycle_id: int, save_dir: str):
+    def export_reports(self, cycle_id: int, cycle_year: int, cycle_title: str, save_dir: str):
         payload = f'{{"type":"2","parameters":"{{\\"cycleId\\":{cycle_id}}}"}}'
-        self.long_running_file_request(payload, save_dir)
+        filename = self.long_running_file_request(payload, save_dir)
+        head, tail = os.path.split(filename)
+        sanitised_title = sanitise_filename(cycle_title)
+        new_tail = f"SemesterReports-{cycle_year}-{sanitised_title}.csv"
+        new_filename = os.path.join(head,new_tail)
+        if os.path.exists(new_filename):
+            os.remove(new_filename)
+        os.rename(filename, new_filename)
+
 
     def get_report_cycles(self):
         headers = {'Content-Type': 'application/json; charset=utf-8'}

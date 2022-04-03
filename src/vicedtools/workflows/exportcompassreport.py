@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Export all Compass progress reports.')
-    parser.add_argument('year', help='the report year')
+    parser.add_argument('year', type=int, help='the report year')
     parser.add_argument('title', help='the report title')
     args = parser.parse_args()
 
@@ -47,6 +47,6 @@ if __name__ == "__main__":
     with open(report_cycles_file, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
 
-    id = get_report_cycle_id(cycles, args.year, args.title)
+    cycle_id = get_report_cycle_id(cycles, args.year, args.title)
     s = CompassSession(compass_school_code, compass_authenticator)
-    s.export_report_cycle(id, save_dir=reports_dir)
+    s.export_reports(cycle_id, args.year, args.title, save_dir=reports_dir)
