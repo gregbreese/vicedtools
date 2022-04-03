@@ -13,40 +13,30 @@
 # limitations under the License.
 """Executable script for exporting Compass reports data."""
 
-import sys
+from __future__ import annotations
+
+import argparse
+import json
 import os
 
-from vicedtools.compass import CompassWebDriver, CompassAuthenticator
-
-
-def export_compass_reports(gecko_path: str, school_code: str,
-                           authenticator: CompassAuthenticator,
-                           reports_dir: str, year: str, title: str):
-    """Exports a single Compass reports cycle.
-
-    Args:
-        gecko_path: The path to geckodiver.exe
-        school_code: The compass school string. E.g. https://{school_code}.compass.education
-        authenticator: An instance of CompassAuthenticator.
-        reports_dir: The directory to save reports data to
-        year: The year of the report cycle to export, as a string.
-        title: The title of the report cycle to export.
-    """
-    driver = CompassWebDriver(school_code, gecko_path, authenticator)
-    driver.export_report_cycle(year, title, download_path=reports_dir)
-    driver.quit()
-
+from vicedtools.compass import CompassSession, get_report_cycle_id
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Received arguments were: ", sys.argv[1:])
-        print('Requires two arguments: year title')
-        sys.exit(2)
-    year = sys.argv[1]
-    title = sys.argv[2]
+    from config import (root_dir, compass_folder, reports_folder,
+                        compass_authenticator, compass_school_code,
+                        report_cycles_json)
 
-    from config import (root_dir, compass_folder, reports_folder, gecko_path,
-                        compass_authenticator, compass_school_code)
+    parser = argparse.ArgumentParser(
+        description='Export all Compass progress reports.')
+    parser.add_argument('--forceall',
+                        '-a',
+                        action="store_true",
+                        help='force re-download existing reports')
+    parser.add_argument('--forcerecent',
+                        '-r',
+                        action="store_true",
+                        help='force re-download most recent report')
+    args = parser.parse_args()
 
     if not os.path.exists(root_dir):
         raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
@@ -59,5 +49,17 @@ if __name__ == "__main__":
     if not os.path.exists(reports_dir):
         os.mkdir(reports_dir)
 
-    export_compass_reports(gecko_path, compass_school_code,
-                           compass_authenticator, reports_dir, year, title)
+    report_cycles_file = os.path.join(compass_dir, report_cycles_json)
+    with open(report_cycles_file, 'r', encoding='utf-8') as f:
+        cycles = json.load(f)
+
+    s = CompassSession(compass_school_code, compass_authenticator)
+
+    for i in range(len(cycles)):
+        cycle = cycles[i]
+        file_name = os.path.join(
+            reports_dir, f"SemesterReports-{cycle['year']}-{cycle['name']}.csv")
+        if (not os.path.exists(file_name) or args.forceall or
+            (args.forcerecent and i == 0)) and cycle['type'] == 1:
+            print(f"Exporting {cycle['year']} {cycle['name']}")
+            s.export_reports(cycle['id'], reports_dir)

@@ -18,7 +18,7 @@ import json
 import os
 import sys
 
-from vicedtools.compass import CompassSession, sanitise_filename
+from vicedtools.compass import CompassSession
 
 if __name__ == "__main__":
     from config import (root_dir, compass_folder, learning_tasks_folder,
@@ -26,15 +26,8 @@ if __name__ == "__main__":
                         academic_groups_json)
 
     parser = argparse.ArgumentParser(
-        description='Export all Compass learning tasks.')
-    parser.add_argument('--forceall',
-                        '-a',
-                        action="store_true",
-                        help='force re-download existing learning task exports')
-    parser.add_argument('--forcecurrent',
-                        '-c',
-                        action="store_true",
-                        help='force re-download current academic cycle')
+        description='Export learning tasks from a given academic year.')
+    parser.add_argument('academic_group', help='the academic cycle to export, use "current" for the current cycle')
     args = parser.parse_args()
 
     if not os.path.exists(root_dir):
@@ -52,12 +45,24 @@ if __name__ == "__main__":
     with open(academic_groups_file, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
     
-    s = CompassSession(compass_school_code, compass_authenticator)
+    if args.academic_group == 'current':
+        for c in cycles:
+            if c['isRelevant']:
+                academic_group_id = c['id']
+                academic_group_name = c['name']
 
-    for cycle in cycles:
-        sanitised_name = sanitise_filename(cycle['name'])
-        file_name = os.path.join(learning_tasks_dir, f"LearningTasks-{sanitised_name}.csv")
-        if not os.path.exists(file_name) or args.forceall or (args.forcecurrent
-                                                              and cycle['isRelevant']):
-            print(f"Exporting {cycle['name']}")
-            s.export_learning_tasks(cycle['id'], cycle['name'], save_dir=learning_tasks_dir)
+    else:
+        academic_group_name = args.academic_group
+        academic_group_id = None
+        for c in cycles:
+            if c['name'] == args.academic_group:
+                academic_group_id = c['id']
+                break
+    if academic_group_id:
+        s = CompassSession(compass_school_code, compass_authenticator)
+        s.export_learning_tasks(academic_group_id,
+                                academic_group_name, save_dir=learning_tasks_dir)
+        sys.exit(0)
+    else:
+        print("Learning tasks academic cycle not found.")
+        sys.exit(2)

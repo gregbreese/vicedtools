@@ -15,30 +15,11 @@
 
 import os
 
-import pandas as pd
-
-from vicedtools.compass import CompassWebDriver, CompassAuthenticator
-
-
-def export_compass_students(gecko_path: str, school_code: str,
-                            authenticator: CompassAuthenticator,
-                            file_name: str):
-    """Exports student details from Compass.
-
-    Args:
-        gecko_path: The path to geckodiver.exe
-        school_code: The compass school string. E.g. https://{school_code}.compass.education
-        authenticator: An instance of CompassAuthenticator.
-        file_name: The filename to save the student csv data to.
-    """
-    driver = CompassWebDriver(school_code, gecko_path, authenticator)
-    driver.export_student_details(file_name, detailed=True)
-    driver.quit()
-
+from vicedtools.compass import CompassSession
 
 if __name__ == "__main__":
     from config import (root_dir, compass_folder, student_details_folder,
-                        student_details_csv, gecko_path, compass_authenticator,
+                        student_details_csv, compass_authenticator,
                         compass_school_code)
 
     if not os.path.exists(root_dir):
@@ -53,6 +34,6 @@ if __name__ == "__main__":
         os.mkdir(student_details_dir)
     student_details_file = os.path.join(student_details_dir,
                                         student_details_csv)
+    s = CompassSession(compass_school_code, compass_authenticator)
+    s.export_student_details(file_name=student_details_file, detailed=True)
 
-    export_compass_students(gecko_path, compass_school_code,
-                            compass_authenticator, student_details_file)

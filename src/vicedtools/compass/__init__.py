@@ -12,12 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vicedtools.compass.compasswebdriver import (
-    CompassWebDriver, CompassAuthenticator, CompassCLIAuthenticator,
-    CompassFirefoxCookieAuthenticator, CompassElementSelectionError,
-    CompassDownloadFailedError)
-from vicedtools.compass.exports import (
-    discover_academic_years, discover_progress_report_cycles,
-    discover_report_cycles, export_learning_tasks, export_progress_report,
-    export_report_cycle, export_sds, export_student_details)
+from vicedtools.compass.compasssession import (
+    CompassSession, CompassAuthenticator, CompassAuthenticationError,
+    CompassConfigAuthenticator, CompassCLIAuthenticator,
+    CompassFirefoxCookieAuthenticator, get_report_cycle_id, sanitise_filename)
+
 from vicedtools.compass.reports import Reports, class_code_parser

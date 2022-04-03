@@ -9,5 +9,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-from vicedtools.workflows.compass import export_reports, upload_reports_to_bq, export_students, upload_students_to_bq

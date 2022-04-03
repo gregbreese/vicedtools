@@ -17,11 +17,13 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from datetime import datetime
+from math import ceil
 import os
 import re
 import requests
 import time
 from typing import Protocol
+from urllib.parse import quote
 import zipfile
 
 import browser_cookie3
@@ -30,6 +32,11 @@ import browser_cookie3
 def current_ms_time() -> int:
     """Returns the current millisecond time."""
     return round(time.time() * 1000)
+
+def sanitise_filename(filename):
+    filename = re.sub(r'[/\\]+', '', filename)
+    filename = re.sub(' +', ' ', filename)
+    return filename
 
 
 class CompassAuthenticator(Protocol):
@@ -52,6 +59,67 @@ class CompassFirefoxCookieAuthenticator(CompassAuthenticator):
             s.cookies.update(c)
 
 
+class CompassAuthenticationError(Exception):
+    """Authentication with Compass failed."""
+    pass
+
+
+class CompassConfigAuthenticator(CompassAuthenticator):
+    """Authenticates using a provided username and password."""
+
+    def __init__(self, username: str, password: str):
+        self.username = username
+        self.password = password
+
+    def authenticate(self, s: CompassSession):
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        s.headers.update(headers)
+        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
+        # get viewstate
+        r = s.get(login_url)
+        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/]*)"'
+        m = re.search(pattern, r.text)
+        viewstate = quote(m.group('viewstate'))
+        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/]*)"'
+        m = re.search(pattern, r.text)
+        viewstategenerator = quote(m.group('viewstategenerator'))
+        # url encode username and password
+        username = quote(self.username)
+        password = quote(self.password)
+        # auth
+        payload = f'__EVENTTARGET=button1&__EVENTARGUMENT=&__VIEWSTATE={viewstate}&browserFingerprint=3597254041&username={username}&password={password}&g-recaptcha-response=&rememberMeChk=on&__VIEWSTATEGENERATOR={viewstategenerator}'
+        r = s.post(login_url, data=payload)
+        if r.status_code != 200:
+            raise CompassAuthenticationError
+
+
+class CompassCLIAuthenticator(CompassAuthenticator):
+    """Authenticates using login details from CLI prompt."""
+
+    def authenticate(self, s: CompassSession):
+        username = input("Compass username: ")
+        password = input("Compass password: ")
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        s.headers.update(headers)
+        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
+        # get viewstate
+        r = s.get(login_url)
+        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/]*)"'
+        m = re.search(pattern, r.text)
+        viewstate = quote(m.group('viewstate'))
+        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/]*)"'
+        m = re.search(pattern, r.text)
+        viewstategenerator = quote(m.group('viewstategenerator'))
+        # url encode username and password
+        username = quote(username)
+        password = quote(password)
+        # auth
+        payload = f'__EVENTTARGET=button1&__EVENTARGUMENT=&__VIEWSTATE={viewstate}&browserFingerprint=3597254041&username={username}&password={password}&g-recaptcha-response=&rememberMeChk=on&__VIEWSTATEGENERATOR={viewstategenerator}'
+        r = s.post(login_url, data=payload)
+        if r.status_code != 200:
+            raise CompassAuthenticationError
+
+
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
@@ -66,14 +134,12 @@ class CompassSession(requests.sessions.Session):
         requests.sessions.Session.__init__(self)
         headers = {
             "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0",
-            'Content-Type':
-                'application/json; charset=utf-8'
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0"
         }
         self.headers.update(headers)
+        self.school_code = school_code
 
         authenticator.authenticate(self)
-        self.school_code = school_code
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:
@@ -112,14 +178,14 @@ class CompassSession(requests.sessions.Session):
             " ", "%20")
         r = self.get(file_download_url)
         # save response
-        save_path = os.path.join(save_dir, file_name)
+        save_path = os.path.join(save_dir, sanitise_filename(file_name))
         with open(save_path, "wb") as f:
             f.write(r.content)
         return save_path
 
-    def export_progress_reports(self, cycle_id: int, cycle_name: str,
+    def export_progress_reports(self, cycle_id: int, cycle_title: str,
                                 save_dir: str):
-        payload = f'{{"type":"35","parameters":"{{\\"cycleId\\":{cycle_id},\\"cycleName\\":\\"{cycle_name}\\",\\"displayType\\":1}}"}}'
+        payload = f'{{"type":"35","parameters":"{{\\"cycleId\\":{cycle_id},\\"cycleName\\":\\"{cycle_title}\\",\\"displayType\\":1}}"}}'
         self.long_running_file_request(payload, save_dir)
 
     def export_learning_tasks(self, academic_year_id: int,
@@ -132,42 +198,52 @@ class CompassSession(requests.sessions.Session):
         self.long_running_file_request(payload, save_dir)
 
     def get_report_cycles(self):
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
+
         cycles_url = f"https://{self.school_code}.compass.education/Services/Reports.svc/GetCycles?_dc={current_ms_time()}"
         cycles = []
         page = 1
-        payload = f'{"page":{page},"start":{25*(page-1)},"limit":25}'
+        payload = f'{{"page":{page},"start":{25*(page-1)},"limit":25}}'
         r = self.post(cycles_url, data=payload)
         new_cycles = r.json()['d']
         cycles += new_cycles
         while len(new_cycles) == 25:
             page += 1
-            payload = f'{"page":{page},"start":{25*(page-1)},"limit":25}'
+            payload = f'{{"page":{page},"start":{25*(page-1)},"limit":25}}'
             r = self.post(cycles_url, data=payload)
             new_cycles = r.json()['d']
             cycles += new_cycles
         return cycles
 
     def get_progress_report_cycles(self):
-        cycles_url = f"https:/{self.school_code}.compass.education/Services/Gpa.svc/GetCyclesForPagedGrid?sessionstate=readonly&_dc={current_ms_time()}"
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
+
+        cycles_url = f"https://{self.school_code}.compass.education/Services/Gpa.svc/GetCyclesForPagedGrid?sessionstate=readonly&_dc={current_ms_time()}"
         cycles = []
         page = 1
-        payload = f'{"page":{page},"start":{10*(page-1)},"limit":10}'
+        payload = f'{{"page":{page},"start":{10*page-10},"limit":10}}'
         r = self.post(cycles_url, data=payload)
-        new_cycles = r.json()['d']
+        decoded_response = r.json()['d']
+        new_cycles = decoded_response['data']
         cycles += new_cycles
         while len(new_cycles) == 10:
             page += 1
-            payload = f'{"page":{page},"start":{10*(page-1)},"limit":10}'
+            payload = f'{{"page":{page},"start":{10*(page-1)},"limit":10}}'
             r = self.post(cycles_url, data=payload)
-            new_cycles = r.json()['d']
+            new_cycles = r.json()['d']['data']
             cycles += new_cycles
         return cycles
 
     def get_academic_groups(self):
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
+
         learning_tasks_admin_url = f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx"
         r = self.get(learning_tasks_admin_url)
-        pattern = "Compass.referenceDataCacheKeys.schoolConfigKey = '(?P<key>)'"
-        m = re.search(pattern, r.content)
+        pattern = "Compass.referenceDataCacheKeys.schoolConfigKey = '(?P<key>[0-9a-z-]*)'"
+        m = re.search(pattern, r.text)
         key = m.group('key')
         groups = []
         page = 1
@@ -261,3 +337,10 @@ class CompassSession(requests.sessions.Session):
                 else:
                     zip_ref.extract(content, path=save_dir)
         os.remove(archive_file_name)
+
+
+def get_report_cycle_id(cycles, year, name):
+    for c in cycles:
+        if c['year'] == year and c['name'] == name:
+            return c['id']
+    return None
