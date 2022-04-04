@@ -27,7 +27,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Export learning tasks from a given academic year.')
-    parser.add_argument('academic_group', help='the academic cycle to export, use "current" for the current cycle')
+    parser.add_argument(
+        'academic_group',
+        help='the academic cycle to export, use "current" for the current cycle'
+    )
     args = parser.parse_args()
 
     if not os.path.exists(root_dir):
@@ -44,7 +47,7 @@ if __name__ == "__main__":
     academic_groups_file = os.path.join(compass_dir, academic_groups_json)
     with open(academic_groups_file, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
-    
+
     if args.academic_group == 'current':
         for c in cycles:
             if c['isRelevant']:
@@ -61,7 +64,8 @@ if __name__ == "__main__":
     if academic_group_id:
         s = CompassSession(compass_school_code, compass_authenticator)
         s.export_learning_tasks(academic_group_id,
-                                academic_group_name, save_dir=learning_tasks_dir)
+                                academic_group_name,
+                                save_dir=learning_tasks_dir)
         sys.exit(0)
     else:
         print("Learning tasks academic cycle not found.")

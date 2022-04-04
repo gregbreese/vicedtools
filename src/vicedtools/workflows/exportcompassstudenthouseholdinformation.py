@@ -36,4 +36,5 @@ if __name__ == "__main__":
         student_details_dir, student_household_information_csv)
 
     s = CompassSession(compass_school_code, compass_authenticator)
-    s.export_student_household_information(file_name=student_household_information_file)
+    s.export_student_household_information(
+        file_name=student_household_information_file)

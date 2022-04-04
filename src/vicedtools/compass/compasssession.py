@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""A requests.requests.Session calss for accessing the Compass API."""
+"""A requests.requests.Session class for accessing the Compass API."""
 
 from __future__ import annotations
 
@@ -32,6 +32,7 @@ import browser_cookie3
 def current_ms_time() -> int:
     """Returns the current millisecond time."""
     return round(time.time() * 1000)
+
 
 def sanitise_filename(filename):
     filename = re.sub(r'[/\\]+', '', filename)
@@ -193,17 +194,17 @@ class CompassSession(requests.sessions.Session):
         payload = f'{{"type":"47","parameters":"{{\\"academicYearId\\":{academic_year_id},\\"academicYearName\\":\\"{academic_year_name}\\"}}"}}'
         self.long_running_file_request(payload, save_dir)
 
-    def export_reports(self, cycle_id: int, cycle_year: int, cycle_title: str, save_dir: str):
+    def export_reports(self, cycle_id: int, cycle_year: int, cycle_title: str,
+                       save_dir: str):
         payload = f'{{"type":"2","parameters":"{{\\"cycleId\\":{cycle_id}}}"}}'
         filename = self.long_running_file_request(payload, save_dir)
         head, tail = os.path.split(filename)
         sanitised_title = sanitise_filename(cycle_title)
         new_tail = f"SemesterReports-{cycle_year}-{sanitised_title}.csv"
-        new_filename = os.path.join(head,new_tail)
+        new_filename = os.path.join(head, new_tail)
         if os.path.exists(new_filename):
             os.remove(new_filename)
         os.rename(filename, new_filename)
-
 
     def get_report_cycles(self):
         headers = {'Content-Type': 'application/json; charset=utf-8'}

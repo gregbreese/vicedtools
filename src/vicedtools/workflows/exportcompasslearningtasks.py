@@ -51,13 +51,16 @@ if __name__ == "__main__":
     academic_groups_file = os.path.join(compass_dir, academic_groups_json)
     with open(academic_groups_file, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
-    
+
     s = CompassSession(compass_school_code, compass_authenticator)
 
     for cycle in cycles:
         sanitised_name = sanitise_filename(cycle['name'])
-        file_name = os.path.join(learning_tasks_dir, f"LearningTasks-{sanitised_name}.csv")
-        if not os.path.exists(file_name) or args.forceall or (args.forcecurrent
-                                                              and cycle['isRelevant']):
+        file_name = os.path.join(learning_tasks_dir,
+                                 f"LearningTasks-{sanitised_name}.csv")
+        if not os.path.exists(file_name) or args.forceall or (
+                args.forcecurrent and cycle['isRelevant']):
             print(f"Exporting {cycle['name']}")
-            s.export_learning_tasks(cycle['id'], cycle['name'], save_dir=learning_tasks_dir)
+            s.export_learning_tasks(cycle['id'],
+                                    cycle['name'],
+                                    save_dir=learning_tasks_dir)

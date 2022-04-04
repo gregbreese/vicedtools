@@ -20,13 +20,16 @@ from vicedtools.gcp import (upload_csv_to_bigquery, REPORTS_SCHEMA,
                             REPORTS_SUMMARY_CLUSTERING_FIELDS)
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, reports_csv, reports_summary_csv,
-                        reports_table_id, reports_summary_table_id, bucket)
-    
+    from config import (root_dir, compass_folder, reports_csv,
+                        reports_summary_csv, reports_table_id,
+                        reports_summary_table_id, bucket)
+
     reports_file = os.path.join(root_dir, compass_folder, reports_csv)
-    reports_summary_file = os.path.join(root_dir, compass_folder, reports_summary_csv)
-    
-    upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA, 
+    reports_summary_file = os.path.join(root_dir, compass_folder,
+                                        reports_summary_csv)
+
+    upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA,
                            REPORTS_CLUSTERING_FIELDS, reports_table_id, bucket)
     upload_csv_to_bigquery(reports_summary_file, REPORTS_SUMMARY_SCHEMA,
-                           REPORTS_SUMMARY_CLUSTERING_FIELDS, reports_summary_table_id, bucket)
+                           REPORTS_SUMMARY_CLUSTERING_FIELDS,
+                           reports_summary_table_id, bucket)
