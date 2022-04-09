@@ -20,18 +20,13 @@ import pandas as pd
 from vicedtools.compass import Reports
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, progress_reports_folder,
-                        learning_tasks_folder, reports_folder, replace_values,
-                        replace_subject_codes, work_habits_result_mapper,
-                        learning_tasks_result_mapper,
+    from config import (compass_dir, learning_tasks_dir, progress_reports_dir,
+                        reports_dir, reports_file, reports_summary_file,
+                        replace_values, replace_subject_codes,
+                        work_habits_result_mapper, learning_tasks_result_mapper,
                         progress_report_result_mapper, results_dtype,
                         progress_report_items, gwsc_class_code_parser,
                         subjects_file, reports_csv, reports_summary_csv)
-
-    compass_dir = os.path.join(root_dir, compass_folder)
-    progress_reports_dir = os.path.join(compass_dir, progress_reports_folder)
-    learning_tasks_dir = os.path.join(compass_dir, learning_tasks_folder)
-    reports_dir = os.path.join(compass_dir, reports_folder)
 
     reports = Reports()
 
@@ -71,7 +66,5 @@ if __name__ == "__main__":
 
     reports.updateFromClassDetails()
 
-    reports_file = os.path.join(compass_dir, reports_csv)
-    summary_file = os.path.join(compass_dir, reports_summary_csv)
     reports.saveReports(reports_file)
-    reports.saveSummary(summary_file)
+    reports.saveSummary(reports_summary_file)

@@ -58,7 +58,6 @@ def naplan_outcomes_to_bq(table_id: str,
 
 
 if __name__ == "__main__":
-    from config import (root_dir, naplan_folder, naplan_outcomes_folder,
-                        naplan_outcomes_table_id, bucket)
-    naplan_dir = os.path.join(root_dir, naplan_folder, naplan_outcomes_folder)
-    naplan_outcomes_to_bq(naplan_outcomes_table_id, bucket, naplan_dir)
+    from config import (naplan_outcomes_dir, naplan_outcomes_table_id, bucket)
+
+    naplan_outcomes_to_bq(naplan_outcomes_table_id, bucket, naplan_outcomes_dir)

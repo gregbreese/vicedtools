@@ -51,13 +51,6 @@ def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
 
 
 if __name__ == "__main__":
-    from config import (root_dir, oars_folder, pat_most_recent_table_id, bucket)
+    from config import (pat_most_recent_csv, pat_most_recent_table_id, bucket)
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    oars_dir = os.path.join(root_dir, oars_folder)
-    if not os.path.exists(oars_dir):
-        raise FileNotFoundError(f"{oars_dir} does not exist as a directory.")
-    scores_file = os.path.join(oars_dir, "pat most recent.csv")
-
-    pat_most_recent_to_bq(pat_most_recent_table_id, bucket, scores_file)
+    pat_most_recent_to_bq(pat_most_recent_table_id, bucket, pat_most_recent_csv)

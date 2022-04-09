@@ -20,9 +20,8 @@ import os
 from vicedtools.compass import CompassSession, sanitise_filename
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, progress_reports_folder,
-                        progress_report_cycles_json, compass_authenticator,
-                        compass_school_code)
+    from config import (progress_reports_dir, progress_report_cycles_json,
+                        compass_authenticator, compass_school_code)
 
     parser = argparse.ArgumentParser(
         description='Export all Compass progress reports.')
@@ -36,20 +35,10 @@ if __name__ == "__main__":
                         help='force re-download most recent report')
     args = parser.parse_args()
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    progress_reports_dir = os.path.join(compass_dir, progress_reports_folder)
     if not os.path.exists(progress_reports_dir):
-        os.mkdir(progress_reports_dir)
+        os.makedirs(progress_reports_dir)
 
-    progress_report_cycles_file = os.path.join(compass_dir,
-                                               progress_report_cycles_json)
-    with open(progress_report_cycles_file, 'r', encoding='utf-8') as f:
+    with open(progress_report_cycles_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
 
     s = CompassSession(compass_school_code, compass_authenticator)

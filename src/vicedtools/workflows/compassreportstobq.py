@@ -13,20 +13,13 @@
 # limitations under the License.
 """Executable script for uploading compass reports to BigQuery."""
 
-import os
-
 from vicedtools.gcp import (upload_csv_to_bigquery, REPORTS_SCHEMA,
                             REPORTS_CLUSTERING_FIELDS, REPORTS_SUMMARY_SCHEMA,
                             REPORTS_SUMMARY_CLUSTERING_FIELDS)
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, reports_csv,
-                        reports_summary_csv, reports_table_id,
+    from config import (reports_file, reports_summary_file, reports_table_id,
                         reports_summary_table_id, bucket)
-
-    reports_file = os.path.join(root_dir, compass_folder, reports_csv)
-    reports_summary_file = os.path.join(root_dir, compass_folder,
-                                        reports_summary_csv)
 
     upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA,
                            REPORTS_CLUSTERING_FIELDS, reports_table_id, bucket)

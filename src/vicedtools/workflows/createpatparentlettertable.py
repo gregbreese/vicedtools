@@ -94,28 +94,9 @@ def create_pat_parent_letter_table(student_details_file: str,
 
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, student_details_folder,
-                        student_details_csv, student_household_information_csv,
-                        oars_folder)
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
+    from config import (student_details_csv, student_household_information_csv,
+                        pat_scores_csv)
 
-    oars_dir = os.path.join(root_dir, oars_folder)
-    if not os.path.exists(oars_dir):
-        raise FileNotFoundError(f"{oars_dir} does not exist as a directory.")
-    pat_scores_file = os.path.join(oars_dir, "pat scores.csv")
-
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    student_details_dir = os.path.join(compass_dir, student_details_folder)
-    if not os.path.exists(student_details_dir):
-        os.mkdir(student_details_dir)
-    student_household_information_file = os.path.join(
-        student_details_dir, student_household_information_csv)
-    student_details_file = os.path.join(student_details_dir,
-                                        student_details_csv)
-
-    create_pat_parent_letter_table(student_details_file,
-                                   student_household_information_file,
-                                   pat_scores_file)
+    create_pat_parent_letter_table(student_details_csv,
+                                   student_household_information_csv,
+                                   pat_scores_csv)

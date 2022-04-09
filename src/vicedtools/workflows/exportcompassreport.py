@@ -22,8 +22,7 @@ import os
 from vicedtools.compass import CompassSession, get_report_cycle_id
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, reports_folder,
-                        compass_authenticator, compass_school_code,
+    from config import (reports_dir, compass_authenticator, compass_school_code,
                         report_cycles_json)
 
     parser = argparse.ArgumentParser(
@@ -32,19 +31,10 @@ if __name__ == "__main__":
     parser.add_argument('title', help='the report title')
     args = parser.parse_args()
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    reports_dir = os.path.join(compass_dir, reports_folder)
     if not os.path.exists(reports_dir):
-        os.mkdir(reports_dir)
+        os.makedirs(reports_dir)
 
-    report_cycles_file = os.path.join(compass_dir, report_cycles_json)
-    with open(report_cycles_file, 'r', encoding='utf-8') as f:
+    with open(report_cycles_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
 
     cycle_id = get_report_cycle_id(cycles, args.year, args.title)

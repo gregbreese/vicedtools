@@ -22,17 +22,17 @@ from vicedtools.gcp import (upload_csv_to_bigquery, STUDENT_DETAILS_SCHEMA,
 
 
 def compass_student_details_to_bq(table_id: str, bucket: str,
-                                  student_details_file: str):
+                                  student_details_csv: str):
     """Imports student details to BQ from Compass student details export.
     
     Args:
         table_id: The BQ table id for the enrolments data
         bucket: A GCS bucket for temporarily storing the csv for import into BQ.
-        student_details_file: The path to the Compass student details csv.
+        student_details_csv: The path to the Compass student details csv.
     """
-    temp_file = os.path.join(os.path.dirname(student_details_file), "temp.csv")
+    temp_file = os.path.join(os.path.dirname(student_details_csv), "temp.csv")
 
-    details_df = pd.read_csv(student_details_file,
+    details_df = pd.read_csv(student_details_csv,
                              keep_default_na=False,
                              dtype=str)
     details_df = details_df[details_df["Status"].isin(["Active",
@@ -76,10 +76,7 @@ def compass_student_details_to_bq(table_id: str, bucket: str,
 
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, student_details_folder,
-                        student_details_csv, student_details_table_id, bucket)
-    student_details_file = os.path.join(root_dir, compass_folder,
-                                        student_details_folder,
-                                        student_details_csv)
+    from config import (student_details_csv, student_details_table_id, bucket)
+
     compass_student_details_to_bq(student_details_table_id, bucket,
-                                  student_details_file)
+                                  student_details_csv)

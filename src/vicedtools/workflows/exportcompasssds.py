@@ -18,19 +18,10 @@ import os
 from vicedtools.compass import CompassSession
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, sds_folder,
-                        compass_authenticator, compass_school_code)
+    from config import (sds_dir, compass_authenticator, compass_school_code)
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    sds_dir = os.path.join(compass_dir, sds_folder)
     if not os.path.exists(sds_dir):
-        os.mkdir(sds_dir)
+        os.makedirs(sds_dir)
 
     s = CompassSession(compass_school_code, compass_authenticator)
     s.export_sds(save_dir=sds_dir)

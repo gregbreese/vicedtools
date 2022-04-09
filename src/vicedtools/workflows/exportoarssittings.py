@@ -25,7 +25,7 @@ def export_oars_sittings(from_date: str,
                          to_date: str,
                          school_code: str,
                          authenticator: OARSAuthenticator,
-                         export_dir: str = "."):
+                         pat_sittings_dir: str = "."):
     """Exports completed PAT Sittings and saves them in sittings.json.
 
     Args:
@@ -34,9 +34,9 @@ def export_oars_sittings(from_date: str,
         to_date: The end date to download results for in dd-mm-yyyy format.
         school_code: An OARS school string. E.g. https://oars.acer.edu.au/{your school string}/...
         authenticator: An instance of OARSAuthenticator.
-        export_dir: The directory to save the sittings data in.
+        pat_sittings_dir: The directory to save the sittings data in.
     """
-    export_file = os.path.join(export_dir,
+    export_file = os.path.join(pat_sittings_dir,
                                f"sittings {from_date} {to_date}.json")
 
     s = OARSSession(school_code, authenticator)
@@ -64,19 +64,10 @@ if __name__ == "__main__":
         print("Dates must be formatted as dd-mm-yyyy")
         sys.exit(2)
 
-    from config import (root_dir, oars_folder, pat_sittings_folder,
-                        oars_authenticator, oars_school_code)
+    from config import (pat_sittings_dir, oars_authenticator, oars_school_code)
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    oars_dir = os.path.join(root_dir, oars_folder)
-    if not os.path.exists(oars_dir):
-        os.mkdir(oars_dir)
-    sittings_dir = os.path.join(oars_dir, pat_sittings_folder)
-    if not os.path.exists(sittings_dir):
-        os.mkdir(sittings_dir)
+    if not os.path.exists(pat_sittings_dir):
+        os.makedirs(pat_sittings_dir)
 
     export_oars_sittings(from_date, to_date, oars_school_code,
-                         oars_authenticator, sittings_dir)
+                         oars_authenticator, pat_sittings_dir)

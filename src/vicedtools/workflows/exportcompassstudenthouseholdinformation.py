@@ -18,23 +18,13 @@ import os
 from vicedtools.compass import CompassSession
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, student_details_folder,
-                        student_household_information_csv,
+    from config import (student_household_information_csv,
                         compass_authenticator, compass_school_code)
 
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    student_details_dir = os.path.join(compass_dir, student_details_folder)
-    if not os.path.exists(student_details_dir):
-        os.mkdir(student_details_dir)
-    student_household_information_file = os.path.join(
-        student_details_dir, student_household_information_csv)
+    folder = os.path.dirname(student_household_information_csv)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
     s = CompassSession(compass_school_code, compass_authenticator)
     s.export_student_household_information(
-        file_name=student_household_information_file)
+        file_name=student_household_information_csv)
