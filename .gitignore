@@ -5,6 +5,9 @@ __pycache__/
 # Build
 /build
 
+# vscode
+.vscode
+
 # gwsc specific
 **/gwsc
 **/workflows/config.py
