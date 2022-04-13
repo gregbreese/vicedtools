@@ -152,7 +152,7 @@ class VASSWebDriver(webdriver.Ie):
         handle = find_window(self, "Login To VASS")
         self.switch_to.window(handle)
         self.main_window = self.current_window_handle
-        
+
         # username/password auth
         self.find_element_by_name("username").send_keys(username)
         self.find_element_by_name("password").send_keys(password)
@@ -179,6 +179,14 @@ class VASSWebDriver(webdriver.Ie):
             self.school = m.group('school')
             self.year = m.group('year')
 
+    def execute_click(self, element):
+        self.set_script_timeout(1)
+        try:
+            self.execute_script("arguments[0].click()", element)
+        except TimeoutException:
+            pass
+        self.set_script_timeout(30)  #default
+
     def change_year(self, year: str) -> None:
         """Changes the year in VASS.
         
@@ -186,25 +194,20 @@ class VASSWebDriver(webdriver.Ie):
             year: The year to change to.
         """
         self.switch_to.default_content()
-        self.switch_to.frame('nav')
-        system_admin_menu = self.find_element_by_xpath(
-            "//*[contains(text(),'SYSTEM ADMIN')]")
-        click_with_retry(
-            system_admin_menu, lambda: is_menu_item_displayed(
-                self, "//*[contains(text(),'Change Year')]"))
-        self.switch_to.parent_frame()
+        # ignore tempramental menu and just inject the menu click
         self.switch_to.frame('main')
         current_handles = self.window_handles
-
-        WebDriverWait(self, 20).until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//*[contains(text(),'Change Year')]"))).click()
+        menu_item = self.find_element_by_xpath(
+            "//*[contains(text(),'Change Year')]")
+        self.execute_click(menu_item)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         for handle in self.window_handles:
             self.switch_to.window(handle)
             if self.title == "Change Code/Year":
                 break
-        self.switch_to.frame('VASSFrame')
+        WebDriverWait(self, 10).until(
+            EC.frame_to_be_available_and_switch_to_it((By.NAME, "VASSFrame")))
+        #self.switch_to.frame('VASSFrame')
         year_field = self.find_element_by_name("Year")
         year_field.send_keys(year)
         continue_button = self.find_element_by_xpath("//input[@type='submit']")
@@ -239,7 +242,7 @@ class VASSWebDriver(webdriver.Ie):
                          skiprows=1)
         df.to_csv(file_name, index=False)
 
-    def school_program_summary(self, file_name: str, report: str="vce"):
+    def school_program_summary(self, file_name: str, report: str = "vce"):
         """Saves the school program summary to a csv file.
         
         Args:
@@ -306,22 +309,16 @@ class VASSWebDriver(webdriver.Ie):
         self.switch_to.default_content()
         self.switch_to.frame('main')
         menu_item = self.find_element_by_id("item7_3_1")  # GAT Summary
-        try:
-            self.execute_script("arguments[0].click();", menu_item)
-        except TimeoutException:
-            pass
+        self.execute_click(menu_item)
         current_handles = self.window_handles
         # run report
         WebDriverWait(self, 30).until(
             EC.element_to_be_clickable(
                 (By.XPATH,
-                 "//input[(@name='btnRunReport') and (@type='submit')]"
-                )))
-        button = self.find_element_by_xpath("//input[(@name='btnRunReport') and (@type='submit')]")
-        try:
-            self.execute_script("arguments[0].click();", button)
-        except TimeoutException:
-            pass
+                 "//input[(@name='btnRunReport') and (@type='submit')]")))
+        button = self.find_element_by_xpath(
+            "//input[(@name='btnRunReport') and (@type='submit')]")
+        self.execute_click(button)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         gat_window = find_window(
             self, f"GAT Results Summary for {self.school} - {self.year}")
@@ -329,9 +326,9 @@ class VASSWebDriver(webdriver.Ie):
         students = []
         while (True):
             self.switch_to.frame('VASSFrame')
-            report_data = WebDriverWait(self, 30 ).until(EC.presence_of_element_located((By.ID, 'reportData')))
-            data = report_data.get_attribute(
-                'innerHTML')
+            report_data = WebDriverWait(self, 30).until(
+                EC.presence_of_element_located((By.ID, 'reportData')))
+            data = report_data.get_attribute('innerHTML')
             root = ET.fromstring(data.strip())
             for child in root.iter('student'):
                 students.append(child.attrib)
@@ -366,9 +363,11 @@ class VASSWebDriver(webdriver.Ie):
         # TODO: possibly can open this directly with a javascript click instead of driver click
         self.switch_to.default_content()
         self.switch_to.frame('main')
-        menu_item = self.find_element_by_id(
-            "item7_3_3_2")  # Subject ranked summaries
-        self.execute_script("arguments[0].click();", menu_item)
+        menu_item = WebDriverWait(self, 30).until(
+            EC.presence_of_element_located((By.ID, 'item7_3_3_2')))
+        #menu_item = self.find_element_by_id(
+        #    "item7_3_3_2")  # Subject ranked summaries
+        self.execute_click(menu_item)
         # scrape all of the school scores
         school_scores = []
         cycle_names = [
@@ -382,22 +381,25 @@ class VASSWebDriver(webdriver.Ie):
                 f"//select[@name='CycleNum']/option[text()='{cycle}']").click()
             button = self.find_element_by_xpath(
                 "//input[@value='Run Ranked School Scores Report']")
-            try:
-                self.execute_script("arguments[0].click();", button)
-            except TimeoutException:
-                pass
+            self.execute_click(button)
             handle = find_window(
                 self,
                 f"Ranked School Scores Report for {self.school} - {self.year}")
             self.switch_to.window(handle)
             while (True):
                 self.switch_to.frame("VASSFrame")
-                data = self.find_element_by_id("reportData").get_attribute(
-                    'innerHTML')
-                root = ET.fromstring(data.strip())
-                max_score = root.get("MaxScore")
-                siar = root.get("SIAR")
-                siar_max_score = root.get("SIARMaxScore")
+                for i in range(10):
+                    try:
+                        data = WebDriverWait(self, 30).until(
+                            EC.presence_of_element_located(
+                                (By.ID, 'reportData'))).get_attribute('innerHTML')
+                        root = ET.fromstring(data.strip())
+                        max_score = root.get("MaxScore")
+                        siar = root.get("SIAR")
+                        siar_max_score = root.get("SIARMaxScore")
+                        break
+                    except ET.ParseError:
+                        time.sleep(1)
                 params = {
                     'Max Score': max_score,
                     "SIAR": siar,
