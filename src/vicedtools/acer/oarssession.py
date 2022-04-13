@@ -28,8 +28,8 @@ from urllib.parse import quote
 import pandas as pd
 
 import browser_cookie3
-from acer.ewritesittings import EWriteSittings
 
+from vicedtools.acer.ewritesittings import EWriteSittings
 from vicedtools.acer.patcandidates import PATCandidates
 from vicedtools.acer.patitems import PATItems
 from vicedtools.acer.patsittings import PATSittings

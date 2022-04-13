@@ -21,7 +21,7 @@ import time
 
 import pandas as pd
 
-from vicedtools.acer import score_categoriser
+from vicedtools.acer.patresults import score_categoriser
 from vicedtools.acer.pattests import PATTests
 
 

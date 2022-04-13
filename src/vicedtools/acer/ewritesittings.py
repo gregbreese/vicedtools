@@ -19,7 +19,7 @@ from collections import abc
 from datetime import datetime
 import time
 
-from vicedtools.acer import PATTests
+from vicedtools.acer.pattests import PATTests
 
 
 class EWriteSittings(list):
