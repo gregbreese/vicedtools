@@ -158,14 +158,16 @@ class VASSWebDriver(webdriver.Ie):
         self.find_element_by_name("password").send_keys(password)
         self.find_element_by_xpath("//input[contains(@name, 'Login')]").click()
         # password grid auth
-        elements = WebDriverWait(self, 20).until(
+        elements = WebDriverWait(self, 10).until(
             EC.presence_of_all_elements_located(
                 (By.XPATH,
                  "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")))
         grid_values = {}
-        for e in elements:  # TODO: review this loop as it's very slow
-            grid_values[(e.get_attribute("ColumnNum"),
-                         e.get_attribute("RowNum"))] = e.get_attribute("value")
+        # get_attribute is very slow, so call it once and extract required values
+        for e in elements:
+            element_html = e.get_attribute("outerHTML")
+            grid_values[(element_html[211],
+                        element_html[222])] = element_html[121]
         grid_password_characters = "".join(
             [grid_values[i] for i in grid_password])
         self.find_element_by_xpath("//input[contains(@name, 'PassCode')]"
