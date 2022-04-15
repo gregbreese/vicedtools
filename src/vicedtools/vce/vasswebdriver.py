@@ -30,7 +30,8 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.ie.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select, WebDriverWait
+
 
 
 def click_with_retry(element: WebElement, test: callable[[], bool]) -> bool:
@@ -441,4 +442,75 @@ class VASSWebDriver(webdriver.Ie):
             "result": "Result"
         },
                   inplace=True)
+        df.to_csv(file_name, index=False)
+
+    def predicted_scores(self, file_name: str):
+        """Exports student achieved and predicted scores from Report 17.
+        
+        Uses the currently selected year in VASS even though the Report 17 UI
+        allows for year selection.
+
+        Args:
+            file_name: The csv to save to.
+        """
+        self.switch_to.default_content()
+        self.switch_to.frame('main')
+        menu_item = self.find_element_by_id("item2_6_1")  # Reporting
+        self.execute_click(menu_item)
+        time.sleep(0.5)
+        button = WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.XPATH, "//input[@value='Run VCE Data Service Reporting System']")))
+        current_handles = self.window_handles
+        self.execute_click(button)
+        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
+        handle = find_window(
+            self,
+            f"VCE Data System Reporting for {self.school} - {self.year}")
+        self.switch_to.window(handle)
+        # open report 17
+        self.switch_to.frame('VASSTop')
+        report17 = self.find_element_by_id('btnReport17')
+        self.execute_click(report17)
+        # select year
+        year_select_element = WebDriverWait(self, 5).until(
+            EC.presence_of_element_located((By.ID, 'mainHolder_Report17_ddlYear')))
+        select = Select(year_select_element)
+        select.select_by_visible_text(self.year)
+        # select all subjects, trying doing this with action chains later, might be faster
+        select = Select(self.find_element_by_id('mainHolder_Report17_lstSubjects'))
+        n_subjects = len(select.options)
+        for i in range(n_subjects):
+            select_element = WebDriverWait(self, 5).until(
+                                    EC.presence_of_element_located(
+                                        (By.ID, 'mainHolder_Report17_lstSubjects')))
+            select = Select(select_element)
+            select.select_by_index(i)
+            time.sleep(0.5)
+        button = self.find_element_by_id('mainHolder_btnReport')
+        self.execute_click(button)
+        time.sleep(1)
+        results = []
+        while True:
+            WebDriverWait(self, 10).until(EC.presence_of_element_located((By.ID, 'mainHolder_pnlReport')))
+            page_source = self.page_source
+            # get subject
+            pattern = r'>(?P<subject>[A-Za-z :\(\)]+):&nbsp;&nbsp;Student Results by Study'
+            m = re.search(pattern, page_source)
+            subject = m.group('subject')
+            # get student results
+            pattern = '<TR>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<surname>[A-Za-z-\']+)</TD>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<firstname>[A-Za-z- ]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<yearlevel>[0-9]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<classgroup>[A-Za-z0-9]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<achieved>[0-9.]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<predicted>[0-9.]+)</TD></TR>'
+            ms = re.findall(pattern,page_source)
+            new_results = [{'Year':year, 'Subject':subject, 'Surname':m[0], 'FirstName':m[1], 'YearLevel':m[2], 'ClassGroup':m[3], 'Achieved':m[4], 'Predicted':m[5]} for m in ms]
+            results += new_results
+            # go to next subject
+            next_button = self.find_element_by_name('ctl00$mainHolder$ReportHeader1$btnNext')
+            if next_button.get_attribute('disabled') == 'true':
+                break
+            self.execute_click(next_button)
+            time.sleep(1)
+        close_button = self.find_element_by_id('mainHolder_ReportHeader1_btnClose')
+        self.execute_click(close_button)
+        self.close()
+        self.switch_to.window(self.main_window)
+        df = pd.DataFrame.from_records(results)
         df.to_csv(file_name, index=False)

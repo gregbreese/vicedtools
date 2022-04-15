@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for exporting adjusted score data from VASS."""
+"""Executable script for exporting predicted score data from VASS."""
 
 import argparse
 import os
@@ -20,7 +20,7 @@ from vicedtools.vce import VASSWebDriver
 
 if __name__ == "__main__":
     from config import (vass_username, vass_password, vass_grid_password,
-                        iedriver_path, vass_adjusted_scores_dir)
+                        iedriver_path, vass_predicted_scores_dir)
 
     parser = argparse.ArgumentParser(description='Export VASS student details.')
     parser.add_argument('years',
@@ -28,8 +28,8 @@ if __name__ == "__main__":
                         help='the year to download the scores for.')
     args = parser.parse_args()
 
-    if not os.path.exists(vass_adjusted_scores_dir):
-        os.makedirs(vass_adjusted_scores_dir)
+    if not os.path.exists(vass_predicted_scores_dir):
+        os.makedirs(vass_predicted_scores_dir)
 
     driver = VASSWebDriver(iedriver_path=iedriver_path,
                            username=vass_username,
@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     for year in args.years:
         driver.change_year(year)
-        file_name = os.path.join(vass_adjusted_scores_dir,
-                                 f"adjusted scores {year}.csv")
-        driver.adjusted_scores(file_name)
+        file_name = os.path.join(vass_predicted_scores_dir,
+                                 f"predicted scores {year}.csv")
+        driver.predicted_scores(file_name)
     driver.quit()
