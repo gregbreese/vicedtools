@@ -158,16 +158,12 @@ class VASSWebDriver(webdriver.Ie):
         self.find_element_by_name("password").send_keys(password)
         self.find_element_by_xpath("//input[contains(@name, 'Login')]").click()
         # password grid auth
-        elements = WebDriverWait(self, 10).until(
-            EC.presence_of_all_elements_located(
-                (By.XPATH,
-                 "//table/tbody/tr/td/form/table/tbody/tr[1]/td/input")))
+        WebDriverWait(self, 10).until(EC.presence_of_element_located((By.NAME, 'PASSCODEGRID')))
+        pattern = r'type=input value=(?P<value>[A-Za-z0-9!@#\$%\^&\*~\+=]) name=PASSCODEGRID MaxCol="8" MaxList="64" PassListLength="6" QuadrantNum="[0-9]" ColumnNum="(?P<col>[0-9])" RowNum="(?P<row>[0-9])"'
+        ms = re.findall(pattern, self.page_source)
         grid_values = {}
-        # get_attribute is very slow, so call it once and extract required values
-        for e in elements:
-            element_html = e.get_attribute("outerHTML")
-            grid_values[(element_html[211],
-                        element_html[222])] = element_html[121]
+        for m in ms:
+            grid_values[(m[1], m[2])] = m[0]
         grid_password_characters = "".join(
             [grid_values[i] for i in grid_password])
         self.find_element_by_xpath("//input[contains(@name, 'PassCode')]"
@@ -383,7 +379,9 @@ class VASSWebDriver(webdriver.Ie):
                 f"//select[@name='CycleNum']/option[text()='{cycle}']").click()
             button = self.find_element_by_xpath(
                 "//input[@value='Run Ranked School Scores Report']")
+            current_handles = self.window_handles
             self.execute_click(button)
+            WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
             handle = find_window(
                 self,
                 f"Ranked School Scores Report for {self.school} - {self.year}")
