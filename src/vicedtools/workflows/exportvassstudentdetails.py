@@ -23,7 +23,7 @@ if __name__ == "__main__":
                         iedriver_path, vass_student_details_dir)
 
     parser = argparse.ArgumentParser(description='Export VASS student details.')
-    parser.add_argument('years', 
+    parser.add_argument('years',
                         nargs='+',
                         help='the years to download the details for.')
     args = parser.parse_args()
@@ -39,6 +39,6 @@ if __name__ == "__main__":
         driver.change_year(year)
 
         file_name = os.path.join(vass_student_details_dir,
-                                f"personal details summary {year}.csv")
+                                 f"personal details summary {year}.csv")
         driver.personal_details_summary(file_name)
     driver.quit()

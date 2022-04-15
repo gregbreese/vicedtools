@@ -33,7 +33,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 
-
 def click_with_retry(element: WebElement, test: callable[[], bool]) -> bool:
     """Tries fives times to click a webdriver element, stopping if test passes.
     
@@ -159,7 +158,8 @@ class VASSWebDriver(webdriver.Ie):
         self.find_element_by_name("password").send_keys(password)
         self.find_element_by_xpath("//input[contains(@name, 'Login')]").click()
         # password grid auth
-        WebDriverWait(self, 10).until(EC.presence_of_element_located((By.NAME, 'PASSCODEGRID')))
+        WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.NAME, 'PASSCODEGRID')))
         pattern = r'type=input value=(?P<value>[A-Za-z0-9!@#\$%\^&\*~\+=]) name=PASSCODEGRID MaxCol="8" MaxList="64" PassListLength="6" QuadrantNum="[0-9]" ColumnNum="(?P<col>[0-9])" RowNum="(?P<row>[0-9])"'
         ms = re.findall(pattern, self.page_source)
         grid_values = {}
@@ -382,7 +382,8 @@ class VASSWebDriver(webdriver.Ie):
                 "//input[@value='Run Ranked School Scores Report']")
             current_handles = self.window_handles
             self.execute_click(button)
-            WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
+            WebDriverWait(self,
+                          20).until(EC.new_window_is_opened(current_handles))
             handle = find_window(
                 self,
                 f"Ranked School Scores Report for {self.school} - {self.year}")
@@ -393,7 +394,8 @@ class VASSWebDriver(webdriver.Ie):
                     try:
                         data = WebDriverWait(self, 30).until(
                             EC.presence_of_element_located(
-                                (By.ID, 'reportData'))).get_attribute('innerHTML')
+                                (By.ID,
+                                 'reportData'))).get_attribute('innerHTML')
                         root = ET.fromstring(data.strip())
                         max_score = root.get("MaxScore")
                         siar = root.get("SIAR")
@@ -459,13 +461,14 @@ class VASSWebDriver(webdriver.Ie):
         self.execute_click(menu_item)
         time.sleep(0.5)
         button = WebDriverWait(self, 10).until(
-            EC.presence_of_element_located((By.XPATH, "//input[@value='Run VCE Data Service Reporting System']")))
+            EC.presence_of_element_located(
+                (By.XPATH,
+                 "//input[@value='Run VCE Data Service Reporting System']")))
         current_handles = self.window_handles
         self.execute_click(button)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         handle = find_window(
-            self,
-            f"VCE Data System Reporting for {self.school} - {self.year}")
+            self, f"VCE Data System Reporting for {self.school} - {self.year}")
         self.switch_to.window(handle)
         # open report 17
         self.switch_to.frame('VASSTop')
@@ -473,16 +476,18 @@ class VASSWebDriver(webdriver.Ie):
         self.execute_click(report17)
         # select year
         year_select_element = WebDriverWait(self, 5).until(
-            EC.presence_of_element_located((By.ID, 'mainHolder_Report17_ddlYear')))
+            EC.presence_of_element_located(
+                (By.ID, 'mainHolder_Report17_ddlYear')))
         select = Select(year_select_element)
         select.select_by_visible_text(self.year)
         # select all subjects, trying doing this with action chains later, might be faster
-        select = Select(self.find_element_by_id('mainHolder_Report17_lstSubjects'))
+        select = Select(
+            self.find_element_by_id('mainHolder_Report17_lstSubjects'))
         n_subjects = len(select.options)
         for i in range(n_subjects):
             select_element = WebDriverWait(self, 5).until(
-                                    EC.presence_of_element_located(
-                                        (By.ID, 'mainHolder_Report17_lstSubjects')))
+                EC.presence_of_element_located(
+                    (By.ID, 'mainHolder_Report17_lstSubjects')))
             select = Select(select_element)
             select.select_by_index(i)
             time.sleep(0.5)
@@ -491,7 +496,8 @@ class VASSWebDriver(webdriver.Ie):
         time.sleep(1)
         results = []
         while True:
-            WebDriverWait(self, 10).until(EC.presence_of_element_located((By.ID, 'mainHolder_pnlReport')))
+            WebDriverWait(self, 10).until(
+                EC.presence_of_element_located((By.ID, 'mainHolder_pnlReport')))
             page_source = self.page_source
             # get subject
             pattern = r'>(?P<subject>[A-Za-z :\(\)]+):&nbsp;&nbsp;Student Results by Study'
@@ -499,16 +505,27 @@ class VASSWebDriver(webdriver.Ie):
             subject = m.group('subject')
             # get student results
             pattern = '<TR>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<surname>[A-Za-z-\']+)</TD>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<firstname>[A-Za-z- ]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<yearlevel>[0-9]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<classgroup>[A-Za-z0-9]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<achieved>[0-9.]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<predicted>[0-9.]+)</TD></TR>'
-            ms = re.findall(pattern,page_source)
-            new_results = [{'Year':year, 'Subject':subject, 'Surname':m[0], 'FirstName':m[1], 'YearLevel':m[2], 'ClassGroup':m[3], 'Achieved':m[4], 'Predicted':m[5]} for m in ms]
+            ms = re.findall(pattern, page_source)
+            new_results = [{
+                'Year': year,
+                'Subject': subject,
+                'Surname': m[0],
+                'FirstName': m[1],
+                'YearLevel': m[2],
+                'ClassGroup': m[3],
+                'Achieved': m[4],
+                'Predicted': m[5]
+            } for m in ms]
             results += new_results
             # go to next subject
-            next_button = self.find_element_by_name('ctl00$mainHolder$ReportHeader1$btnNext')
+            next_button = self.find_element_by_name(
+                'ctl00$mainHolder$ReportHeader1$btnNext')
             if next_button.get_attribute('disabled') == 'true':
                 break
             self.execute_click(next_button)
             time.sleep(1)
-        close_button = self.find_element_by_id('mainHolder_ReportHeader1_btnClose')
+        close_button = self.find_element_by_id(
+            'mainHolder_ReportHeader1_btnClose')
         self.execute_click(close_button)
         self.close()
         self.switch_to.window(self.main_window)
