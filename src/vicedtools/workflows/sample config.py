@@ -24,7 +24,7 @@ from pandas.api.types import CategoricalDtype
 root_dir = "."
 
 # vass
-iedriver_path = "./IEDriverServer.exe" # download from https://www.selenium.dev/documentation/ie_driver_server/
+iedriver_path = "./IEDriverServer.exe"  # download from https://www.selenium.dev/documentation/ie_driver_server/
 vass_grid_password = [('1', '1'), ('8', '1'), ('4', '5'), ('5', '5'),
                       ('1', '8'), ('8', '8')]
 vass_username = ""
@@ -40,6 +40,7 @@ vass_external_scores_dir = os.path.join(vass_dir, "external scores")
 
 # compass
 from vicedtools.compass.compasssession import CompassConfigAuthenticator
+
 compass_username = ""
 compass_password = """"""
 compass_authenticator = CompassConfigAuthenticator(compass_username,
@@ -47,20 +48,16 @@ compass_authenticator = CompassConfigAuthenticator(compass_username,
 compass_school_code = "gwsc-vic"
 compass_dir = os.path.join(root_dir, "compass exports")
 # student details export file
-student_details_csv = os.path.join(compass_dir,
-                                   "student details",
+student_details_csv = os.path.join(compass_dir, "student details",
                                    "student details.csv")
 # student household information file
 student_household_information_csv = os.path.join(
-    compass_dir, "student details",
-    "student household information.csv")
+    compass_dir, "student details", "student household information.csv")
 # SDS export (has class enrolment data)
 sds_dir = os.path.join(compass_dir, "SDS export")
 # folders for reports/progress report/learning task exports
-progress_reports_dir = os.path.join(compass_dir,
-                                    "progress reports")
-learning_tasks_dir = os.path.join(compass_dir,
-                                  "learning tasks")
+progress_reports_dir = os.path.join(compass_dir, "progress reports")
+learning_tasks_dir = os.path.join(compass_dir, "learning tasks")
 reports_dir = os.path.join(compass_dir, "reports")
 # metadata on academic groups (e.g. timetable years), report cycles and progress report cycles
 academic_groups_json = os.path.join(compass_dir, "academic groups.json")
@@ -69,8 +66,7 @@ progress_report_cycles_json = os.path.join(compass_dir,
 report_cycles_json = os.path.join(compass_dir, "report cycles.json")
 # locations for saving files of combined report data
 reports_file = os.path.join(compass_dir, "reports.csv")
-reports_summary_file = os.path.join(compass_dir,
-                                    "reports_summary.csv")
+reports_summary_file = os.path.join(compass_dir, "reports_summary.csv")
 
 # naplan
 # folder for saving NAPLAN csv exports
@@ -80,6 +76,7 @@ naplan_outcomes_dir = os.path.join(root_dir, "naplan")
 oars_username = ""
 oars_password = """"""
 from vicedtools.acer import OARSConfigAuthenaticator
+
 oars_authenticator = OARSConfigAuthenaticator(oars_username, oars_password)
 oars_school_code = ""
 # sub-folder for all OARS exports
@@ -108,9 +105,9 @@ vce_study_scores_table_id = "abc-school-data.vce_data.study_scores"
 vce_adjusted_scores_table_id = "abc-school-data.vce_data.adjusted_scores"
 bucket = "abc-school-bucket"
 
-# school specific 
+# school specific
 
-# A CSV with SubjectCode, SubjectName, LearningArea columns with metadata 
+# A CSV with SubjectCode, SubjectName, LearningArea columns with metadata
 # for each subject in the school. Used for adding Learning Area data to
 # report summaries.
 subjects_file = "./subjects metadata.csv"
@@ -120,8 +117,7 @@ subjects_file = "./subjects metadata.csv"
 # but you want to treat them the same.
 replace_values = {
     "SubjectName": {
-        "11 Computing":
-            "11 Applied Computing"
+        "11 Computing": "11 Applied Computing"
     },
     "Result": {
         "Needs Improvement": "Below Standard",
@@ -143,8 +139,7 @@ grade_order = [
     "Below Standard", "Satisfactory", "Sometimes", "Competent", "Good",
     "Very Good", "Usually", "Excellent", "Consistently", "Outstanding"
 ]
-results_dtype = CategoricalDtype(categories=grade_order,
-                                              ordered=True)
+results_dtype = CategoricalDtype(categories=grade_order, ordered=True)
 
 # The text names for progress report times to use as work habits.
 progress_report_items = [
@@ -152,6 +147,7 @@ progress_report_items = [
     "Ready to learn", "Respectfully works/communicates with others",
     "Uses feedback to improve"
 ]
+
 
 def learning_tasks_result_mapper(result: str) -> float:
     """Maps report grade labels to a score."""
@@ -173,6 +169,7 @@ def learning_tasks_result_mapper(result: str) -> float:
         return 1.0
     return float('nan')
 
+
 def work_habits_result_mapper(result: str) -> float:
     """Maps work habit grade labels to a score."""
     if result == "Unsatisfactory":
@@ -186,6 +183,7 @@ def work_habits_result_mapper(result: str) -> float:
     if result == "Excellent":
         return 1.0
     return np.nan
+
 
 def progress_report_result_mapper(result: str) -> float:
     """Maps progress report grade labels to a score."""
