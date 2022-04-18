@@ -456,8 +456,10 @@ class VASSWebDriver(webdriver.Ie):
             file_name: The csv to save to.
         """
         self.switch_to.default_content()
-        self.switch_to.frame('main')
-        menu_item = self.find_element_by_id("item2_6_1")  # Reporting
+        WebDriverWait(self, 10).until(
+            EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
+        menu_item = WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.ID, "item2_6_1")))
         self.execute_click(menu_item)
         time.sleep(0.5)
         button = WebDriverWait(self, 10).until(
@@ -481,8 +483,11 @@ class VASSWebDriver(webdriver.Ie):
         select = Select(year_select_element)
         select.select_by_visible_text(self.year)
         # select all subjects, trying doing this with action chains later, might be faster
-        select = Select(
-            self.find_element_by_id('mainHolder_Report17_lstSubjects'))
+        time.sleep(0.5)
+        subject_select_element = WebDriverWait(self, 5).until(
+            EC.presence_of_element_located(
+                (By.ID, 'mainHolder_Report17_lstSubjects')))
+        select = Select(subject_select_element)
         n_subjects = len(select.options)
         for i in range(n_subjects):
             select_element = WebDriverWait(self, 5).until(
@@ -507,7 +512,7 @@ class VASSWebDriver(webdriver.Ie):
             pattern = '<TR>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<surname>[A-Za-z-\']+)</TD>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<firstname>[A-Za-z- ]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<yearlevel>[0-9]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<classgroup>[A-Za-z0-9]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<achieved>[0-9.]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<predicted>[0-9.]+)</TD></TR>'
             ms = re.findall(pattern, page_source)
             new_results = [{
-                'Year': year,
+                'Year': self.year,
                 'Subject': subject,
                 'Surname': m[0],
                 'FirstName': m[1],
