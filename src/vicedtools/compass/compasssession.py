@@ -148,12 +148,20 @@ class CompassSession(requests.sessions.Session):
         self.headers.update(headers)
 
         request_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/QueueTask"
-        r = self.post(request_url, data=request_payload)
-        data = r.json()
-        if 'd' in data:
-            guid = data['d']
-        else:
-            raise ValueError("Unexpected Compass response.")
+        max_attempts = 5
+        for i in range(max_attempts):
+            r = self.post(request_url, data=request_payload)
+            data = r.json()
+            if 'd' in data:
+                guid = data['d']
+                break
+            else:
+                if i < max_attempts - 1:
+                    time.sleep(5)
+                    print(f"File request error. Retrying {max_attempts - i - 1} more times.")
+                else:
+                    print('File request failed.')
+                    return ""
         # poll for status
         poll_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/PollTaskStatus"
         payload = {"guid": guid}
