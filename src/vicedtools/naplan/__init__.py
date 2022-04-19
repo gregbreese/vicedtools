@@ -12,4 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from vicedtools.naplan.dataservicesession import (
+    DataserviceSession, DataserviceAuthenticator,
+    DataServiceConfigAuthenticator, DataserviceAuthenticationError)
 from vicedtools.naplan.sssrdata import SSSRdata
