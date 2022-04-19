@@ -8,12 +8,12 @@ Subpackages
    :maxdepth: 4
 
    vicedtools.acer
-   vicedtools.automation
    vicedtools.compass
-   vicedtools.gc
-   vicedtools.gwsc
+   vicedtools.gcp
    vicedtools.naplan
    vicedtools.vce
+   vicedtools.workflows
+
 
 Submodules
 ----------

@@ -239,6 +239,11 @@ VASS completed.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="vicedtools.vce.vasswebdriver.VASSWebDriver.execute_click">
+<code class="sig-name descname">execute_click</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">element</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.execute_click" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="vicedtools.vce.vasswebdriver.VASSWebDriver.external_results">
 <code class="sig-name descname">external_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.external_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the student external results (study scores) to a csv.</p>
@@ -267,6 +272,19 @@ VASS completed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>file_name</strong> – The file name to save the data to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.vce.vasswebdriver.VASSWebDriver.predicted_scores">
+<code class="sig-name descname">predicted_scores</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.predicted_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports student achieved and predicted scores from Report 17.</p>
+<p>Uses the currently selected year in VASS even though the Report 17 UI
+allows for year selection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_name</strong> – The csv to save to.</p>
 </dd>
 </dl>
 </dd></dl>

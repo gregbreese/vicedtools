@@ -199,19 +199,6 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator">
-<em class="property">class </em><code class="sig-prename descclassname">vicedtools.compass.compasswebdriver.</code><code class="sig-name descname">CompassBrowserCookieAuthenticator</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">vicedtools.compass.compasswebdriver.CompassAuthenticator</span></code></a></p>
-<p>A Compass Authenticator that gets login details from local Firefox cookies.</p>
-<dl class="py method">
-<dt id="vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator.authenticate">
-<code class="sig-name descname">authenticate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassBrowserCookieAuthenticator.authenticate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Authenticates the given webdriver with Compass.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="vicedtools.compass.compasswebdriver.CompassCLIAuthenticator">
 <em class="property">class </em><code class="sig-prename descclassname">vicedtools.compass.compasswebdriver.</code><code class="sig-name descname">CompassCLIAuthenticator</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassCLIAuthenticator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">vicedtools.compass.compasswebdriver.CompassAuthenticator</span></code></a></p>
@@ -236,6 +223,19 @@
 <em class="property">exception </em><code class="sig-prename descclassname">vicedtools.compass.compasswebdriver.</code><code class="sig-name descname">CompassElementSelectionError</code><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassElementSelectionError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Raised when an expected user interface element is not found.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.compass.compasswebdriver.</code><code class="sig-name descname">CompassFirefoxCookieAuthenticator</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">vicedtools.compass.compasswebdriver.CompassAuthenticator</span></code></a></p>
+<p>A Compass Authenticator that gets login details from local Firefox cookies.</p>
+<dl class="py method">
+<dt id="vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator.authenticate">
+<code class="sig-name descname">authenticate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">driver</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates the given webdriver with Compass.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -301,6 +301,23 @@ access.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list of the (year,name) pairs for each report cyle.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_all_reports">
+<code class="sig-name descname">export_all_reports</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">learning_tasks_dir</span><span class="o">=</span><span class="default_value">'./learning tasks'</span></em>, <em class="sig-param"><span class="n">reports_dir</span><span class="o">=</span><span class="default_value">'./reports'</span></em>, <em class="sig-param"><span class="n">progress_reports_dir</span><span class="o">=</span><span class="default_value">'./progress reports'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_all_reports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports available reports data from Compass.</p>
+<p>Attempts to download all learning task, report and progress report data
+from Compass. Will skip already downloaded data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>learning_tasks_dir</strong> – The directory to save learning tasks data to</p></li>
+<li><p><strong>reports_dir</strong> – The directory to save reports data to</p></li>
+<li><p><strong>progress_reports_dir</strong> – THe directory to save progress reports data to</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -399,6 +416,18 @@ house. It includes students who have exited.</p>
 <li><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p></li>
 <li><p><strong>detailed</strong> – Whether to perform a detailed student details export.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_household_information">
+<code class="sig-name descname">export_student_household_information</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">download_path</span><span class="o">=</span><span class="default_value">'student household information.csv'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_household_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports student household information from Compass.</p>
+<p>The basic export includes student address, parent names and parent contact details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p>
 </dd>
 </dl>
 </dd></dl>

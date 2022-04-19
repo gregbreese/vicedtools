@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>vicedtools.automation package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.gcp package &mdash; VicEdTools 0.0.5 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="vicedtools.compass package" href="vicedtools.compass.html" />
-    <link rel="prev" title="vicedtools.acer package" href="vicedtools.acer.html" /> 
+    <link rel="next" title="vicedtools.naplan package" href="vicedtools.naplan.html" />
+    <link rel="prev" title="vicedtools.compass package" href="vicedtools.compass.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,12 +91,11 @@
 <li class="toctree-l2 current"><a class="reference internal" href="vicedtools.html">vicedtools package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="vicedtools.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.acer.html">vicedtools.acer package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.automation package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.gc.html">vicedtools.gc package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.gwsc.html">vicedtools.gwsc package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.gcp package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.naplan.html">vicedtools.naplan package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
@@ -158,13 +157,13 @@
         
           <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
         
-      <li>vicedtools.automation package</li>
+      <li>vicedtools.gcp package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/vicedtools.automation.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/vicedtools.gcp.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -177,22 +176,62 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="vicedtools-automation-package">
-<h1>vicedtools.automation package<a class="headerlink" href="#vicedtools-automation-package" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="vicedtools-gcp-package">
+<h1>vicedtools.gcp package<a class="headerlink" href="#vicedtools-gcp-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="vicedtools-automation-compass-module">
-<h2>vicedtools.automation.compass module<a class="headerlink" href="#vicedtools-automation-compass-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-vicedtools.gcp.api">
+<span id="vicedtools-gcp-api-module"></span><h2>vicedtools.gcp.api module<a class="headerlink" href="#module-vicedtools.gcp.api" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for uploading data to GCP.</p>
+<dl class="py function">
+<dt id="vicedtools.gcp.api.upload_csv_to_bigquery">
+<code class="sig-prename descclassname">vicedtools.gcp.api.</code><code class="sig-name descname">upload_csv_to_bigquery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source_file</span></em>, <em class="sig-param"><span class="n">schema</span></em>, <em class="sig-param"><span class="n">clustering_fields</span></em>, <em class="sig-param"><span class="n">table_id</span></em>, <em class="sig-param"><span class="n">bucket_name</span></em>, <em class="sig-param"><span class="n">blob_name</span><span class="o">=</span><span class="default_value">'temp.csv'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gcp.api.upload_csv_to_bigquery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads a CSV to BigQuery via GSC.</p>
+<p>Uploads the file to GSC, imports it into BigQuery and then deletes the file
+from GSC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_file</strong> – The path to the csv file to import.</p></li>
+<li><p><strong>schema</strong> – The BigQuery schema to use.</p></li>
+<li><p><strong>clustering_fields</strong> – A list of fields to use for clustering.</p></li>
+<li><p><strong>table_id</strong> – The BigQuery table_id to use.</p></li>
+<li><p><strong>bucket_name</strong> – The name of the GSC bucket to use as an intermediary for the
+import.</p></li>
+<li><p><strong>blob_name</strong> – The name of the GSC blob to use when uploading the source
+file to GSC.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="vicedtools-automation-gcp-module">
-<h2>vicedtools.automation.gcp module<a class="headerlink" href="#vicedtools-automation-gcp-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-vicedtools.gcp.format">
+<span id="vicedtools-gcp-format-module"></span><h2>vicedtools.gcp.format module<a class="headerlink" href="#module-vicedtools.gcp.format" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for formatting data for upload to GC.</p>
+<dl class="py function">
+<dt id="vicedtools.gcp.format.create_student_details_gc_csv">
+<code class="sig-prename descclassname">vicedtools.gcp.format.</code><code class="sig-name descname">create_student_details_gc_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">compass_student_details_file</span></em>, <em class="sig-param"><span class="n">save_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gcp.format.create_student_details_gc_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a csv for uploading to GC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compass_student_details</strong> – a student details export csv from Compass. Can be
+downloaded using vicedtools.compass.export_student_details or directly
+from <a class="reference external" href="https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37">https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37</a></p></li>
+<li><p><strong>save_path</strong> – the path to save the csv</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="vicedtools-automation-gcpschema-module">
-<h2>vicedtools.automation.gcpschema module<a class="headerlink" href="#vicedtools-automation-gcpschema-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-vicedtools.gcp.schema">
+<span id="vicedtools-gcp-schema-module"></span><h2>vicedtools.gcp.schema module<a class="headerlink" href="#module-vicedtools.gcp.schema" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-vicedtools.gcp">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-vicedtools.gcp" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -202,8 +241,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="vicedtools.compass.html" class="btn btn-neutral float-right" title="vicedtools.compass package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="vicedtools.acer.html" class="btn btn-neutral float-left" title="vicedtools.acer package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vicedtools.naplan.html" class="btn btn-neutral float-right" title="vicedtools.naplan package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vicedtools.compass.html" class="btn btn-neutral float-left" title="vicedtools.compass package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

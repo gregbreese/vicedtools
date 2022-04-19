@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vicedtools
-Version: 0.0.5.1
+Version: 0.0.6
 Summary: A collection of tools for school data in Victorian schools.
 Home-page: https://github.com/gregbreese/vicedtools
 Author: Greg Breese
@@ -28,5 +28,7 @@ Currently includes tools for:
 - extracting NAPLAN data from the SSSR data.js file
 - exporting data from VCAA's VASS site
 - uploading data to Google Cloud storage and BigQuery for use with Data Studio
+
+See workflows/sample_config.py for a sample config file.
 
 
