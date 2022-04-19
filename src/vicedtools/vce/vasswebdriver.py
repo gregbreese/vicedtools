@@ -312,7 +312,7 @@ class VASSWebDriver(webdriver.Ie):
         WebDriverWait(self, 10).until(
             EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
         menu_item = WebDriverWait(self, 10).until(
-            EC.presence_of_element_located((By.ID, "item7_3_1"))) # GAT Summary
+            EC.presence_of_element_located((By.ID, "item7_3_1")))  # GAT Summary
         self.execute_click(menu_item)
         current_handles = self.window_handles
         # run report
@@ -320,7 +320,7 @@ class VASSWebDriver(webdriver.Ie):
             button = WebDriverWait(self, 10).until(
                 EC.presence_of_element_located(
                     (By.XPATH,
-                    "//input[(@name='btnRunReport') and (@type='submit')]")))
+                     "//input[(@name='btnRunReport') and (@type='submit')]")))
         except TimeoutException:
             self.switch_to.default_content()
             WebDriverWait(self, 10).until(
@@ -330,7 +330,7 @@ class VASSWebDriver(webdriver.Ie):
             button = WebDriverWait(self, 10).until(
                 EC.presence_of_element_located(
                     (By.XPATH,
-                    "//input[(@name='btnRunReport') and (@type='submit')]")))
+                     "//input[(@name='btnRunReport') and (@type='submit')]")))
         self.execute_click(button)
         time.sleep(0.5)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
@@ -346,7 +346,7 @@ class VASSWebDriver(webdriver.Ie):
             try:
                 root = ET.fromstring(data.strip())
             except ET.ParseError:
-                time.sleep(2) # try giving page more time to load
+                time.sleep(2)  # try giving page more time to load
                 report_data = WebDriverWait(self, 30).until(
                     EC.presence_of_element_located((By.ID, 'reportData')))
                 data = report_data.get_attribute('innerHTML')
@@ -398,7 +398,8 @@ class VASSWebDriver(webdriver.Ie):
         ]
         for cycle in cycle_names:
             self.switch_to.default_content()
-            self.switch_to.frame('main')
+            WebDriverWait(self, 10).until(
+                EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
             self.find_element_by_xpath(
                 f"//select[@name='CycleNum']/option[text()='{cycle}']").click()
             button = self.find_element_by_xpath(
@@ -406,7 +407,7 @@ class VASSWebDriver(webdriver.Ie):
             current_handles = self.window_handles
             self.execute_click(button)
             WebDriverWait(self,
-                          20).until(EC.new_window_is_opened(current_handles))
+                          10).until(EC.new_window_is_opened(current_handles))
             handle = find_window(
                 self,
                 f"Ranked School Scores Report for {self.school} - {self.year}")
@@ -426,6 +427,7 @@ class VASSWebDriver(webdriver.Ie):
                         break
                     except ET.ParseError:
                         time.sleep(1)
+                print(data)
                 params = {
                     'Max Score': max_score,
                     "SIAR": siar,
@@ -446,28 +448,30 @@ class VASSWebDriver(webdriver.Ie):
             self.switch_to.parent_frame()
             self.switch_to.frame('VASSTop')
             self.find_element_by_id("idClose").click()
+            time.sleep(1)
             self.switch_to.window(self.main_window)
-        df = pd.DataFrame(school_scores)
-        subject_names = {}
-        unit_names = df["Unit"]
-        pattern = "(?P<code>[A-Z]{2}[0-9]{2})[34] - (?P<name>[A-Z :\(\)]+) [34]"
-        for unit in unit_names:
-            m = re.match(pattern, unit)
-            if m:
-                subject_names[unit] = m.group('name')
-        df["Unit Code"] = df["Unit"].str[:4]
-        df["Unit Name"] = df["Unit"].map(subject_names)
-        #df.drop(["Unit"], inplace=True)
-        df.drop_duplicates(inplace=True)
-        df.rename(columns={
-            "CandNum": "Student Number",
-            "name": "Student Name",
-            "focus_area": "Focus Area",
-            "class_cd": "Class",
-            "result": "Result"
-        },
-                  inplace=True)
-        df.to_csv(file_name, index=False)
+        if school_scores:
+            df = pd.DataFrame(school_scores)
+            subject_names = {}
+            unit_names = df["Unit"]
+            pattern = "(?P<code>[A-Z]{2}[0-9]{2})[34] - (?P<name>[A-Z :\(\)]+) [34]"
+            for unit in unit_names:
+                m = re.match(pattern, unit)
+                if m:
+                    subject_names[unit] = m.group('name')
+            df["Unit Code"] = df["Unit"].str[:4]
+            df["Unit Name"] = df["Unit"].map(subject_names)
+            #df.drop(["Unit"], inplace=True)
+            df.drop_duplicates(inplace=True)
+            df.rename(columns={
+                "CandNum": "Student Number",
+                "name": "Student Name",
+                "focus_area": "Focus Area",
+                "class_cd": "Class",
+                "result": "Result"
+            },
+                      inplace=True)
+            df.to_csv(file_name, index=False)
 
     def predicted_scores(self, file_name: str):
         """Exports student achieved and predicted scores from Report 17.
