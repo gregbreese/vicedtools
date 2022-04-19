@@ -158,7 +158,9 @@ class CompassSession(requests.sessions.Session):
             else:
                 if i < max_attempts - 1:
                     time.sleep(5)
-                    print(f"File request error. Retrying {max_attempts - i - 1} more times.")
+                    print(
+                        f"File request error. Retrying {max_attempts - i - 1} more times."
+                    )
                 else:
                     print('File request failed.')
                     return ""
