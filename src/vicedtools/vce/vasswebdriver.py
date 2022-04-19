@@ -194,11 +194,13 @@ class VASSWebDriver(webdriver.Ie):
         """
         self.switch_to.default_content()
         # ignore tempramental menu and just inject the menu click
-        self.switch_to.frame('main')
+        WebDriverWait(self, 10).until(
+            EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
         current_handles = self.window_handles
         menu_item = self.find_element_by_xpath(
             "//*[contains(text(),'Change Year')]")
         self.execute_click(menu_item)
+        time.sleep(0.5)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         for handle in self.window_handles:
             self.switch_to.window(handle)
@@ -211,6 +213,7 @@ class VASSWebDriver(webdriver.Ie):
         year_field.send_keys(year)
         continue_button = self.find_element_by_xpath("//input[@type='submit']")
         continue_button.click()
+        time.sleep(1)
         self.switch_to.window(self.main_window)
         self.year = year
 
@@ -306,18 +309,30 @@ class VASSWebDriver(webdriver.Ie):
             file_name: The file name for the csv to save the data to.
         """
         self.switch_to.default_content()
-        self.switch_to.frame('main')
-        menu_item = self.find_element_by_id("item7_3_1")  # GAT Summary
+        WebDriverWait(self, 10).until(
+            EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
+        menu_item = WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.ID, "item7_3_1"))) # GAT Summary
         self.execute_click(menu_item)
         current_handles = self.window_handles
         # run report
-        WebDriverWait(self, 30).until(
-            EC.element_to_be_clickable(
-                (By.XPATH,
-                 "//input[(@name='btnRunReport') and (@type='submit')]")))
-        button = self.find_element_by_xpath(
-            "//input[(@name='btnRunReport') and (@type='submit')]")
+        try:
+            button = WebDriverWait(self, 10).until(
+                EC.presence_of_element_located(
+                    (By.XPATH,
+                    "//input[(@name='btnRunReport') and (@type='submit')]")))
+        except TimeoutException:
+            self.switch_to.default_content()
+            WebDriverWait(self, 10).until(
+                EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
+            menu_item = self.find_element_by_id("item7_3_1")
+            self.execute_click(menu_item)
+            button = WebDriverWait(self, 10).until(
+                EC.presence_of_element_located(
+                    (By.XPATH,
+                    "//input[(@name='btnRunReport') and (@type='submit')]")))
         self.execute_click(button)
+        time.sleep(0.5)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         gat_window = find_window(
             self, f"GAT Results Summary for {self.school} - {self.year}")
@@ -328,7 +343,14 @@ class VASSWebDriver(webdriver.Ie):
             report_data = WebDriverWait(self, 30).until(
                 EC.presence_of_element_located((By.ID, 'reportData')))
             data = report_data.get_attribute('innerHTML')
-            root = ET.fromstring(data.strip())
+            try:
+                root = ET.fromstring(data.strip())
+            except ET.ParseError:
+                time.sleep(2) # try giving page more time to load
+                report_data = WebDriverWait(self, 30).until(
+                    EC.presence_of_element_located((By.ID, 'reportData')))
+                data = report_data.get_attribute('innerHTML')
+                root = ET.fromstring(data.strip())
             for child in root.iter('student'):
                 students.append(child.attrib)
             self.switch_to.parent_frame()
@@ -361,7 +383,8 @@ class VASSWebDriver(webdriver.Ie):
         # open ranked school scores report page
         # TODO: possibly can open this directly with a javascript click instead of driver click
         self.switch_to.default_content()
-        self.switch_to.frame('main')
+        WebDriverWait(self, 10).until(
+            EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
         menu_item = WebDriverWait(self, 30).until(
             EC.presence_of_element_located((By.ID, 'item7_3_3_2')))
         #menu_item = self.find_element_by_id(
