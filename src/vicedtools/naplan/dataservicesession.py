@@ -120,9 +120,9 @@ class DataserviceSession(requests.sessions.Session):
             for content in contents:
                 parts = content.split('.')
                 new_filename = f"{year} {parts[0]}.{parts[1]}"
-                info = zip_ref.get_info(content)
+                info = zip_ref.getinfo(content)
                 info.filename = new_filename
-                zip_ref.extract(new_filename, path=save_dir)
+                zip_ref.extract(info, path=save_dir)
         os.remove(temp_zip)
 
     def export_sssr(self, year: str, save_dir: str):

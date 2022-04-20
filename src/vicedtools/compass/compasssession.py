@@ -350,9 +350,9 @@ class CompassSession(requests.sessions.Session):
                     today = datetime.today().strftime('%Y-%m-%d')
                     parts = content.split('.')
                     new_filename = parts[0] + " " + today + "." + parts[1]
-                    info = zip_ref.get_info(content)
+                    info = zip_ref.getinfo(content)
                     info.filename = new_filename
-                    zip_ref.extract(new_filename, path=save_dir)
+                    zip_ref.extract(info, path=save_dir)
                 else:
                     zip_ref.extract(content, path=save_dir)
         os.remove(archive_file_name)
