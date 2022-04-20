@@ -15,6 +15,7 @@
 
 import pandas as pd
 
+
 def create_student_details_gc_csv(compass_student_details_file: str,
                                   save_path: str) -> None:
     '''Creates a csv for uploading to GC.

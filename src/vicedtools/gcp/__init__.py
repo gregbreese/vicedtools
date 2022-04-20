@@ -14,19 +14,11 @@
 
 from vicedtools.gcp.api import upload_csv_to_bigquery
 from vicedtools.gcp.format import create_student_details_gc_csv
-from vicedtools.gcp.schema import (STUDENT_DETAILS_SCHEMA, 
-                            STUDENT_DETAILS_CLUSTERING_FIELDS, 
-                            STUDENT_ENROLMENTS_SCHEMA,
-                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
-                            REPORTS_SCHEMA,
-                            REPORTS_CLUSTERING_FIELDS,
-                            REPORTS_SUMMARY_SCHEMA,
-                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
-                            NAPLAN_OUTCOMES_SCHEMA,
-                            NAPLAN_OUTCOMES_CLUSTERING_FIELDS,
-                            GAT_SCHEMA,
-                            GAT_CLUSTERING_FIELDS,
-                            PAT_SCORES_SCHEMA,
-                            PAT_SCORES_CLUSTERING_FIELDS,
-                            PAT_MOST_RECENT_SCHEMA,
-                            PAT_MOST_RECENT_CLUSTERING_FIELDS)
+from vicedtools.gcp.schema import (
+    STUDENT_DETAILS_SCHEMA, STUDENT_DETAILS_CLUSTERING_FIELDS,
+    STUDENT_ENROLMENTS_SCHEMA, STUDENT_ENROLMENTS_CLUSTERING_FIELDS,
+    REPORTS_SCHEMA, REPORTS_CLUSTERING_FIELDS, REPORTS_SUMMARY_SCHEMA,
+    REPORTS_SUMMARY_CLUSTERING_FIELDS, NAPLAN_OUTCOMES_SCHEMA,
+    NAPLAN_OUTCOMES_CLUSTERING_FIELDS, GAT_SCHEMA, GAT_CLUSTERING_FIELDS,
+    PAT_SCORES_SCHEMA, PAT_SCORES_CLUSTERING_FIELDS, PAT_MOST_RECENT_SCHEMA,
+    PAT_MOST_RECENT_CLUSTERING_FIELDS)

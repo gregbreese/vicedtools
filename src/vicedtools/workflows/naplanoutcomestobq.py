@@ -35,7 +35,7 @@ def naplan_outcomes_to_bq(table_id: str,
         combined_file: If provided, save a csv containing the merged outcomes
             to this filename.
     """
-    files = glob.glob(os.path.join(naplan_outcomes_dir,"*Outcome*.csv"))
+    files = glob.glob(os.path.join(naplan_outcomes_dir, "*Outcome*.csv"))
     columns = [
         "APS Year", "Reporting Test", "First Name", "Second Name", "Surname",
         "READING_nb", "WRITING_nb", "SPELLING_nb", "NUMERACY_nb",
@@ -61,7 +61,11 @@ def naplan_outcomes_to_bq(table_id: str,
 
 
 if __name__ == "__main__":
-    from config import (naplan_dir, naplan_outcomes_dir, naplan_outcomes_table_id, bucket)
+    from config import (naplan_dir, naplan_outcomes_dir,
+                        naplan_outcomes_table_id, bucket)
 
     combined_file = os.path.join(naplan_dir, "NAPLAN combined.csv")
-    naplan_outcomes_to_bq(naplan_outcomes_table_id, bucket, naplan_outcomes_dir, combined_file=combined_file)
+    naplan_outcomes_to_bq(naplan_outcomes_table_id,
+                          bucket,
+                          naplan_outcomes_dir,
+                          combined_file=combined_file)

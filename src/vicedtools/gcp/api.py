@@ -18,12 +18,13 @@ from __future__ import annotations
 from google.cloud import storage
 from google.cloud import bigquery
 
+
 def upload_csv_to_bigquery(source_file: str,
-                       schema: dict[bigquery.SchemaField],
-                       clustering_fields: list[str],
-                       table_id: str,
-                       bucket_name: str,
-                       blob_name: str = "temp.csv") -> None:
+                           schema: dict[bigquery.SchemaField],
+                           clustering_fields: list[str],
+                           table_id: str,
+                           bucket_name: str,
+                           blob_name: str = "temp.csv") -> None:
     """Uploads a CSV to BigQuery via GSC.
 
     Uploads the file to GSC, imports it into BigQuery and then deletes the file
@@ -54,8 +55,9 @@ def upload_csv_to_bigquery(source_file: str,
         clustering_fields=clustering_fields,
         source_format=bigquery.SourceFormat.CSV,
         write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE)
-    load_job = bq_client.load_table_from_uri(
-        uri, table_id, job_config=job_config)
+    load_job = bq_client.load_table_from_uri(uri,
+                                             table_id,
+                                             job_config=job_config)
     load_job.result()  # Waits for the job to complete.
     destination_table = bq_client.get_table(table_id)
     print(table_id)

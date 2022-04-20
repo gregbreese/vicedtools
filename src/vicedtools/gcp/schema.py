@@ -23,7 +23,7 @@ STUDENT_DETAILS_SCHEMA = [
     bigquery.SchemaField("YearLevel", "STRING"),
     bigquery.SchemaField("HomeGroup", "STRING"),
     bigquery.SchemaField("Status", "STRING"),
-    bigquery.SchemaField("DateOfBirth","DATE")
+    bigquery.SchemaField("DateOfBirth", "DATE")
 ]
 STUDENT_DETAILS_CLUSTERING_FIELDS = [
     "Status", "StudentCode", "YearLevel", "Gender"
@@ -32,11 +32,9 @@ STUDENT_DETAILS_CLUSTERING_FIELDS = [
 STUDENT_ENROLMENTS_SCHEMA = [
     bigquery.SchemaField("ClassGroupCode", "STRING"),
     bigquery.SchemaField("StudentCode", "STRING")
-    ]
-
-STUDENT_ENROLMENTS_CLUSTERING_FIELDS = [
-    "ClassGroupCode", "StudentCode"
 ]
+
+STUDENT_ENROLMENTS_CLUSTERING_FIELDS = ["ClassGroupCode", "StudentCode"]
 
 REPORTS_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),
@@ -51,7 +49,7 @@ REPORTS_SCHEMA = [
     bigquery.SchemaField("LearningArea", "STRING"),
     bigquery.SchemaField("TeacherCode", "STRING")
 ]
-REPORTS_CLUSTERING_FIELDS = ["StudentCode", "Type", "LearningArea", "Time" ]
+REPORTS_CLUSTERING_FIELDS = ["StudentCode", "Type", "LearningArea", "Time"]
 
 REPORTS_SUMMARY_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),
@@ -88,7 +86,9 @@ NAPLAN_OUTCOMES_SCHEMA = [
     bigquery.SchemaField("Reporting_School_Name", "STRING"),
     bigquery.SchemaField("Cases_ID", "STRING"),
 ]
-NAPLAN_OUTCOMES_CLUSTERING_FIELDS = ["APS_Year", "Reporting_Test", "Cases_ID", "Gender"]
+NAPLAN_OUTCOMES_CLUSTERING_FIELDS = [
+    "APS_Year", "Reporting_Test", "Cases_ID", "Gender"
+]
 
 GAT_SCHEMA = [
     bigquery.SchemaField("Year", "STRING"),
@@ -114,10 +114,8 @@ PAT_SCORES_SCHEMA = [
     bigquery.SchemaField("TestForm", "STRING"),
     bigquery.SchemaField("Scale", "FLOAT"),
     bigquery.SchemaField("ScoreCategory", "STRING"),
-    ]
-PAT_SCORES_CLUSTERING_FIELDS = [
-    "Test", "StudentCode", "Date", "YearLevel"
 ]
+PAT_SCORES_CLUSTERING_FIELDS = ["Test", "StudentCode", "Date", "YearLevel"]
 
 PAT_MOST_RECENT_SCHEMA = [
     bigquery.SchemaField("StudentCode", "STRING"),
@@ -131,7 +129,5 @@ PAT_MOST_RECENT_SCHEMA = [
     bigquery.SchemaField("ReadingScale", "FLOAT"),
     bigquery.SchemaField("MathsScoreCategory", "STRING"),
     bigquery.SchemaField("ReadingScoreCategory", "STRING")
-    ]
-PAT_MOST_RECENT_CLUSTERING_FIELDS = [
-    "StudentCode"
 ]
+PAT_MOST_RECENT_CLUSTERING_FIELDS = ["StudentCode"]

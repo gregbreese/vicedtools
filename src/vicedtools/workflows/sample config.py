@@ -70,9 +70,11 @@ reports_summary_file = os.path.join(compass_dir, "reports_summary.csv")
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceConfigAuthenticator
+
 dataservice_username = ""
 dataservice_password = ""
-dataservice_authenticator = DataServiceConfigAuthenticator(dataservice_username, dataservice_password)
+dataservice_authenticator = DataServiceConfigAuthenticator(
+    dataservice_username, dataservice_password)
 # folders for saving NAPLAN exports
 naplan_dir = os.path.join(root_dir, "napla exports")
 naplan_outcomes_dir = os.path.join(naplan_dir, "outcomes exports")

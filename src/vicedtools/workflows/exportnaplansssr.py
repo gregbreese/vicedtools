@@ -25,7 +25,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description='Export NAPLAN outcomes from VCAA data service')
-    parser.add_argument('years', nargs='+', type=int, help='the years to export')
+    parser.add_argument('years',
+                        nargs='+',
+                        type=int,
+                        help='the years to export')
     args = parser.parse_args()
 
     if not os.path.exists(naplan_sssr_dir):
