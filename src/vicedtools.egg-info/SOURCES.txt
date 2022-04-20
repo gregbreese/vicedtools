@@ -54,6 +54,8 @@ src/vicedtools/workflows/exportcompassreports.py
 src/vicedtools/workflows/exportcompasssds.py
 src/vicedtools/workflows/exportcompassstudenthouseholdinformation.py
 src/vicedtools/workflows/exportcompassstudents.py
+src/vicedtools/workflows/exportnaplanoutcomes.py
+src/vicedtools/workflows/exportnaplansssr.py
 src/vicedtools/workflows/exportoarsmetadata.py
 src/vicedtools/workflows/exportoarssittings.py
 src/vicedtools/workflows/exportoarsstudents.py
