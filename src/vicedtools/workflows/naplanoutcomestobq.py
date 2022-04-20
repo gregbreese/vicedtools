@@ -24,17 +24,18 @@ from vicedtools.gcp import (upload_csv_to_bigquery, NAPLAN_OUTCOMES_SCHEMA,
 
 def naplan_outcomes_to_bq(table_id: str,
                           bucket: str,
-                          naplan_dir: str,
-                          keep_combined_file: bool = False):
+                          naplan_outcomes_dir: str,
+                          combined_file: str = ""):
     """Merges NAPLAN outcomes exports and uploads a combined table to Bigquery.
     
     Args:
         table_id: The BQ table id for the NAPLAN data
         bucket: A GCS bucket for temporarily storing the csv for import into BQ.
-        naplan_dir: The folder containing the outcomes exports.
-        keep_combined_file: If True, save a csv containing the merged outcomes exports.
+        naplan_outcomes_dir: The folder containing the outcomes exports.
+        combined_file: If provided, save a csv containing the merged outcomes
+            to this filename.
     """
-    files = glob.glob(naplan_dir + "*Outcome*.csv")
+    files = glob.glob(os.path.join(naplan_outcomes_dir,"*Outcome*.csv"))
     columns = [
         "APS Year", "Reporting Test", "First Name", "Second Name", "Surname",
         "READING_nb", "WRITING_nb", "SPELLING_nb", "NUMERACY_nb",
@@ -48,16 +49,19 @@ def naplan_outcomes_to_bq(table_id: str,
         if len(temp_df.columns) == 18 and temp_df.columns[0] == "APS Year":
             temp_df.columns = columns
             df = pd.concat([df, temp_df])
-    combined_file = os.path.join(naplan_dir, "NAPLAN combined.csv")
-    df[columns].to_csv(combined_file, index=False)
+    temp_file = os.path.join(naplan_outcomes_dir, "NAPLAN combined.csv")
+    df[columns].to_csv(temp_file, index=False)
 
-    upload_csv_to_bigquery(combined_file, NAPLAN_OUTCOMES_SCHEMA,
+    upload_csv_to_bigquery(temp_file, NAPLAN_OUTCOMES_SCHEMA,
                            NAPLAN_OUTCOMES_CLUSTERING_FIELDS, table_id, bucket)
-    if not keep_combined_file:
-        os.remove(combined_file)
+    if combined_file:
+        os.replace(temp_file, combined_file)
+    else:
+        os.remove(temp_file)
 
 
 if __name__ == "__main__":
-    from config import (naplan_outcomes_dir, naplan_outcomes_table_id, bucket)
+    from config import (naplan_dir, naplan_outcomes_dir, naplan_outcomes_table_id, bucket)
 
-    naplan_outcomes_to_bq(naplan_outcomes_table_id, bucket, naplan_outcomes_dir)
+    combined_file = os.path.join(naplan_dir, "NAPLAN combined.csv")
+    naplan_outcomes_to_bq(naplan_outcomes_table_id, bucket, naplan_outcomes_dir, combined_file=combined_file)
