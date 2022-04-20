@@ -21,14 +21,17 @@ from vicedtools.gcp import (upload_csv_to_bigquery, STUDENT_DETAILS_SCHEMA,
                             STUDENT_DETAILS_CLUSTERING_FIELDS)
 
 
-def compass_student_details_to_bq(table_id: str, bucket: str,
-                                  student_details_csv: str):
+def compass_student_details_to_bq(table_id: str,
+                                  bucket: str,
+                                  student_details_csv: str,
+                                  save_file: str = ""):
     """Imports student details to BQ from Compass student details export.
     
     Args:
         table_id: The BQ table id for the enrolments data
         bucket: A GCS bucket for temporarily storing the csv for import into BQ.
         student_details_csv: The path to the Compass student details csv.
+        save_file: Optionally, save the student details csv to this path.
     """
     temp_file = os.path.join(os.path.dirname(student_details_csv), "temp.csv")
 
@@ -72,11 +75,18 @@ def compass_student_details_to_bq(table_id: str, bucket: str,
 
     upload_csv_to_bigquery(temp_file, STUDENT_DETAILS_SCHEMA,
                            STUDENT_DETAILS_CLUSTERING_FIELDS, table_id, bucket)
-    os.remove(temp_file)
+    if save_file:
+        os.replace(temp_file, save_file)
+    else:
+        os.remove(temp_file)
 
 
 if __name__ == "__main__":
-    from config import (student_details_csv, student_details_table_id, bucket)
+    from config import (compass_dir, student_details_csv,
+                        student_details_table_id, bucket)
 
-    compass_student_details_to_bq(student_details_table_id, bucket,
-                                  student_details_csv)
+    save_file = os.path.join(compass_dir, "student details upload.csv")
+    compass_student_details_to_bq(student_details_table_id,
+                                  bucket,
+                                  student_details_csv,
+                                  save_file=save_file)
