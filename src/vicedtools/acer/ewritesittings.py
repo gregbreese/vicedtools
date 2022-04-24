@@ -19,7 +19,7 @@ from collections import abc
 from datetime import datetime
 import time
 
-from vicedtools.acer.pattests import PATTests
+from vicedtools.acer.oarstests import OARSTests
 
 
 class EWriteSittings(list):
@@ -33,11 +33,11 @@ class EWriteSittings(list):
         else:
             raise TypeError(f"Unsupported type: {type(sittings)}")
 
-    def group_report(self, tests: PATTests) -> list:
+    def group_report(self, tests: OARSTests) -> list:
         """Extracts data for the preparation of a group report spreadsheet.
         
         Args:
-            tests: A PATTests instance containing the relevant test metadata.
+            tests: A OARSTests instance containing the relevant test metadata.
             test_name: The name of the test to export. E.g. "eWrite"
             form_name: The name of the form to export. E.g. "Task C Report (Years 5-8)"
             
@@ -54,7 +54,7 @@ class EWriteSittings(list):
 class EWriteSitting(dict):
     """A class for storing a eWrite sitting result."""
 
-    def group_report(self, tests: PATTests) -> dict:
+    def group_report(self, tests: OARSTests) -> dict:
         """Returns the data provided in a eWrite group report export for this sitting."""
         data = {}
         data['Display name'] = self['user']['display_name']

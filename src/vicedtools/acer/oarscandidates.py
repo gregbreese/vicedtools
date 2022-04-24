@@ -11,7 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Classes for storing PAT candidate data."""
+"""Classes for storing OARS candidate data.
+
+Wrapper for data downloaded from https://oars.acer.edu.au/api/{school}/candidates/getCandidateIds."""
 
 from __future__ import annotations
 
@@ -22,14 +24,14 @@ import time
 import pandas as pd
 
 
-class PATCandidates(list):
-    """A class for storing metadata for PAT candidates."""
+class OARSCandidates(list):
+    """A class for storing metadata for OARS candidates."""
 
     def __init__(self, candidates: list[dict]):
-        if isinstance(candidates, PATCandidates):
+        if isinstance(candidates, OARSCandidates):
             return candidates
         if isinstance(candidates, abc.Sequence):
-            super().__init__([PATCandidate(i) for i in candidates])
+            super().__init__([OARSCandidate(i) for i in candidates])
         else:
             raise TypeError(f"Unsupported type: {type(candidates)}")
 
@@ -64,8 +66,8 @@ class PATCandidates(list):
         return data
 
 
-class PATCandidate(dict):
-    """A class for storing metadata for a PAT candidate."""
+class OARSCandidate(dict):
+    """A class for storing metadata for an OARS candidate."""
 
     def __init__(self, item):
         super().__init__(item)

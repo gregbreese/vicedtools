@@ -30,10 +30,10 @@ import pandas as pd
 import browser_cookie3
 
 from vicedtools.acer.ewritesittings import EWriteSittings
-from vicedtools.acer.patcandidates import PATCandidates
+from vicedtools.acer.oarscandidates import OARSCandidates
 from vicedtools.acer.patitems import PATItems
 from vicedtools.acer.patsittings import PATSittings
-from vicedtools.acer.pattests import PATTests
+from vicedtools.acer.oarstests import OARSTests
 
 
 class OARSSession(requests.sessions.Session):
@@ -68,7 +68,7 @@ class OARSSession(requests.sessions.Session):
         url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getTests/"
         r = self.get(url)
         try:
-            self.tests = PATTests(r.json())
+            self.tests = OARSTests(r.json())
         except json.JSONDecodeError:
             raise OARSAuthenticateError()
 
@@ -170,14 +170,14 @@ class OARSSession(requests.sessions.Session):
                         sittings += r.json()
         return PATSittings(sittings)
 
-    def get_ewrite_sittings(self, candidates: PATCandidates, from_date: str,
+    def get_ewrite_sittings(self, candidates: OARSCandidates, from_date: str,
                             to_date: str) -> EWriteSittings:
         """Downloads the results for eWrite sittings for the candidates.
 
         Downloads results between to_date and from_date.
         
         Args:
-            candidates: A PATCandidates instance with the candidates to get
+            candidates: A OARSCandidates instance with the candidates to get
                 results for.
             from_date: The start date to download results for in 
                 dd-mm-yyyy format.
@@ -252,7 +252,7 @@ class OARSSession(requests.sessions.Session):
 
         return PATItems(r.json())
 
-    def get_all_items(self, tests: PATTests) -> pd.DataFrame:
+    def get_all_items(self, tests: OARSTests) -> pd.DataFrame:
         items = []
         for test in tests:
             for form in test['forms']:
@@ -276,7 +276,7 @@ class OARSSession(requests.sessions.Session):
         items_df = pd.concat(items)
         return items_df
 
-    def get_candidates(self, enrolled: int = 1) -> PATCandidates:
+    def get_candidates(self, enrolled: int = 1) -> OARSCandidates:
         """Gets candidate data.
         
         Args:
@@ -284,7 +284,7 @@ class OARSSession(requests.sessions.Session):
                 2 for pre-enrolled students.
         
         Returns:
-            An instance of PATCandidates.
+            An instance of OARSCandidates.
         """
 
         ids_url = f"https://oars.acer.edu.au/api/{self.school}/candidates/getCandidateIds?enrolled={enrolled}"
@@ -304,7 +304,7 @@ class OARSSession(requests.sessions.Session):
                 r = self.post(candidates_url, json=payload)
                 candidates += r.json()
 
-        return PATCandidates(candidates)
+        return OARSCandidates(candidates)
 
 
 class SecurityTokenParser(HTMLParser):

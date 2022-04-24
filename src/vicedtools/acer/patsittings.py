@@ -22,7 +22,7 @@ import time
 import pandas as pd
 
 from vicedtools.acer.patresults import score_categoriser
-from vicedtools.acer.pattests import PATTests
+from vicedtools.acer.oarstests import OARSTests
 
 
 class PATSitting(dict):

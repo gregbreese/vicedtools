@@ -11,39 +11,42 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Classes for storing PAT test metadata."""
+"""Classes for storing OARS test metadata.
+
+Wrapper for data downloaded from https://oars.acer.edu.au/api/{school}/reports-new/getTests/.
+"""
 
 from __future__ import annotations
 
 from collections import abc
 
 
-class PATTests(list):
-    """A class for storing metadata for PAT Tests."""
+class OARSTests(list):
+    """A class for storing metadata for OARS tests."""
 
     def __init__(self, tests: list[dict]):
-        if isinstance(tests, PATTests):
+        if isinstance(tests, OARSTests):
             super().__init__(tests)
         if isinstance(tests, abc.Sequence):
-            super().__init__([PATTest(i) for i in tests])
+            super().__init__([OARSTest(i) for i in tests])
         else:
             raise TypeError(f"Unsupported type: {type(tests)}")
 
-    def get_test_from_id(self, test_id: str) -> PATTest:
+    def get_test_from_id(self, test_id: str) -> OARSTest:
         """Gets a test's metadata.
         
         Args:
             test_id: The testId of the test to locate.
             
         Returns:
-            A PATTest containing metadata about the particular test.
+            A OARSTest containing metadata about the particular test.
         """
         for t in self:
             if t['testId'] == test_id:
                 return t
         raise TestNotFoundError()
 
-    def get_test_from_name(self, test_name: str) -> PATTest:
+    def get_test_from_name(self, test_name: str) -> OARSTest:
         """Gets a test's metadata.
         
         Args:
@@ -51,7 +54,7 @@ class PATTests(list):
                 E.g. "PAT Maths 4th Edition"
             
         Returns:
-            A PATTest containing metadata about the particular test
+            An OARSTest containing metadata about the particular test
         """
         for t in self:
             if t['name'] == test_name:
@@ -88,8 +91,8 @@ class PATTests(list):
         raise TestNotFoundError()
 
 
-class PATTest(dict):
-    """A class for storing metadata for a PAT Test"""
+class OARSTest(dict):
+    """A class for storing metadata for a test on OARS."""
 
     def __init__(self, test):
         super().__init__(test)
