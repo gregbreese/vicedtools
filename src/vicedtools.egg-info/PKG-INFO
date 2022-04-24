@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vicedtools
-Version: 0.0.6.1
+Version: 0.0.6.2
 Summary: A collection of tools for school data in Victorian schools.
 Home-page: https://github.com/gregbreese/vicedtools
 Author: Greg Breese
@@ -23,10 +23,9 @@ The utilities have been designed to be state-less. Where tools have been created
 
 Currently includes tools for:
 
-- automating the exporting of data from Compass
-- tools for working with ACER's OARS site
+- automating the exporting of data from Compass, ACER's OARS site, the VCAA data service (NAPLAN) and VASS (VCE results).
+- tools for working with ACER's OARS site, such as working with PAT data
 - extracting NAPLAN data from the SSSR data.js file
-- exporting data from VCAA's VASS site
 - uploading data to Google Cloud storage and BigQuery for use with Data Studio
 
 See workflows/sample_config.py for a sample config file.
