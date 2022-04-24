@@ -54,7 +54,8 @@ def upload_csv_to_bigquery(source_file: str,
         skip_leading_rows=1,
         clustering_fields=clustering_fields,
         source_format=bigquery.SourceFormat.CSV,
-        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE)
+        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+        allow_quoted_newlines=True)
     load_job = bq_client.load_table_from_uri(uri,
                                              table_id,
                                              job_config=job_config)

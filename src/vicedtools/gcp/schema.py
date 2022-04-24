@@ -131,3 +131,29 @@ PAT_MOST_RECENT_SCHEMA = [
     bigquery.SchemaField("ReadingScoreCategory", "STRING")
 ]
 PAT_MOST_RECENT_CLUSTERING_FIELDS = ["StudentCode"]
+
+EWRITE_SCORES_SCHEMA = [
+    bigquery.SchemaField("Date", "DATETIME"),
+    bigquery.SchemaField("StudentCode", "STRING"),
+    bigquery.SchemaField("Year_level", "INTEGER"),
+    bigquery.SchemaField("Effective_year_level", "INTEGER"),
+    bigquery.SchemaField("Result_flag", "STRING"),
+    bigquery.SchemaField("Score", "INTEGER"),
+    bigquery.SchemaField("Scale", "INTEGER"),
+    bigquery.SchemaField("Band", "INTEGER"),
+    bigquery.SchemaField("Response", "STRING"),
+]
+
+EWRITE_SCORES_CLUSTERING_FIELDS = ['Result_flag', 'StudentCode', 'Effective_year_level', 'Date']
+
+EWRITE_CRITERIA_SCHEMA = [
+    bigquery.SchemaField("Date", "DATETIME"),
+    bigquery.SchemaField("StudentCode", "STRING"),
+    bigquery.SchemaField("Year_level", "INTEGER"),
+    bigquery.SchemaField("Effective_year_level", "INTEGER"),
+    bigquery.SchemaField("Criteria", "STRING"),
+    bigquery.SchemaField("Score", "INTEGER"),
+    bigquery.SchemaField("Scale", "FLOAT"),
+]
+
+EWRITE_CRITERIA_CLUSTERING_FIELDS = ['Criteria', 'StudentCode', 'Effective_year_level', 'Date']

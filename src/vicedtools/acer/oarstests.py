@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from collections import abc
 
+import pandas as pd
 
 class OARSTests(list):
     """A class for storing metadata for OARS tests."""
@@ -89,6 +90,20 @@ class OARSTests(list):
             if t['id'] == test_id:
                 return t['name']
         raise TestNotFoundError()
+
+    def ewrite_criteria_scores(self):
+        """Returns a lookup table for scale scores for each eWrite criteria.
+
+        Returns:
+            A pandas DataFrame with columns 'Criteria', 'Scores', and 'Scale'.
+        """
+        criteria_scores = []
+        ewrite_test = self.get_test_from_name('eWrite')
+        categories = ewrite_test['metadata']['categories']
+        for _, category_metadata in categories.items():
+            for idx, score_metadata in enumerate(category_metadata['scales']):
+                criteria_scores.append({'Criteria': category_metadata['short_name'], 'Score': idx, 'Scale': score_metadata['scale']})
+        return pd.DataFrame.from_records(criteria_scores)
 
 
 class OARSTest(dict):

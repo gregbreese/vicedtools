@@ -62,16 +62,22 @@ class EWriteSitting(dict):
         data['Given name'] = self['user']['given_name']
         data['Middle name'] = self['user']['middle_name']
         data['Username'] = self['user']['username']
-        data['Gender'] = self['user']['gender']
+        data['Gender'] = self['user']['gender'].title()
         data['Year level (at time of test)'] = self['user']['yearLevel']
         data['Tags'] = ",".join([t['name'] for t in self['user']['tags']])
         data['Date'] = datetime.strptime(time.ctime(self['completed']),
                                          "%a %b %d %H:%M:%S %Y")
-        data['Score'] = self['responses'][1]['score']
-        if data['Score']:
+        if 'vantageResult' in self['responses'][1]:
+            data['Result flag'] = self['responses'][1]['vantageResult']['flagged_code']
+        else:
+            data['Result flag'] = self['responses'][1]['scoreReason']
+        
+        if data['Result flag'] == "OK":
+            data['Score'] = self['responses'][1]['score']
+
             test = tests.get_test_from_id(self['test_id'])
             form = test.get_form_from_id(self['form_id'])
-            scale, band = form['scaleScores'][data['Score']]
+            scale, band = form['scaleScores'][data['Score']].values()
             data['Scale'] = scale
             data['Band'] = band
             for idx, key in enumerate([
@@ -81,6 +87,7 @@ class EWriteSitting(dict):
                 data[key] = self['responses'][1]['vantageResult'][
                     'dimensionalScores'][idx]
         else:
+            data['Score'] = None
             data['Scale'] = None
             data['Band'] = None
             for key in [
