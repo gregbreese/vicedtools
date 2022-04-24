@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""A class derived from webdriver.Firefox that includes Compass authentication."""
+"""Deprecated: Use CompassSession."""
 
 from __future__ import annotations
 
@@ -59,6 +59,9 @@ class CompassWebDriver(webdriver.Firefox):
             An instance of selenium.webdriver.Firefox with authentication to
             Compass completed.
         """
+        import warnings
+        warnings.warn("This class will be retired in the future. Transition to using CompassSession.", DeprecationWarning)
+        
         self.school_code = school_code
 
         profile = webdriver.FirefoxProfile()
