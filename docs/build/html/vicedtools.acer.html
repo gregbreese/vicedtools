@@ -181,10 +181,6 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-vicedtools.acer.ewriteresults">
-<span id="vicedtools-acer-ewriteresults-module"></span><h2>vicedtools.acer.ewriteresults module<a class="headerlink" href="#module-vicedtools.acer.ewriteresults" title="Permalink to this headline">¶</a></h2>
-<p>Utility functions for working with eWrite results exports.</p>
-</div>
 <div class="section" id="module-vicedtools.acer.ewritesittings">
 <span id="vicedtools-acer-ewritesittings-module"></span><h2>vicedtools.acer.ewritesittings module<a class="headerlink" href="#module-vicedtools.acer.ewritesittings" title="Permalink to this headline">¶</a></h2>
 <p>Classes for storing eWrite sitting data.</p>
@@ -213,7 +209,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tests</strong> – A PATTests instance containing the relevant test metadata.</p></li>
+<li><p><strong>tests</strong> – A OARSTests instance containing the relevant test metadata.</p></li>
 <li><p><strong>test_name</strong> – The name of the test to export. E.g. “eWrite”</p></li>
 <li><p><strong>form_name</strong> – The name of the form to export. E.g. “Task C Report (Years 5-8)”</p></li>
 </ul>
@@ -264,6 +260,62 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-vicedtools.acer.oarscandidates">
+<span id="vicedtools-acer-oarscandidates-module"></span><h2>vicedtools.acer.oarscandidates module<a class="headerlink" href="#module-vicedtools.acer.oarscandidates" title="Permalink to this headline">¶</a></h2>
+<p>Classes for storing OARS candidate data.</p>
+<p>Wrapper for data downloaded from <a class="reference external" href="https://oars.acer.edu.au/api">https://oars.acer.edu.au/api</a>/{school}/candidates/getCandidateIds.</p>
+<dl class="py class">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidate">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oarscandidates.</code><code class="sig-name descname">OARSCandidate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>A class for storing metadata for an OARS candidate.</p>
+<dl class="py method">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidate.get_sitting_status">
+<code class="sig-name descname">get_sitting_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidate.get_sitting_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidate.student_details_export">
+<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidate.student_details_export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidates">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oarscandidates.</code><code class="sig-name descname">OARSCandidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>A class for storing metadata for OARS candidates.</p>
+<dl class="py method">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidates.sitting_status_export">
+<code class="sig-name descname">sitting_status_export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidates.sitting_status_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the sitting information from the candiates.</p>
+<p>Provides the completion status of all assigned sittings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas DataFrame with the sitting details.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarscandidates.OARSCandidates.student_details_export">
+<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarscandidates.OARSCandidates.student_details_export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the student details data export from the candidates.</p>
+<p>Columns match the export provided by OARS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>include_tests</strong> – If true, adds an additional column listing any incomplete sittings.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A pandas DataFrame with the student details table.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -361,7 +413,7 @@ dd-mm-yyyy format.</p></li>
 2 for pre-enrolled students.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An instance of PATCandidates.</p>
+<dd class="field-even"><p>An instance of OARSCandidates.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -374,7 +426,7 @@ dd-mm-yyyy format.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>candidates</strong> – A PATCandidates instance with the candidates to get
+<li><p><strong>candidates</strong> – A OARSCandidates instance with the candidates to get
 results for.</p></li>
 <li><p><strong>from_date</strong> – The start date to download results for in
 dd-mm-yyyy format.</p></li>
@@ -441,64 +493,154 @@ are automatically converted to the corresponding Unicode characters.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-vicedtools.acer.patcandidates">
-<span id="vicedtools-acer-patcandidates-module"></span><h2>vicedtools.acer.patcandidates module<a class="headerlink" href="#module-vicedtools.acer.patcandidates" title="Permalink to this headline">¶</a></h2>
-<p>Classes for storing PAT candidate data.</p>
+<div class="section" id="module-vicedtools.acer.oarstests">
+<span id="vicedtools-acer-oarstests-module"></span><h2>vicedtools.acer.oarstests module<a class="headerlink" href="#module-vicedtools.acer.oarstests" title="Permalink to this headline">¶</a></h2>
+<p>Classes for storing OARS test metadata.</p>
+<p>Wrapper for data downloaded from <a class="reference external" href="https://oars.acer.edu.au/api">https://oars.acer.edu.au/api</a>/{school}/reports-new/getTests/.</p>
+<dl class="py exception">
+<dt id="vicedtools.acer.oarstests.FormNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">vicedtools.acer.oarstests.</code><code class="sig-name descname">FormNotFoundError</code><a class="headerlink" href="#vicedtools.acer.oarstests.FormNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised if an OARS form id or name is not found.</p>
+</dd></dl>
+
 <dl class="py class">
-<dt id="vicedtools.acer.patcandidates.PATCandidate">
-<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.patcandidates.</code><code class="sig-name descname">PATCandidate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidate" title="Permalink to this definition">¶</a></dt>
+<dt id="vicedtools.acer.oarstests.OARSTest">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oarstests.</code><code class="sig-name descname">OARSTest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>A class for storing metadata for a PAT candidate.</p>
+<p>A class for storing metadata for a test on OARS.</p>
 <dl class="py method">
-<dt id="vicedtools.acer.patcandidates.PATCandidate.get_sitting_status">
-<code class="sig-name descname">get_sitting_status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidate.get_sitting_status" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.patcandidates.PATCandidate.student_details_export">
-<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidate.student_details_export" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="vicedtools.acer.patcandidates.PATCandidates">
-<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.patcandidates.</code><code class="sig-name descname">PATCandidates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">candidates</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
-<p>A class for storing metadata for PAT candidates.</p>
-<dl class="py method">
-<dt id="vicedtools.acer.patcandidates.PATCandidates.sitting_status_export">
-<code class="sig-name descname">sitting_status_export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidates.sitting_status_export" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extracts the sitting information from the candiates.</p>
-<p>Provides the completion status of all assigned sittings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A pandas DataFrame with the sitting details.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.patcandidates.PATCandidates.student_details_export">
-<code class="sig-name descname">student_details_export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">include_sittings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patcandidates.PATCandidates.student_details_export" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extracts the student details data export from the candidates.</p>
-<p>Columns match the export provided by OARS.</p>
+<dt id="vicedtools.acer.oarstests.OARSTest.get_form_from_id">
+<code class="sig-name descname">get_form_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a form from it’s id.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>include_tests</strong> – If true, adds an additional column listing any incomplete sittings.</p>
+<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas DataFrame with the student details table.</p>
+<dd class="field-even"><p>The the form metadata in a dictionary</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTest.get_form_id_from_name">
+<code class="sig-name descname">get_form_id_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_id_from_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a form’s id from its name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>form_name</strong> – The name of the form. E.g. “PAT Maths Test 6”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The id of the form.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTest.get_form_name_from_id">
+<code class="sig-name descname">get_form_name_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_name_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a form’s name from it’s id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the form. E.g. “PAT Maths Test 6”</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="vicedtools.acer.oarstests.OARSTests">
+<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.oarstests.</code><code class="sig-name descname">OARSTests</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>A class for storing metadata for OARS tests.</p>
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTests.ewrite_criteria_scores">
+<code class="sig-name descname">ewrite_criteria_scores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.ewrite_criteria_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a lookup table for scale scores for each eWrite criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A pandas DataFrame with columns ‘Criteria’, ‘Scores’, and ‘Scale’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTests.get_id_from_name">
+<code class="sig-name descname">get_id_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_id_from_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a test’s id from its name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
+E.g “PAT Maths 4th Edition”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The id string for the test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTests.get_name_from_id">
+<code class="sig-name descname">get_name_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_name_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a test’s name from its id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_id</strong> – The id of the test to locate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name ofr the test. E.g “PAT Maths 4th Edition”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTests.get_test_from_id">
+<code class="sig-name descname">get_test_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_test_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a test’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_id</strong> – The testId of the test to locate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A OARSTest containing metadata about the particular test.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="vicedtools.acer.oarstests.OARSTests.get_test_from_name">
+<code class="sig-name descname">get_test_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_test_from_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a test’s metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
+E.g. “PAT Maths 4th Edition”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An OARSTest containing metadata about the particular test</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="vicedtools.acer.oarstests.TestNotFoundError">
+<em class="property">exception </em><code class="sig-prename descclassname">vicedtools.acer.oarstests.</code><code class="sig-name descname">TestNotFoundError</code><a class="headerlink" href="#vicedtools.acer.oarstests.TestNotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised if an OARS test id or name is not found.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-vicedtools.acer.patitems">
 <span id="vicedtools-acer-patitems-module"></span><h2>vicedtools.acer.patitems module<a class="headerlink" href="#module-vicedtools.acer.patitems" title="Permalink to this headline">¶</a></h2>
 <p>Classes for storing PAT item metadata.</p>
+<p>Wrapper for data downloaded from <a class="reference external" href="https://oars.acer.edu.au/api">https://oars.acer.edu.au/api</a>/{self.school}/reports-new/getGroupReportItemsData/.</p>
 <dl class="py class">
 <dt id="vicedtools.acer.patitems.PATItem">
 <em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.patitems.</code><code class="sig-name descname">PATItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patitems.PATItem" title="Permalink to this definition">¶</a></dt>
@@ -864,138 +1006,6 @@ the year level of the student when they sat the test</p></li>
 <dt id="vicedtools.acer.patsittings.year_level_at_time_of_test">
 <code class="sig-prename descclassname">vicedtools.acer.patsittings.</code><code class="sig-name descname">year_level_at_time_of_test</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">year_levels</span></em>, <em class="sig-param"><span class="n">time_of_test</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.year_level_at_time_of_test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</div>
-<div class="section" id="module-vicedtools.acer.pattests">
-<span id="vicedtools-acer-pattests-module"></span><h2>vicedtools.acer.pattests module<a class="headerlink" href="#module-vicedtools.acer.pattests" title="Permalink to this headline">¶</a></h2>
-<p>Classes for storing PAT test metadata.</p>
-<dl class="py exception">
-<dt id="vicedtools.acer.pattests.FormNotFoundError">
-<em class="property">exception </em><code class="sig-prename descclassname">vicedtools.acer.pattests.</code><code class="sig-name descname">FormNotFoundError</code><a class="headerlink" href="#vicedtools.acer.pattests.FormNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised if an OARS form id or name is not found.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="vicedtools.acer.pattests.PATTest">
-<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.pattests.</code><code class="sig-name descname">PATTest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>A class for storing metadata for a PAT Test</p>
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTest.get_form_from_id">
-<code class="sig-name descname">get_form_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTest.get_form_from_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a form from it’s id.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The the form metadata in a dictionary</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTest.get_form_id_from_name">
-<code class="sig-name descname">get_form_id_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTest.get_form_id_from_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a form’s id from its name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_name</strong> – The name of the form. E.g. “PAT Maths Test 6”</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The id of the form.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTest.get_form_name_from_id">
-<code class="sig-name descname">get_form_name_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">form_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTest.get_form_name_from_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a form’s name from it’s id.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The name of the form. E.g. “PAT Maths Test 6”</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="vicedtools.acer.pattests.PATTests">
-<em class="property">class </em><code class="sig-prename descclassname">vicedtools.acer.pattests.</code><code class="sig-name descname">PATTests</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTests" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
-<p>A class for storing metadata for PAT Tests.</p>
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTests.get_id_from_name">
-<code class="sig-name descname">get_id_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTests.get_id_from_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a test’s id from its name.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
-E.g “PAT Maths 4th Edition”</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The id string for the test.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTests.get_name_from_id">
-<code class="sig-name descname">get_name_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTests.get_name_from_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a test’s name from its id.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_id</strong> – The id of the test to locate.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The name ofr the test. E.g “PAT Maths 4th Edition”</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTests.get_test_from_id">
-<code class="sig-name descname">get_test_from_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTests.get_test_from_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a test’s metadata.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_id</strong> – The testId of the test to locate.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A PATTest containing metadata about the particular test.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="vicedtools.acer.pattests.PATTests.get_test_from_name">
-<code class="sig-name descname">get_test_from_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">test_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.pattests.PATTests.get_test_from_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a test’s metadata.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
-E.g. “PAT Maths 4th Edition”</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A PATTest containing metadata about the particular test</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt id="vicedtools.acer.pattests.TestNotFoundError">
-<em class="property">exception </em><code class="sig-prename descclassname">vicedtools.acer.pattests.</code><code class="sig-name descname">TestNotFoundError</code><a class="headerlink" href="#vicedtools.acer.pattests.TestNotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised if an OARS test id or name is not found.</p>
-</dd></dl>
 
 </div>
 <div class="section" id="module-vicedtools.acer.plots">

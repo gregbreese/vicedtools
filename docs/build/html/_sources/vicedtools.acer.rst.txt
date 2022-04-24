@@ -4,13 +4,6 @@ vicedtools.acer package
 Submodules
 ----------
 
-vicedtools.acer.ewriteresults module
-------------------------------------
-
-.. automodule:: vicedtools.acer.ewriteresults
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 vicedtools.acer.ewritesittings module
 -------------------------------------
@@ -28,6 +21,14 @@ vicedtools.acer.oars module
    :undoc-members:
    :show-inheritance:
 
+vicedtools.acer.oarscandidates module
+-------------------------------------
+
+.. automodule:: vicedtools.acer.oarscandidates
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 vicedtools.acer.oarssession module
 ----------------------------------
 
@@ -36,13 +37,14 @@ vicedtools.acer.oarssession module
    :undoc-members:
    :show-inheritance:
 
-vicedtools.acer.patcandidates module
-------------------------------------
+vicedtools.acer.oarstests module
+--------------------------------
 
-.. automodule:: vicedtools.acer.patcandidates
+.. automodule:: vicedtools.acer.oarstests
    :members:
    :undoc-members:
    :show-inheritance:
+
 
 vicedtools.acer.patitems module
 -------------------------------
@@ -68,13 +70,6 @@ vicedtools.acer.patsittings module
    :undoc-members:
    :show-inheritance:
 
-vicedtools.acer.pattests module
--------------------------------
-
-.. automodule:: vicedtools.acer.pattests
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 vicedtools.acer.plots module
 ----------------------------
