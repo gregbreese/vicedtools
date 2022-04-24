@@ -19,7 +19,7 @@ import os
 
 import pandas as pd
 
-from vicedtools.acer import PATTests, PATSittings
+from vicedtools.acer import OARSTests, PATSittings
 
 
 def pat_sittings_to_scores(oars_tests_json: str, pat_sittings_dir: str,
@@ -27,7 +27,7 @@ def pat_sittings_to_scores(oars_tests_json: str, pat_sittings_dir: str,
     # import test metadata
     with open(oars_tests_json, 'r', encoding='utf-8') as fp:
         tests = json.load(fp)
-    tests = PATTests(tests)
+    tests = OARSTests(tests)
     # import all settings exports and combine
     filenames = glob.glob(os.path.join(pat_sittings_dir, "sittings*.json"))
     sittings = PATSittings([])
