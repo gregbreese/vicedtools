@@ -22,7 +22,7 @@ from vicedtools.gcp import (upload_csv_to_bigquery, PAT_MOST_RECENT_SCHEMA,
 
 
 def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
-    """Imports student details to BQ from Compass student details export.
+    """Imports most recent PAT results table to BQ.
     
     Args:
         table_id: The BQ table id for the enrolments data
