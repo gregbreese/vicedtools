@@ -22,8 +22,6 @@ import pandas as pd
 from vicedtools.acer import OARSTests, EWriteSittings
 
 
-
-
 def ewrite_sittings_to_scores(oars_tests_json: str, ewrite_sittings_dir: str,
                               ewrite_scores_csv: str, ewrite_criteria_csv: str):
     """Creates summary tables from eWrite sittings data.
@@ -38,7 +36,8 @@ def ewrite_sittings_to_scores(oars_tests_json: str, ewrite_sittings_dir: str,
     tests = OARSTests(tests)
 
     # import all settings exports and combine
-    sittings_files = glob.glob(os.path.join(ewrite_sittings_dir, "sittings*.json"))
+    sittings_files = glob.glob(
+        os.path.join(ewrite_sittings_dir, "sittings*.json"))
     sittings = []
     for f in sittings_files:
         with open(f, 'r', encoding='utf-8') as f:
@@ -48,12 +47,18 @@ def ewrite_sittings_to_scores(oars_tests_json: str, ewrite_sittings_dir: str,
     # remove duplicates, rename columns
     sittings_df = pd.DataFrame.from_records(sittings.group_report(tests))
     sittings_df.drop_duplicates(subset=["Date", "Username"], inplace=True)
-    sittings_df.rename(columns={"Username":"StudentCode", 'Year level (at time of test)':'Year level'}, inplace=True)
+    sittings_df.rename(columns={
+        "Username": "StudentCode",
+        'Year level (at time of test)': 'Year level'
+    },
+                       inplace=True)
     sittings_df["Date"] = pd.to_datetime(sittings_df["Date"], format="%d-%m-%Y")
-    sittings_df["Score"] = sittings_df["Score"].astype('Int64').astype(str).replace("<NA>","")
-    sittings_df["Band"] = sittings_df["Band"].astype('Int64').astype(str).replace("<NA>","")
-    sittings_df["Scale"] = sittings_df["Scale"].astype('Int64').astype(str).replace("<NA>","")
-
+    sittings_df["Score"] = sittings_df["Score"].astype('Int64').astype(
+        str).replace("<NA>", "")
+    sittings_df["Band"] = sittings_df["Band"].astype('Int64').astype(
+        str).replace("<NA>", "")
+    sittings_df["Scale"] = sittings_df["Scale"].astype('Int64').astype(
+        str).replace("<NA>", "")
 
     # if student did test at beginning of year then count as previous year's year level
     def effective_year_level(year_level, date):
@@ -61,34 +66,44 @@ def ewrite_sittings_to_scores(oars_tests_json: str, ewrite_sittings_dir: str,
         if date.month <= 4:
             year_level_num -= 1
         return str(year_level_num)
-    sittings_df['Effective year level'] = sittings_df.apply(lambda x: effective_year_level(x['Year level'],
-                                                            x["Date"]),
-                                axis=1)
+
+    sittings_df['Effective year level'] = sittings_df.apply(
+        lambda x: effective_year_level(x['Year level'], x["Date"]), axis=1)
 
     # Create overall scores table
-    columns_to_save = ['Date', 'StudentCode', 
-        'Year level', 'Effective year level', 'Result flag', 'Score', 'Scale',
-        'Band', 'Response']
+    columns_to_save = [
+        'Date', 'StudentCode', 'Year level', 'Effective year level',
+        'Result flag', 'Score', 'Scale', 'Band', 'Response'
+    ]
     sittings_df[columns_to_save].to_csv(ewrite_scores_csv, index=False)
 
     # Create criteria score table
-    cols = ['Date','StudentCode',
-       'Year level', 'Effective year level', 'OE', 'TS', 'ID', 'VOC', 'PARA',
-       'SENT', 'SPUNC', 'PINS', 'SP']
+    cols = [
+        'Date', 'StudentCode', 'Year level', 'Effective year level', 'OE', 'TS',
+        'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP'
+    ]
     rows = sittings_df["Result flag"] == "OK"
-    criteria_df =  sittings_df.loc[rows, cols].melt(id_vars=['Date','StudentCode',
-        'Year level', 'Effective year level'], value_vars=['OE', 'TS', 'ID', 'VOC', 'PARA',
-        'SENT', 'SPUNC', 'PINS', 'SP'], value_name="Score", var_name="Criteria")
-    criteria_df.dropna(subset=["Score"],inplace=True)
+    criteria_df = sittings_df.loc[rows, cols].melt(
+        id_vars=['Date', 'StudentCode', 'Year level', 'Effective year level'],
+        value_vars=[
+            'OE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP'
+        ],
+        value_name="Score",
+        var_name="Criteria")
+    criteria_df.dropna(subset=["Score"], inplace=True)
     criteria_df["Score"] = criteria_df["Score"].astype(int)
     # merge in scale score for each criteria score
     criteria_scale_scores = tests.ewrite_criteria_scores()
-    criteria_df = criteria_df.merge(criteria_scale_scores, on=["Criteria", "Score"])
-    criteria_df["Scale"] = criteria_df["Scale"].replace("N/A", "nan").astype(float)
+    criteria_df = criteria_df.merge(criteria_scale_scores,
+                                    on=["Criteria", "Score"])
+    criteria_df["Scale"] = criteria_df["Scale"].replace("N/A",
+                                                        "nan").astype(float)
     criteria_df.to_csv(ewrite_criteria_csv, index=False)
 
-if __name__ == "__main__":
-    from config import (oars_tests_json, ewrite_sittings_dir, ewrite_scores_csv, ewrite_criteria_csv)
 
-    ewrite_sittings_to_scores(oars_tests_json, ewrite_sittings_dir, 
+if __name__ == "__main__":
+    from config import (oars_tests_json, ewrite_sittings_dir, ewrite_scores_csv,
+                        ewrite_criteria_csv)
+
+    ewrite_sittings_to_scores(oars_tests_json, ewrite_sittings_dir,
                               ewrite_scores_csv, ewrite_criteria_csv)

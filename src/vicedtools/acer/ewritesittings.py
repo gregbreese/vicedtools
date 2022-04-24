@@ -68,10 +68,11 @@ class EWriteSitting(dict):
         data['Date'] = datetime.strptime(time.ctime(self['completed']),
                                          "%a %b %d %H:%M:%S %Y")
         if 'vantageResult' in self['responses'][1]:
-            data['Result flag'] = self['responses'][1]['vantageResult']['flagged_code']
+            data['Result flag'] = self['responses'][1]['vantageResult'][
+                'flagged_code']
         else:
             data['Result flag'] = self['responses'][1]['scoreReason']
-        
+
         if data['Result flag'] == "OK":
             data['Score'] = self['responses'][1]['score']
 

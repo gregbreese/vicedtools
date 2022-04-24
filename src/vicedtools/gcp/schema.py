@@ -144,7 +144,9 @@ EWRITE_SCORES_SCHEMA = [
     bigquery.SchemaField("Response", "STRING"),
 ]
 
-EWRITE_SCORES_CLUSTERING_FIELDS = ['Result_flag', 'StudentCode', 'Effective_year_level', 'Date']
+EWRITE_SCORES_CLUSTERING_FIELDS = [
+    'Result_flag', 'StudentCode', 'Effective_year_level', 'Date'
+]
 
 EWRITE_CRITERIA_SCHEMA = [
     bigquery.SchemaField("Date", "DATETIME"),
@@ -156,4 +158,6 @@ EWRITE_CRITERIA_SCHEMA = [
     bigquery.SchemaField("Scale", "FLOAT"),
 ]
 
-EWRITE_CRITERIA_CLUSTERING_FIELDS = ['Criteria', 'StudentCode', 'Effective_year_level', 'Date']
+EWRITE_CRITERIA_CLUSTERING_FIELDS = [
+    'Criteria', 'StudentCode', 'Effective_year_level', 'Date'
+]

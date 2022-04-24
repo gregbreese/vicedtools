@@ -22,6 +22,7 @@ from collections import abc
 
 import pandas as pd
 
+
 class OARSTests(list):
     """A class for storing metadata for OARS tests."""
 
@@ -102,7 +103,11 @@ class OARSTests(list):
         categories = ewrite_test['metadata']['categories']
         for _, category_metadata in categories.items():
             for idx, score_metadata in enumerate(category_metadata['scales']):
-                criteria_scores.append({'Criteria': category_metadata['short_name'], 'Score': idx, 'Scale': score_metadata['scale']})
+                criteria_scores.append({
+                    'Criteria': category_metadata['short_name'],
+                    'Score': idx,
+                    'Scale': score_metadata['scale']
+                })
         return pd.DataFrame.from_records(criteria_scores)
 
 

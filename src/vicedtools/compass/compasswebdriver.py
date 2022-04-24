@@ -60,8 +60,10 @@ class CompassWebDriver(webdriver.Firefox):
             Compass completed.
         """
         import warnings
-        warnings.warn("This class will be retired in the future. Transition to using CompassSession.", DeprecationWarning)
-        
+        warnings.warn(
+            "This class will be retired in the future. Transition to using CompassSession.",
+            DeprecationWarning)
+
         self.school_code = school_code
 
         profile = webdriver.FirefoxProfile()

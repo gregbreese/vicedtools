@@ -23,10 +23,12 @@ from vicedtools.gcp import (upload_csv_to_bigquery, EWRITE_SCORES_SCHEMA,
                             EWRITE_CRITERIA_CLUSTERING_FIELDS)
 
 if __name__ == "__main__":
-    from config import (ewrite_scores_csv, ewrite_scores_table_id, 
+    from config import (ewrite_scores_csv, ewrite_scores_table_id,
                         ewrite_criteria_csv, ewrite_criteria_table_id, bucket)
 
     upload_csv_to_bigquery(ewrite_scores_csv, EWRITE_SCORES_SCHEMA,
-                           EWRITE_SCORES_CLUSTERING_FIELDS, ewrite_scores_table_id, bucket)
+                           EWRITE_SCORES_CLUSTERING_FIELDS,
+                           ewrite_scores_table_id, bucket)
     upload_csv_to_bigquery(ewrite_criteria_csv, EWRITE_CRITERIA_SCHEMA,
-                           EWRITE_CRITERIA_CLUSTERING_FIELDS, ewrite_criteria_table_id, bucket)
+                           EWRITE_CRITERIA_CLUSTERING_FIELDS,
+                           ewrite_criteria_table_id, bucket)
