@@ -306,6 +306,45 @@ class OARSSession(requests.sessions.Session):
 
         return OARSCandidates(candidates)
 
+    def get_staff_xlsx(self, xlsx_filename):
+        """Downloads a XLSX of all staff details.
+        
+        Downloads the XLSX that is provided through the bulk edit staff
+        interface.
+        """
+        staff_excel_export_url = f"https://oars.acer.edu.au/api/{self.school}/staff/exportExcel"
+        payload = {
+            'export_name': f"{self.school}-staff",
+            'security_token': self.security_token
+        }
+        r = self.post(staff_excel_export_url, data=payload)
+        response_filename = r.json()['filename']
+
+        quoted_security_token = quote(self.security_token)
+        download_url = f"https://oars.acer.edu.au/api/{self.school}/clients/downloadFile?filePath={response_filename}&security%5Btoken%5D={quoted_security_token}"
+        r = self.get(download_url)
+        with open(xlsx_filename, "wb") as f:
+            f.write(r.content)
+
+    def update_staff(self, staff_xlsx: str) -> bool:
+        """Uploads a staff details to OARS.
+        
+        Args:
+            staff_xlsx: The path to a correctly formatted XLSX with staff
+                details.
+
+        Returns:
+            True if the upload was successful.
+        """
+        del self.headers['Content-Type']
+
+        upload_url = f"https://oars.acer.edu.au/api/{s.school}/staff/bulkUpdate"
+        files = {'upload': open(staff_xlsx, 'rb')}
+        payload = {
+            'security_token': self.security_token
+        }
+        r = self.post(upload_url, files=files, data=payload)
+        return r.status_code == 200
 
 class SecurityTokenParser(HTMLParser):
     """Extracts the OARS security token from a page."""
@@ -324,8 +363,8 @@ class OARSAuthenticator(Protocol):
         raise NotImplementedError
 
 
-class OARSFirefoxCookieAuthenaticator(OARSAuthenticator):
-    """An OARS authenaticator that gets login details from the local Firefox installation."""
+class OARSFirefoxCookieAuthenticator(OARSAuthenticator):
+    """An OARS authenticator that gets login details from the local Firefox installation."""
 
     def authenticate(self, s: OARSSession):
         cj = browser_cookie3.firefox(domain_name='oars.acer.edu.au')
@@ -335,7 +374,7 @@ class OARSFirefoxCookieAuthenaticator(OARSAuthenticator):
             s.cookies.update(c)
 
 
-class OARSConfigAuthenaticator(OARSAuthenticator):
+class OARSConfigAuthenticator(OARSAuthenticator):
     """Authenticates using a provided username and password."""
 
     def __init__(self, username: str, password: str):

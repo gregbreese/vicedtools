@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for exporting student details from OARS."""
+"""Executable script for exporting staff details from OARS."""
 
 import json
 import os
@@ -19,13 +19,11 @@ import os
 from vicedtools.acer import OARSSession
 
 if __name__ == "__main__":
-    from config import (oars_candidates_json, oars_authenticator, oars_school_code)
+    from config import (oars_staff_xlsx, oars_authenticator, oars_school_code)
 
-    parent_dir = os.path.dirname(oars_candidates_json)
+    parent_dir = os.path.dirname(oars_staff_xlsx)
     if not os.path.exists(parent_dir):
         os.makedirs(parent_dir)
 
     s = OARSSession(oars_school_code, oars_authenticator)
-    candidates = s.get_candidates()
-    with open(oars_candidates_json, 'w') as f:
-        json.dump(candidates, f)
+    s.get_staff_xlsx(oars_staff_xlsx)

@@ -89,6 +89,9 @@ oars_authenticator = OARSConfigAuthenaticator(oars_username, oars_password)
 oars_school_code = ""
 # sub-folder for all OARS exports
 oars_dir = os.path.join(root_dir, "OARS exports")
+# student and staff details
+oars_staff_xlsx = os.path.join(oars_dir, f"{oars_school_code}-staff.xlsx")
+oars_candidates_json = os.path.join(oars_dir, "candidates.json")
 # folder for saving all PAT sitting exports
 pat_sittings_dir = os.path.join(oars_dir, "PAT sittings")
 # OARS metadata
@@ -97,6 +100,8 @@ scale_constructs_json = os.path.join(oars_dir, "scaleconstructs.json")
 # files for combined PAT data
 pat_scores_csv = os.path.join(oars_dir, "pat scores.csv")
 pat_most_recent_csv = os.path.join(oars_dir, "pat most recent.csv")
+
+
 
 # gcp
 student_details_table_id = "abc-school-data.student_details.student_details"
