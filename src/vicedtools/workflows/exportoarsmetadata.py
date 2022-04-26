@@ -16,7 +16,7 @@
 import json
 import os
 
-from vicedtools.acer.oars import OARSSession
+from vicedtools.acer import OARSSession
 
 
 def export_oars_metadata(school_code, authenticator, oars_tests_json,

@@ -62,4 +62,4 @@ if __name__ == "__main__":
         if (not os.path.exists(file_name) or args.forceall or
             (args.forcerecent and i == 0)) and cycle['type'] == 1:
             print(f"Exporting {cycle['year']} {cycle['name']}")
-            s.export_reports(cycle['id'], reports_dir)
+            s.export_reports(cycle['id'], cycle['year'], cycle['name'], reports_dir)

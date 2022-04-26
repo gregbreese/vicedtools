@@ -18,7 +18,7 @@ import json
 import os
 import sys
 
-from vicedtools.acer.oars import OARSAuthenticator, OARSSession
+from vicedtools.acer import OARSAuthenticator, OARSSession
 
 
 def export_oars_sittings(from_date: str,

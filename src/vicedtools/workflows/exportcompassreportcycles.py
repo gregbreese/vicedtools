@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for exporting Compass progress report data."""
+"""Executable script for exporting Compass report cycles."""
 
 import json
 import sys
@@ -37,17 +37,12 @@ def export_compass_report_cycles(school_code: str,
 
 
 if __name__ == "__main__":
-    from config import (root_dir, compass_folder, report_cycles_json,
+    from config import (report_cycles_json,
                         compass_authenticator, compass_school_code)
-    if not os.path.exists(root_dir):
-        raise FileNotFoundError(f"{root_dir} does not exist as root directory.")
-    if not os.path.isdir(root_dir):
-        raise NotADirectoryError(f"{root_dir} is not a directory.")
-    compass_dir = os.path.join(root_dir, compass_folder)
-    if not os.path.exists(compass_dir):
-        os.mkdir(compass_dir)
-    file_name = os.path.join(root_dir, compass_folder, report_cycles_json)
+    parent_dir = os.path.basename(report_cycles_json)
+    if not os.path.exists(parent_dir):
+        os.makedirs(parent_dir)
 
     export_compass_report_cycles(compass_school_code, compass_authenticator,
-                                 file_name)
+                                 report_cycles_json)
     sys.exit(0)

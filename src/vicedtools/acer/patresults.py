@@ -345,6 +345,11 @@ def score_categoriser(test: str, year_level: str, datetime_completed: datetime,
     '''
     means = {
         'Reading': {
+            1: 87.1,
+            2: 100.5,
+            3: 110.9,
+            4: 118.7,
+            5: 124.5,
             6: 128.8,
             7: 132.0,
             8: 134.7,
@@ -352,6 +357,11 @@ def score_categoriser(test: str, year_level: str, datetime_completed: datetime,
             10: 140.4
         },
         'Maths': {
+            1: 93.2,
+            2: 103.0,
+            3: 110.9,
+            4: 117.4,
+            5: 122.7,
             6: 127,
             7: 130.5,
             8: 133.6,
@@ -362,22 +372,37 @@ def score_categoriser(test: str, year_level: str, datetime_completed: datetime,
 
     stdevs = {
         'Reading': {
-            6: 12.6,
-            7: 11.5,
-            8: 12.2,
-            9: 12.9,
-            10: 13.1
-        },
-        'Maths': {
+            1: 17.4,
+            2: 16.2,
+            3: 14.7,
+            4: 15.0,
+            5: 12.8,
             6: 12.0,
             7: 12.6,
             8: 10.7,
             9: 11.4,
             10: 10.4
+        },
+        'Maths': {
+            1: 14.6,
+            2: 14.9,
+            3: 14.6,
+            4: 14.2,
+            5: 12.8,
+            6: 12.6,
+            7: 11.5,
+            8: 12.2,
+            9: 12.9,
+            10: 13.1
         }
     }
     # expect year_level as "Year 7"
-    year_level_num = int(year_level[5:])
+    pattern = r"[A-Za-z ]*(?P<yearlevel>[0-9]+)"
+    m = re.search(pattern, year_level)
+    if m:
+        year_level_num = int(m.group('yearlevel'))
+    else:
+        return ""
     if datetime_completed.month <= 4:
         year_level_num -= 1
     if year_level_num > 10:

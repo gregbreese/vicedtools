@@ -16,6 +16,7 @@
 import glob
 import json
 import os
+import sys
 
 import pandas as pd
 
@@ -43,6 +44,9 @@ def ewrite_sittings_to_scores(oars_tests_json: str, ewrite_sittings_dir: str,
         with open(f, 'r', encoding='utf-8') as f:
             new_sittings = json.load(f)
         sittings += new_sittings
+    if not sittings:
+        print("No sittings found.")
+        sys.exit(0)
     sittings = EWriteSittings(sittings)
     # remove duplicates, rename columns
     sittings_df = pd.DataFrame.from_records(sittings.group_report(tests))

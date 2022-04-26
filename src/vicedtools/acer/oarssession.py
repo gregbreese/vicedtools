@@ -56,9 +56,9 @@ class OARSSession(requests.sessions.Session):
         self.school = school
         authenticator.authenticate(self)
         r = self.get(f"https://oars.acer.edu.au/{school}/reports-new")
-        parser = SecurityTokenParser()
-        parser.feed(r.text)
-        self.security_token = parser.security_token
+        pattern = r'"securityToken":"(?P<token>[\$0-9A-Za-z+/\.\\]*)"'
+        m = re.search(pattern, r.text)
+        self.security_token = m.group('token')
 
         self._get_test_metadata()
         self._get_scale_constructs()
@@ -153,9 +153,10 @@ class OARSSession(requests.sessions.Session):
 
                 ids_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingIdsByTestForm/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
                 ids_url = ids_url.replace(" ", "%20")
-
                 r = self.get(ids_url)
                 ids = r.json()
+
+                self.headers.update({"Content-Type":"application/json;charset=utf-8"})
 
                 if ids:
                     sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
@@ -168,6 +169,7 @@ class OARSSession(requests.sessions.Session):
                         }
                         r = self.post(sittings_url, json=payload)
                         sittings += r.json()
+                del self.headers["Content-Type"]
         return PATSittings(sittings)
 
     def get_ewrite_sittings(self, candidates: OARSCandidates, from_date: str,
@@ -386,7 +388,7 @@ class OARSConfigAuthenticator(OARSAuthenticator):
         login_url = f"https://oars.acer.edu.au/{s.school}"
         # get security token
         r = s.get(login_url)
-        pattern = r'name="security\[token\]" value="(?P<token>[\$0-9A-Za-z+/\.]*)"'
+        pattern = r'name="security\[token\]" value="(?P<token>[\$0-9A-Za-z+/\.\\]*)"'
         m = re.search(pattern, r.text)
         security_token = quote(m.group('token'))
         # url encode username and password
