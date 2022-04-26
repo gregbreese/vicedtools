@@ -165,6 +165,8 @@ class CompassSession(requests.sessions.Session):
                     print('File request failed.')
                     return ""
         # poll for status
+        time.sleep(1)
+        poll_requests = 1
         poll_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/PollTaskStatus"
         payload = {"guid": guid}
         r = self.post(poll_url, json=payload)
@@ -175,8 +177,9 @@ class CompassSession(requests.sessions.Session):
             r = self.post(poll_url, json=payload)
             data = r.json()
             status = data['d']['requestStatus']
+            poll_requests += 1
         if status != 3:
-            raise ValueError("Unexpected Compass response.")
+            raise ValueError(f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}")
         # get file details
         get_task_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/GetTask"
         payload = {"guid": guid}
@@ -197,16 +200,37 @@ class CompassSession(requests.sessions.Session):
 
     def export_progress_reports(self, cycle_id: int, cycle_title: str,
                                 save_dir: str):
+        """Exports a single progress report cycle.
+        
+        Args:
+            cycle_id: The Compass cycle id for the cycle to download.
+            cycle_title: The title of the cycle to download.
+            save_dir: The folder to save the export into.
+        """
         payload = f'{{"type":"35","parameters":"{{\\"cycleId\\":{cycle_id},\\"cycleName\\":\\"{cycle_title}\\",\\"displayType\\":1}}"}}'
         self.long_running_file_request(payload, save_dir)
 
     def export_learning_tasks(self, academic_year_id: int,
                               academic_year_name: str, save_dir: str):
+        """Exports learning task data for a single academic group (cycle).
+        
+        Args:
+            academic_year_id: The id for the academic group to download.
+            academic_year_name: The title of the academic group to download.
+            save_dir: The folder to save the export into.
+        """
         payload = f'{{"type":"47","parameters":"{{\\"academicYearId\\":{academic_year_id},\\"academicYearName\\":\\"{academic_year_name}\\"}}"}}'
         self.long_running_file_request(payload, save_dir)
 
     def export_reports(self, cycle_id: int, cycle_year: int, cycle_title: str,
                        save_dir: str):
+        """Exports a single  report cycle.
+        
+        Args:
+            cycle_id: The Compass cycle id for the cycle to download.
+            cycle_title: The title of the cycle to download.
+            save_dir: The folder to save the export into.
+        """
         payload = f'{{"type":"2","parameters":"{{\\"cycleId\\":{cycle_id}}}"}}'
         filename = self.long_running_file_request(payload, save_dir)
         head, tail = os.path.split(filename)
@@ -217,7 +241,12 @@ class CompassSession(requests.sessions.Session):
             os.remove(new_filename)
         os.rename(filename, new_filename)
 
-    def get_report_cycles(self):
+    def get_report_cycles(self) -> list[dict]:
+        """Downloads metadata for Compass report cycles.
+        
+        Returns:
+            A list of the metadata for each report cycle.
+        """
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
@@ -236,7 +265,12 @@ class CompassSession(requests.sessions.Session):
             cycles += new_cycles
         return cycles
 
-    def get_progress_report_cycles(self):
+    def get_progress_report_cycles(self) -> list[dict]:
+        """Downloads metadata for progress report cycles.
+        
+        Returns:
+            A list of the metadata for each progress report cycle.
+        """
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
@@ -256,7 +290,12 @@ class CompassSession(requests.sessions.Session):
             cycles += new_cycles
         return cycles
 
-    def get_academic_groups(self):
+    def get_academic_groups(self) -> list[dict]:
+        """Downloads academic group metadata from Compass.
+        
+        Returns:
+            A list containing the metadata for each academic group.
+        """
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
@@ -358,6 +397,18 @@ class CompassSession(requests.sessions.Session):
                     zip_ref.extract(content, path=save_dir)
         os.remove(archive_file_name)
 
+    def get_subject_metadata(self, file_name: str, academic_group: int = -1):
+        """Downloads a CSV with subject metadata.
+        
+        Args:
+            file_name: The file name to save the CSV to.
+            academic_group: Optional, the academic group id to download the
+                metadata for. Defaults to the currently active academic group.
+        """
+        url = f"https://{self.school_code}.compass.education/Learn/Subjects.aspx?action=export-csv&academicGroup={academic_group}"
+        r = self.get(url)
+        with open(file_name, 'wb') as f:
+            f.write(r.content)
 
 def get_report_cycle_id(cycles, year, name):
     for c in cycles:

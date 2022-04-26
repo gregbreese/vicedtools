@@ -11,7 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for exporting Compass Learning Task data."""
+"""Executable script for exporting Compass subject metadata."""
+
+from __future__ import annotations
 
 import argparse
 import json
@@ -21,23 +23,24 @@ import time
 from vicedtools.compass import CompassSession, sanitise_filename
 
 if __name__ == "__main__":
-    from config import (learning_tasks_dir, compass_authenticator,
-                        compass_school_code, academic_groups_json)
+    from config import (compass_dir, compass_authenticator, 
+                        compass_school_code, academic_groups_json,
+                        subjects_dir)
 
     parser = argparse.ArgumentParser(
-        description='Export all Compass learning tasks.')
+        description='Export all Compass subject metadata.')
     parser.add_argument('--forceall',
                         '-a',
                         action="store_true",
-                        help='force re-download existing learning task exports')
+                        help='force re-download existing subject metadata exports')
     parser.add_argument('--forcecurrent',
                         '-c',
                         action="store_true",
                         help='force re-download current academic cycle')
     args = parser.parse_args()
 
-    if not os.path.exists(learning_tasks_dir):
-        os.makedirs(learning_tasks_dir)
+    if not os.path.exists(subjects_dir):
+        os.makedirs(subjects_dir)
 
     with open(academic_groups_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
@@ -45,13 +48,12 @@ if __name__ == "__main__":
     s = CompassSession(compass_school_code, compass_authenticator)
 
     for cycle in cycles:
-        sanitised_name = sanitise_filename(cycle['name'])
-        file_name = os.path.join(learning_tasks_dir,
-                                 f"LearningTasks-{sanitised_name}.csv")
-        if not os.path.exists(file_name) or args.forceall or (
-                args.forcecurrent and cycle['isRelevant']):
-            print(f"Exporting {cycle['name']}")
-            s.export_learning_tasks(cycle['id'],
-                                    cycle['name'],
-                                    save_dir=learning_tasks_dir)
-            time.sleep(5)
+            sanitised_name = sanitise_filename(cycle['name'])
+            file_name = os.path.join(subjects_dir,
+                                    f"Subjects-{sanitised_name}.csv")
+            if not os.path.exists(file_name) or args.forceall or (
+                    args.forcecurrent and cycle['isRelevant']):
+                print(f"Exporting {cycle['name']}")
+                s.get_subject_metadata(file_name, cycle['id'])
+                
+                time.sleep(3)
