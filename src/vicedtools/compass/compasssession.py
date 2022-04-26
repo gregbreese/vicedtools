@@ -185,6 +185,7 @@ class CompassSession(requests.sessions.Session):
         file_name = data['d']["filename"]
         file_id = data['d']["cdn_fileId"]
         # download the file
+        del self.headers['Content-Type']
         file_download_url = f"https://{self.school_code}.compass.education/Services/FileDownload/FileRequestHandler?FileDownloadType=9&file={file_id}&fileName={file_name}".replace(
             " ", "%20")
         r = self.get(file_download_url)

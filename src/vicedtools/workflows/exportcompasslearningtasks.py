@@ -16,7 +16,7 @@
 import argparse
 import json
 import os
-import sys
+import time
 
 from vicedtools.compass import CompassSession, sanitise_filename
 
@@ -54,3 +54,4 @@ if __name__ == "__main__":
             s.export_learning_tasks(cycle['id'],
                                     cycle['name'],
                                     save_dir=learning_tasks_dir)
+        time.sleep(1)
