@@ -18,29 +18,6 @@ import os
 
 from vicedtools.acer import OARSSession
 
-
-def export_oars_metadata(school_code, authenticator, oars_tests_json,
-                         scale_constructs_json):
-    """Exports PAT test metadata.
-    
-    Saves test metadata in tests.json.
-    Saves scale construct metadata in scaleconstructs.json
-
-    Args:
-        school_code: An OARS school string. E.g. https://oars.acer.edu.au/{your school string}/...
-        authenticator: An instance of OARSAuthenticator.
-        oars_tests_json: The filename to save the test metadata.
-        scale_constructs_json: The filename to save the scale construct metadata
-    """
-    s = OARSSession(oars_school_code, oars_authenticator)
-    with open(oars_tests_json, 'w') as f:
-        json.dump(s.tests, f)
-
-    s = OARSSession(oars_school_code, oars_authenticator)
-    with open(scale_constructs_json, 'w') as f:
-        json.dump(s.scale_constructs, f)
-
-
 if __name__ == "__main__":
     from config import (oars_tests_json, scale_constructs_json,
                         oars_authenticator, oars_school_code)
@@ -48,9 +25,14 @@ if __name__ == "__main__":
     folder = os.path.dirname(oars_tests_json)
     if not os.path.exists(folder):
         os.makedirs(folder)
-        folder = os.path.dirname(scale_constructs_json)
+    folder = os.path.dirname(scale_constructs_json)
     if not os.path.exists(folder):
         os.makedirs(folder)
 
-    export_oars_metadata(oars_school_code, oars_authenticator, oars_tests_json,
-                         scale_constructs_json)
+    s = OARSSession(oars_school_code, oars_authenticator)
+    with open(oars_tests_json, 'w') as f:
+        json.dump(s.tests, f)
+
+    s = OARSSession(oars_school_code, oars_authenticator)
+    with open(scale_constructs_json, 'w') as f:
+        json.dump(s.scale_constructs, f)
