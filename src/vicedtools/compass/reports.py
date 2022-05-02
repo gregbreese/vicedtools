@@ -104,7 +104,7 @@ class Reports:
                 raise ValueError(
                     "Could not determine semester for reports export file.\n"
                     "Try including Sem 1, Sem 2 in the filenames.")
-        time = cls._semesterDateMapper(year, semester)
+        time = cls._semester_date_mapper(year, semester)
         temp_df["Time"] = time
         temp_df["Time"] = pd.to_datetime(temp_df["Time"])
 
@@ -141,6 +141,7 @@ class Reports:
             year: str = None,
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
+            learning_task_filter: Callable[[pd.DataFrame], pd.DataFrame] = None,
             replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass Learning Tasks export."""
         try:
@@ -149,10 +150,9 @@ class Reports:
                                   keep_default_na=False)
         except EmptyDataError:
             return Reports()
-        temp_df = temp_df.loc[temp_df["IsIncludedInReport"], :]
-        temp_df = temp_df.loc[(temp_df["ComponentType"] != "Comment"), :]
-        temp_df = temp_df.loc[temp_df["ReportCycleName"].
-                              isin(["Semester One", "Semester Two"]), :]
+
+        if learning_task_filter:
+            temp_df = learning_task_filter(temp_df)
 
         if (not year):
             # attempt to determine year from filename
@@ -165,7 +165,7 @@ class Reports:
                     "Could not determine year for Learning Tasks export file.")
         temp_df["Year"] = year
         temp_df["Time"] = temp_df.apply(
-            lambda x: cls._semesterDateMapper(x["Year"], x["ReportCycleName"]),
+            lambda x: cls._semester_date_mapper(x["Year"], x["ReportCycleName"]),
             axis=1,
             result_type='reduce')
         temp_df['Time'] = pd.to_datetime(temp_df['Time'])
@@ -269,13 +269,19 @@ class Reports:
         return cls(temp_df[data_columns], temp_df[class_details_columns])
 
     @classmethod
-    def _semesterDateMapper(cls, year: str, semester: str) -> str:
-        if semester in ["Semester One", "1", "One", "one"]:
+    def _semester_date_mapper(cls, year: str, semester: str) -> str:
+        # remove year-like strings from semester
+        semester = re.sub("[0-9]{4}","", semester)
+        # try to identify semester
+        sem_one_pattern = "1|[Oo]ne"
+        sem_two_pattern = "2|[Tt]wo"
+        m = re.search(sem_one_pattern, semester)
+        if m:
             return str(year) + "-06-30"
-        elif semester in ["Semester Two", "2", "Two", "two"]:
+        m = re.search(sem_two_pattern, semester)
+        if m:
             return str(year) + "-12-31"
-        else:
-            return str(year) + "-12-31"
+        return str(year) + "-12-31"
 
     @classmethod
     def _termDateMapper(cls, year: str, term: str) -> str:
@@ -295,6 +301,7 @@ class Reports:
             filename: str,
             grade_score_mapper: Callable[[str], float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
+            learning_task_filter: Callable[[pd.DataFrame], pd.DataFrame] = None,
             replace_values: dict[str, dict] = None) -> None:
         """Adds data from a Compass Learning Tasks export."""
 
@@ -302,7 +309,9 @@ class Reports:
             filename,
             grade_score_mapper=grade_score_mapper,
             grade_dtype=grade_dtype,
-            replace_values=replace_values)
+            learning_task_filter=learning_task_filter,
+            replace_values=replace_values
+            )
         self.data = pd.concat([self.data, temp.data], ignore_index=True)
         self.data.drop_duplicates(
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],

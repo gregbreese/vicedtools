@@ -20,28 +20,27 @@ import pandas as pd
 from vicedtools.compass import Reports
 
 if __name__ == "__main__":
-    from config import (compass_dir, learning_tasks_dir, progress_reports_dir,
-                        reports_dir, reports_file, reports_summary_file,
-                        replace_values, replace_subject_codes,
-                        work_habits_result_mapper, learning_tasks_result_mapper,
+    from config import (learning_tasks_dir, progress_reports_dir,
+                        reports_dir, replace_values, replace_subject_codes,
+                        work_habits_result_mapper, learning_task_filter,
+                        learning_tasks_result_mapper,
                         progress_report_result_mapper, results_dtype,
-                        progress_report_items, gwsc_class_code_parser,
+                        progress_report_items, class_code_parser,
                         subjects_file, reports_csv, reports_summary_csv)
 
     reports = Reports()
 
     files = glob.glob(os.path.join(learning_tasks_dir, "*.csv"))
-    df = pd.DataFrame()
     for filename in files:
         print("importing ", filename)
         reports.addLearningTasksExport(
             filename,
             grade_dtype=results_dtype,
             replace_values=replace_values,
-            grade_score_mapper=learning_tasks_result_mapper)
+            grade_score_mapper=learning_tasks_result_mapper,
+            learning_task_filter=learning_task_filter)
 
     files = glob.glob(os.path.join(reports_dir, "*.csv"))
-    df = pd.DataFrame()
     for filename in files:
         print("importing ", filename)
         reports.addReportsExport(filename,
@@ -50,8 +49,6 @@ if __name__ == "__main__":
                                  grade_score_mapper=work_habits_result_mapper)
 
     files = glob.glob(os.path.join(progress_reports_dir, "*.csv"))
-
-    progress_reports_df = pd.DataFrame()
     for filename in files:
         print("importing ", filename)
         reports.addProgressReportsExport(
@@ -61,10 +58,10 @@ if __name__ == "__main__":
             grade_score_mapper=progress_report_result_mapper)
 
     reports.importSubjectsData(subjects_file,
-                               gwsc_class_code_parser,
+                               class_code_parser,
                                replace_values=replace_subject_codes)
 
     reports.updateFromClassDetails()
 
-    reports.saveReports(reports_file)
-    reports.saveSummary(reports_summary_file)
+    reports.saveReports(reports_csv)
+    reports.saveSummary(reports_summary_csv)

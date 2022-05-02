@@ -16,8 +16,9 @@
 import argparse
 import json
 import os
+import time
 
-from vicedtools.compass import CompassSession, sanitise_filename
+from vicedtools.compass import CompassSession, CompassLongRunningFileRequestError, sanitise_filename
 
 if __name__ == "__main__":
     from config import (progress_reports_dir, progress_report_cycles_json,
@@ -50,5 +51,9 @@ if __name__ == "__main__":
         if not os.path.exists(file_name) or args.forceall or (args.forcerecent
                                                               and i == 0):
             print(f"Exporting {cycle['title']}")
-            s.export_progress_reports(cycle['id'], cycle['title'],
-                                      progress_reports_dir)
+            try:
+                s.export_progress_reports(cycle['id'], cycle['title'],
+                                          progress_reports_dir)
+            except CompassLongRunningFileRequestError:
+                print(f"Exporting {cycle['title']} failed.")
+            time.sleep(1)

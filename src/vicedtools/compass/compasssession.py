@@ -35,7 +35,7 @@ def current_ms_time() -> int:
 
 
 def sanitise_filename(filename):
-    filename = re.sub(r'[/\\]+', '', filename)
+    filename = re.sub(r'[/\\:\*\?<>|]+', '', filename)
     filename = re.sub(' +', ' ', filename)
     return filename
 
@@ -64,6 +64,9 @@ class CompassAuthenticationError(Exception):
     """Authentication with Compass failed."""
     pass
 
+class CompassLongRunningFileRequestError(Exception):
+    """Long running file request failed."""
+    pass
 
 class CompassConfigAuthenticator(CompassAuthenticator):
     """Authenticates using a provided username and password."""
@@ -179,7 +182,7 @@ class CompassSession(requests.sessions.Session):
             status = data['d']['requestStatus']
             poll_requests += 1
         if status != 3:
-            raise ValueError(f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}")
+            raise CompassLongRunningFileRequestError(f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}")
         # get file details
         get_task_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/GetTask"
         payload = {"guid": guid}
