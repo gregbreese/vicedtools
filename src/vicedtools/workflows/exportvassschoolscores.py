@@ -26,6 +26,10 @@ if __name__ == "__main__":
     parser.add_argument('years',
                         nargs='+',
                         help='the year to download the scores for.')
+    parser.add_argument('--force',
+                        '-f',
+                        action="store_true",
+                        help='force re-download the specified years')
     args = parser.parse_args()
 
     if not os.path.exists(vass_school_scores_dir):
@@ -37,8 +41,9 @@ if __name__ == "__main__":
                            grid_password=vass_grid_password)
 
     for year in args.years:
-        driver.change_year(year)
         file_name = os.path.join(vass_school_scores_dir,
                                  f"school scores {year}.csv")
-        driver.school_scores(file_name)
+        if not os.path.exists(file_name) or args.force:
+            driver.change_year(year)
+            driver.school_scores(file_name)
     driver.quit()
