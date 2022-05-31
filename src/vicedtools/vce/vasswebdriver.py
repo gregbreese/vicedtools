@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 from io import StringIO
+import math
 import re
 import requests
 import time
@@ -27,10 +28,12 @@ from selenium.common.exceptions import ElementNotInteractableException, NoSuchEl
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.ie.service import Service
 from selenium.webdriver.ie.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
+from webdriver_manager.microsoft import IEDriverManager
 
 
 def click_with_retry(element: WebElement, test: callable[[], bool]) -> bool:
@@ -87,7 +90,7 @@ def is_menu_item_displayed(driver: WebDriver, xpath_expr: str) -> bool:
     cf = current_frame(driver)
     driver.switch_to.default_content()
     driver.switch_to.frame('main')
-    menu_item = driver.find_element_by_xpath(xpath_expr)
+    menu_item = driver.find_element(By.XPATH, xpath_expr)
     is_displayed = menu_item.is_displayed()
     driver.switch_to.default_content()
     driver.switch_to.frame(cf)
@@ -111,7 +114,8 @@ class VASSWebDriver(webdriver.Ie):
                  iedriver_path: str,
                  username="",
                  password="",
-                 grid_password=""):
+                 grid_password="",
+                 os_type='win32'):
         """Creates a webdriver with VASS authentication completed.
     
         Creates an instance of selenium.webdriver.Ie and authenticates to VASS.
@@ -124,39 +128,42 @@ class VASSWebDriver(webdriver.Ie):
                 tuples, each tuple being the grid coordinate of the next
                 password character. Must be given in top-> bottom, left->
                 right order.
+            os_type: The os type, defaults to win32 as win64 is slow
 
         Returns:
             An instance of selenium.webdriver.ie with authentication to
             VASS completed.
         """
-        ieCapabilities = DesiredCapabilities.INTERNETEXPLORER.copy()
-        ieCapabilities["nativeEvents"] = False
-        ieCapabilities["unexpectedAlertBehaviour"] = "accept"
-        ieCapabilities["ignoreProtectedModeSettings"] = True
-        ieCapabilities["disable-popup-blocking"] = True
-        ieCapabilities["enablePersistentHover"] = True
-        ieCapabilities["ignoreZoomSetting"] = True
+        options = webdriver.IeOptions()
+        options.native_events = False
+        #options.ignore_protected_mode_settings = True
+        options.ignore_zoom_level = True
+        options.persistent_hover = True
+        options.add_additional_option("unexpectedAlertBehaviour", "accept")
+        options.add_additional_option("disable-popup-blocking", True)
 
-        super().__init__(executable_path=iedriver_path,
-                         desired_capabilities=ieCapabilities)
+        super().__init__(executable_path=iedriver_path, options=options)
 
         self.launch_window = self.current_window_handle
         # login to VASS
         self.get("https://www.vass.vic.edu.au/login/")
 
-        time.sleep(2)
+        current_handles = self.window_handles
         login_link = WebDriverWait(self, 20).until(
             EC.element_to_be_clickable((By.NAME, "boslogin")))
-        click_with_retry(login_link, lambda: find_window(self, "Login To VASS"))
-        time.sleep(1)
+        self.execute_click(login_link)
+        time.sleep(0.5)
+        WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
         handle = find_window(self, "Login To VASS")
         self.switch_to.window(handle)
         self.main_window = self.current_window_handle
 
         # username/password auth
-        self.find_element_by_name("username").send_keys(username)
-        self.find_element_by_name("password").send_keys(password)
-        self.find_element_by_xpath("//input[contains(@name, 'Login')]").click()
+        self.find_element(By.NAME, "username").send_keys(username)
+        self.find_element(By.NAME, "password").send_keys(password)
+        self.execute_click(
+            self.find_element(By.XPATH, "//input[contains(@name, 'Login')]"))
+
         # password grid auth
         WebDriverWait(self, 10).until(
             EC.presence_of_element_located((By.NAME, 'PASSCODEGRID')))
@@ -167,16 +174,19 @@ class VASSWebDriver(webdriver.Ie):
             grid_values[(m[1], m[2])] = m[0]
         grid_password_characters = "".join(
             [grid_values[i] for i in grid_password])
-        self.find_element_by_xpath("//input[contains(@name, 'PassCode')]"
-                                  ).send_keys(grid_password_characters)
-        self.find_element_by_xpath(
-            "//input[contains(@name, 'AcceptButton')]").click()
+        self.find_element(By.XPATH,
+                          "//input[contains(@name, 'PassCode')]").send_keys(
+                              grid_password_characters)
+        self.execute_click(
+            self.find_element(By.XPATH,
+                              "//input[contains(@name, 'AcceptButton')]"))
         WebDriverWait(self, 20).until(EC.title_contains("VASS - "))
         pattern = "VASS - (?P<school>[A-Za-z ]+) - Year (?P<year>[0-9]{4})"
         m = re.match(pattern, self.title)
         if m:
             self.school = m.group('school')
             self.year = m.group('year')
+        time.sleep(1)
 
     def execute_click(self, element):
         self.set_script_timeout(1)
@@ -197,8 +207,8 @@ class VASSWebDriver(webdriver.Ie):
         WebDriverWait(self, 10).until(
             EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
         current_handles = self.window_handles
-        menu_item = self.find_element_by_xpath(
-            "//*[contains(text(),'Change Year')]")
+        menu_item = self.find_element(By.XPATH,
+                                      "//*[contains(text(),'Change Year')]")
         self.execute_click(menu_item)
         time.sleep(0.5)
         WebDriverWait(self, 20).until(EC.new_window_is_opened(current_handles))
@@ -209,10 +219,10 @@ class VASSWebDriver(webdriver.Ie):
         WebDriverWait(self, 10).until(
             EC.frame_to_be_available_and_switch_to_it((By.NAME, "VASSFrame")))
         #self.switch_to.frame('VASSFrame')
-        year_field = self.find_element_by_name("Year")
+        year_field = self.find_element(By.NAME, "Year")
         year_field.send_keys(year)
-        continue_button = self.find_element_by_xpath("//input[@type='submit']")
-        continue_button.click()
+        continue_button = self.find_element(By.XPATH, "//input[@type='submit']")
+        self.execute_click(continue_button)
         time.sleep(1)
         self.switch_to.window(self.main_window)
         self.year = year
@@ -280,7 +290,11 @@ class VASSWebDriver(webdriver.Ie):
             file_name: The file name to save the data to.
         """
         personal_details_url = "https://www.vass.vic.edu.au/student/reports/StudentPersonalDetailsSummary/PersonalDetailsSummary.vass?yearLevel=ALL&formGroup=&course=ALL&reportType=1&includeAddress=N&reportOrder=yrLevel"
+        user_agent = self.execute_script("return navigator.userAgent;")
+
         s = requests.session()
+        headers = {"User-Agent": user_agent}
+        s.headers.update(headers)
         # copy cookies from selenium session
         for cookie in self.get_cookies():
             c = {cookie['name']: cookie['value']}
@@ -325,7 +339,7 @@ class VASSWebDriver(webdriver.Ie):
             self.switch_to.default_content()
             WebDriverWait(self, 10).until(
                 EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
-            menu_item = self.find_element_by_id("item7_3_1")
+            menu_item = self.find_element(By.ID, "item7_3_1")
             self.execute_click(menu_item)
             button = WebDriverWait(self, 10).until(
                 EC.presence_of_element_located(
@@ -338,32 +352,31 @@ class VASSWebDriver(webdriver.Ie):
             self, f"GAT Results Summary for {self.school} - {self.year}")
         self.switch_to.window(gat_window)
         students = []
+        time.sleep(0.5)
         while (True):
             self.switch_to.frame('VASSFrame')
-            report_data = WebDriverWait(self, 30).until(
-                EC.presence_of_element_located((By.ID, 'reportData')))
+
+            report_data = self.find_element(By.ID, "reportData")
             data = report_data.get_attribute('innerHTML')
             try:
                 root = ET.fromstring(data.strip())
             except ET.ParseError:
                 time.sleep(2)  # try giving page more time to load
-                report_data = WebDriverWait(self, 30).until(
-                    EC.presence_of_element_located((By.ID, 'reportData')))
+                report_data = self.find_element(By.ID, "reportData")
                 data = report_data.get_attribute('innerHTML')
                 root = ET.fromstring(data.strip())
             for child in root.iter('student'):
                 students.append(child.attrib)
             self.switch_to.parent_frame()
             self.switch_to.frame('VASSTop')
-            try:
-                self.find_element_by_id("idNext").click()  # next subject
-            except ElementNotInteractableException:
-                break
+            e = self.find_element(By.ID, "idNext")  # next subject
+            if e.get_attribute('style') == "DISPLAY: none":
+                break  # no more classes
             self.switch_to.parent_frame()
             time.sleep(0.1)
         self.switch_to.parent_frame()
         self.switch_to.frame('VASSTop')
-        self.find_element_by_id("idClose").click()
+        self.execute_click(self.find_element(By.ID, "idClose"))
         self.switch_to.window(self.main_window)
         df = pd.DataFrame(students)
         df.rename(columns={
@@ -373,61 +386,82 @@ class VASSWebDriver(webdriver.Ie):
                   inplace=True)
         df.to_csv(file_name, index=False)
 
-    # TODO: See if data can be downloaded  directly from https://www.vass.vic.edu.au/common/VASSExtract.cfm?Filename=" + unit_code + ga_code
     def school_scores(self, file_name: str) -> None:
         """Extracts school score data for all GAs and saves to a csv.
         
         Args:
             file_name: The filename to save the data to.
         """
-        # open ranked school scores report page
-        # TODO: possibly can open this directly with a javascript click instead of driver click
-        self.switch_to.default_content()
-        WebDriverWait(self, 10).until(
-            EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
-        menu_item = WebDriverWait(self, 30).until(
-            EC.presence_of_element_located((By.ID, 'item7_3_3_2')))
-        #menu_item = self.find_element_by_id(
-        #    "item7_3_3_2")  # Subject ranked summaries
-        self.execute_click(menu_item)
-        # scrape all of the school scores
+        # create a requests session to avoid working with IE
+        s = requests.session()
+        user_agent = self.execute_script("return navigator.userAgent;")
+        headers = {"User-Agent": user_agent}
+        s.headers.update(headers)
+        # copy cookies from selenium session
+        for cookie in self.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
+
         school_scores = []
-        cycle_names = [
-            "5 - U3 SAT Results", "6 - Unit 3 School-assessed Coursework",
-            "8 - Unit 4 SAT and SAC"
-        ]
-        for cycle in cycle_names:
-            self.switch_to.default_content()
-            WebDriverWait(self, 10).until(
-                EC.frame_to_be_available_and_switch_to_it((By.NAME, "main")))
-            self.find_element_by_xpath(
-                f"//select[@name='CycleNum']/option[text()='{cycle}']").click()
-            button = self.find_element_by_xpath(
-                "//input[@value='Run Ranked School Scores Report']")
-            current_handles = self.window_handles
-            self.execute_click(button)
-            WebDriverWait(self,
-                          10).until(EC.new_window_is_opened(current_handles))
-            handle = find_window(
-                self,
-                f"Ranked School Scores Report for {self.school} - {self.year}")
-            self.switch_to.window(handle)
-            while (True):
-                self.switch_to.frame("VASSFrame")
-                for i in range(10):
-                    try:
-                        data = WebDriverWait(self, 30).until(
-                            EC.presence_of_element_located(
-                                (By.ID,
-                                 'reportData'))).get_attribute('innerHTML')
-                        root = ET.fromstring(data.strip())
-                        max_score = root.get("MaxScore")
-                        siar = root.get("SIAR")
-                        siar_max_score = root.get("SIARMaxScore")
-                        break
-                    except ET.ParseError:
-                        time.sleep(1)
-                print(data)
+
+        # get data about what subjects and GAs have students
+        for cycle in ['5', '6', '8']:
+            school_results_metadata_url = f"https://www.vass.vic.edu.au/results/reports/SchoolAssessedResultsBySchool/SchoolAssessedResultsBySchool_Frameset.cfm?Cycle={cycle}&UnitCode=ALL&GA=0&AssessedElsewhere=false&AdjustPaper=true"
+            r = s.get(school_results_metadata_url)
+            try:
+                # get list of unit names
+                unit_name_list_pattern = r"""UnitNames\t= \[(.*?)];"""
+                unit_name_list_match = re.search(unit_name_list_pattern, r.text)
+                unit_name_pattern = r'"(.*?)"'
+                unit_name_matches = re.findall(unit_name_pattern,
+                                            unit_name_list_match.group(0))
+                # get list of unit codes
+                unit_code_list_pattern = r"""naUnits \t= \[(.*?)];"""
+                unit_code_list_match = re.search(unit_code_list_pattern, r.text)
+                unit_code_pattern = r"'(.*?)'"
+                unit_code_matches = re.findall(unit_code_pattern,
+                                            unit_code_list_match.group(0))
+                # get list of ga numbers
+                ga_number_list_pattern = r"""naGAs \t= \[.*?];"""
+                ga_number_list_match = re.search(ga_number_list_pattern, r.text)
+                ga_number_pattern = r"'(.*?)'"
+                ga_number_matches = re.findall(ga_number_pattern,
+                                            ga_number_list_match.group(0))
+                # get list of ga names
+                ga_name_list_pattern = r"""GANames \t= \[.*?];"""
+                ga_name_list_match = re.search(ga_name_list_pattern, r.text)
+                ga_name_pattern = r'"(.*?)"'
+                ga_name_matches = re.findall(ga_name_pattern,
+                                            ga_name_list_match.group(0))
+                # get list of max scores
+                max_scores_list_pattern = r"""naGAMaxScores\t= \[.*?];"""
+                max_scores_list_match = re.search(max_scores_list_pattern, r.text)
+                max_scores_number_pattern = r"'(.*?)'"
+                max_scores_matches = re.findall(max_scores_number_pattern,
+                                                max_scores_list_match.group(0))
+            except AttributeError:
+                print(f"Error downloading school scores for year {self.year}.")
+                return
+
+            # get all the results
+            
+            metadata = zip(unit_code_matches, unit_name_matches, ga_number_matches,
+                        ga_name_matches, max_scores_matches)
+            for unit_code, unit_name, ga_number, ga_name, max_score in metadata:
+                results_url = f"https://www.vass.vic.edu.au/results/reports/SchoolAssessedResultsBySchool/SchoolAssessedResultsBySchoolCRS_Display.cfm?UnitCode={unit_code}&UnitName={unit_name}&GA={ga_number}&GAName={ga_name}&GAMaxScore={max_score}&AssessedElsewhere=false&AdjustPaper=true&myIndex=1&myTotal=1&ReportName=Ranked School Scores Report"
+                r = s.get(results_url)
+
+                xml_start_pattern = r'<xml id="reportData">'
+                xml_start_match = re.search(xml_start_pattern, r.text)
+                xml_end_pattern = r'</xml>'
+                xml_end_match = re.search(xml_end_pattern, r.text)
+                start = xml_start_match.span(0)[1]
+                end = xml_end_match.span(0)[0]
+
+                root = ET.fromstring(r.text[start:end].strip())
+                max_score = root.get("MaxScore")
+                siar = root.get("SIAR")
+                siar_max_score = root.get("SIARMaxScore")
                 params = {
                     'Max Score': max_score,
                     "SIAR": siar,
@@ -438,19 +472,9 @@ class VASSWebDriver(webdriver.Ie):
                 del params['Students Assessed Elsewhere']
                 for child in root.iter('student'):
                     school_scores.append({**child.attrib, **params})
-                self.switch_to.parent_frame()
-                self.switch_to.frame('VASSTop')
-                try:
-                    self.find_element_by_id("idNext").click()  # next subject
-                except ElementNotInteractableException:
-                    break
-                self.switch_to.parent_frame()
-            self.switch_to.parent_frame()
-            self.switch_to.frame('VASSTop')
-            self.find_element_by_id("idClose").click()
-            time.sleep(1)
-            self.switch_to.window(self.main_window)
+        s.close()
         if school_scores:
+            # convert to a DataFrame and save scores
             df = pd.DataFrame(school_scores)
             subject_names = {}
             unit_names = df["Unit"]
@@ -501,7 +525,7 @@ class VASSWebDriver(webdriver.Ie):
         self.switch_to.window(handle)
         # open report 17
         self.switch_to.frame('VASSTop')
-        report17 = self.find_element_by_id('btnReport17')
+        report17 = self.find_element(By.ID, 'btnReport17')
         self.execute_click(report17)
         # select year
         year_select_element = WebDriverWait(self, 5).until(
@@ -523,7 +547,7 @@ class VASSWebDriver(webdriver.Ie):
             select = Select(select_element)
             select.select_by_index(i)
             time.sleep(0.5)
-        button = self.find_element_by_id('mainHolder_btnReport')
+        button = self.find_element(By.ID, 'mainHolder_btnReport')
         self.execute_click(button)
         time.sleep(1)
         results = []
@@ -536,7 +560,7 @@ class VASSWebDriver(webdriver.Ie):
             m = re.search(pattern, page_source)
             subject = m.group('subject')
             # get student results
-            pattern = '<TR>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<surname>[A-Za-z-\']+)</TD>\r\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<firstname>[A-Za-z- ]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<yearlevel>[0-9]+)</TD>\r\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<classgroup>[A-Za-z0-9]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<achieved>[0-9.]+)</TD>\r\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<predicted>[0-9.]+)</TD></TR>'
+            pattern = '''<TR>\\r\\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<surname>[A-Za-z-']+)<\/TD>\\r\\n<TD align=left style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 150px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">&nbsp;(?P<firstname>[A-Za-z- ]+)<\/TD>\\r\\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<yearlevel>[0-9]+)<\/TD>\\r\\n<TD align=center style="BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<classgroup>[A-Za-z0-9 ]+)<\/TD>\\r\\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<achieved>[0-9\.]+)<\/TD>\\r\\n<TD align=center style="FONT-SIZE: 8pt; BORDER-TOP: black 1px solid; BORDER-RIGHT: black 1px solid; WIDTH: 100px; BORDER-BOTTOM: black 1px solid; FONT-WEIGHT: normal; BORDER-LEFT: black 1px solid">(?P<predicted>[0-9\.]+|N\/A)<\/TD><\/TR>'''
             ms = re.findall(pattern, page_source)
             new_results = [{
                 'Year': self.year,
@@ -550,16 +574,99 @@ class VASSWebDriver(webdriver.Ie):
             } for m in ms]
             results += new_results
             # go to next subject
-            next_button = self.find_element_by_name(
-                'ctl00$mainHolder$ReportHeader1$btnNext')
+            next_button = self.find_element(
+                By.NAME, 'ctl00$mainHolder$ReportHeader1$btnNext')
             if next_button.get_attribute('disabled') == 'true':
                 break
             self.execute_click(next_button)
             time.sleep(1)
-        close_button = self.find_element_by_id(
-            'mainHolder_ReportHeader1_btnClose')
+        close_button = self.find_element(By.ID,
+                                         'mainHolder_ReportHeader1_btnClose')
         self.execute_click(close_button)
         self.close()
         self.switch_to.window(self.main_window)
         df = pd.DataFrame.from_records(results)
         df.to_csv(file_name, index=False)
+
+    def moderated_coursework_scores(self, file_name: str) -> None:
+        """Extracts moderated scores for school scores for all GAs and saves to a csv.
+        
+        Args:
+            file_name: The filename to save the data to.
+        """
+        # create a requests session to avoid working with IE
+        s = requests.session()
+        user_agent = self.execute_script("return navigator.userAgent;")
+        headers = {"User-Agent": user_agent}
+        s.headers.update(headers)
+        # copy cookies from selenium session
+        for cookie in self.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
+
+        # get data about what studies/ga's there is data for
+        url = "https://www.vass.vic.edu.au/school/reports/StatmodStatistics/StatmodStatistics_Frameset.cfm?StudySequenceCode=All&GANum=All&CycleNum=All"
+        r = s.get(url)
+        var_names = [
+            'saCycle', 'saStudyCode', 'saSequenceCode',
+            ' saCombinedSequenceCode', 'saGANum', 'saCycleDescription',
+            'saSequenceDescription', 'saGAName', 'saMaxScore',
+            'saModerationGroup', 'saVCEorVET'
+        ]
+        var_quotes = [
+            "'", "'", "'", "'", "'", '"', '"', '"', "'", "'", "'", "'"
+        ]
+        metadata = []
+        for idx, var_name in enumerate(var_names):
+            list_pattern = var_name + r"""[ \t]+= \[(.*?)];"""
+            list_match = re.search(list_pattern, r.text)
+            if var_quotes[idx] == "'":
+                items_pattern = r"'(.*?)'"
+            else:
+                items_pattern = r'"(.*?)"'
+            item_matches = re.findall(items_pattern, list_match.group(0))
+            metadata.append(item_matches)
+
+        # get moderated score data for each study and ga
+
+        # values are given in reference to x,y in the graph
+        left = 45
+        right = 666
+        top = 30
+        bottom = 364
+
+        moderated_scores = []
+        # get moderation statistics
+        for cycle, study_code, sequence_code, combined_sequence_code, ga_num, cycle_desc, sequence_desc, ga_name, max_score, moderation_group, vce_or_vet in zip(
+                *metadata):
+            url = f"https://www.vass.vic.edu.au/school/reports/StatmodStatistics/StatmodStatistics_Display.cfm?&Cycle={cycle}&CycleDesc={cycle_desc}&StudyCode={study_code}&SequenceCode={sequence_code}&CombinedSequenceCode={combined_sequence_code}&GANum={ga_num}&SequenceDescription={sequence_desc}&GAName={ga_name}&MaxScore={max_score}&ModerationGroup={moderation_group}&VCEorVET={vce_or_vet}&myIndex=1&myTotal=34"
+            r = s.get(url)
+
+            map_pattern = r"""<map id="[0-9]*-map" name="[0-9]*-map">(.*?)</map>"""
+            m = re.search(map_pattern, r.text, flags=re.DOTALL)
+            map_items = m.group(1)
+            graph_element_pattern = r"""<area.*?shape="(.*?)".*?plot-([0-9]).*? coords="(.*?)" />"""
+            graph_elements = re.findall(graph_element_pattern,
+                                        map_items,
+                                        flags=re.DOTALL)
+
+            for e in graph_elements:
+                if e[0] == 'circle':
+                    if e[1] == '1':
+                        x, y, r = [int(a) for a in e[2].split(',')]
+                        moderated_scores.append(
+                            (sequence_desc, ga_num, ga_name, max_score,
+                             math.ceil(
+                                 (x - left) / (right - left) * int(max_score)),
+                             round(
+                                 (bottom - y) / (bottom - top) * int(max_score),
+                                 1)))
+        s.close()
+        if moderated_scores:
+            df = pd.DataFrame.from_records(moderated_scores,
+                                           columns=[
+                                               "Subject", "GA Number",
+                                               "GA Name", "Max score",
+                                               "School score", "Moderated score"
+                                           ])
+            df.to_csv(file_name, index=False)
