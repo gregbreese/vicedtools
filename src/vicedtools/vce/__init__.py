@@ -13,3 +13,4 @@
 # limitations under the License.
 
 from vicedtools.vce.vasswebdriver import VASSWebDriver
+from vicedtools.vce.vasssession import VASSSession
