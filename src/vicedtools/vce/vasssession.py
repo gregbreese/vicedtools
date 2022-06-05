@@ -84,6 +84,7 @@ class VASSSession(requests.Session):
         if "https://www.vass.vic.edu.au/menu/Home.cfm" not in r.text:
             raise  VassLoginError()
 
+    # TODO: this needs fixing
     def change_year(self, year: str) -> None:
         """Changes the year in VASS.
         
@@ -92,7 +93,7 @@ class VASSSession(requests.Session):
         """
         change_year_url = "https://www.vass.vic.edu.au/sysad/ChangeCode/ChangeCode_Action.cfm"
         payload = [("Year", year)]
-        r = s.post(change_year_url, data=payload)
+        r = self.post(change_year_url, data=payload)
 
     def external_results(self, file_name):
         """Saves the student external results (study scores) to a csv.
