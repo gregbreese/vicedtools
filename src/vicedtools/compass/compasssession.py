@@ -413,6 +413,26 @@ class CompassSession(requests.sessions.Session):
         with open(file_name, 'wb') as f:
             f.write(r.content)
 
+    def get_classes_for_subject(self, subject_id:int) -> list[dict]:
+        """Downloads a CSV with subject metadata.
+        
+        Args:
+            subject_id: The Compass subject id number for the subject.
+
+        Returns:
+            A list of dictionaries containing metadata for each class in the
+            subject.
+        """
+        url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetStandardClassesOfSubject?sessionstate=readonly&_dc={current_ms_time()}"
+        payload = {"subjectId": subject_id,
+                   "page": 1,
+                   "start": 1,
+                   "limit":50,
+                   "sort": [{"property":"name", "direction":"ASC"}]}
+        r = self.get(url, json=payload)
+        decoded_response = r.json()['d']['data']
+        return decoded_response
+
 def get_report_cycle_id(cycles, year, name):
     for c in cycles:
         if c['year'] == year and c['name'] == name:
