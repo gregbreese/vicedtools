@@ -423,15 +423,51 @@ class CompassSession(requests.sessions.Session):
             A list of dictionaries containing metadata for each class in the
             subject.
         """
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
         url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetStandardClassesOfSubject?sessionstate=readonly&_dc={current_ms_time()}"
-        payload = {"subjectId": subject_id,
-                   "page": 1,
-                   "start": 1,
-                   "limit":50,
-                   "sort": [{"property":"name", "direction":"ASC"}]}
-        r = self.get(url, json=payload)
+        payload = f'{{"subjectId":{subject_id},"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
+        r = self.post(url, data=payload)
+        decoded_response = r.json()['d']['data']
+        del self.headers['Content-Type']
+        return decoded_response
+
+    def get_subjects(self, academic_group: int = -1) -> list[dict]:
+        """Gets a list of all subjects in an academic group.
+        
+        Args:
+            academic_group: The academic group to export. Defaults to the
+                currently active group.
+                
+        Returns:
+            A list of dictionaries containing subject metadata.
+        """
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)        
+        subjects_url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetSubjectsInAcademicGroup?sessionstate=readonly&_dc={current_ms_time}"
+        payload = f'{{"academicGroupId":{academic_group},"includeDataSyncSubjects":true,"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"importIdentifier\\",\\"direction\\":\\"ASC\\"}}]"}}'
+        r = self.post(subjects_url, data=payload)
+        del self.headers['Content-Type']
         decoded_response = r.json()['d']['data']
         return decoded_response
+
+    def get_classes(self, academic_group: int = -1) -> list[dict]:
+        """Gets a list of all classes in an academic group.
+        
+        Args:
+            academic_group: The academic group to export. Defaults to the
+                currently active group.
+                
+        Returns:
+            A list of dictionaries containing class metadata.
+        """
+        subjects = self.get_subjects(academic_group)
+        classes = []
+        for subject in subjects:
+            new_classes = self.get_classes_for_subject(subject['id'])
+            classes += new_classes
+        return classes
+
 
 def get_report_cycle_id(cycles, year, name):
     for c in cycles:
