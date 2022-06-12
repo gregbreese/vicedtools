@@ -95,7 +95,7 @@ class VASSSession(requests.Session):
         r = self.post(change_year_url, data=payload)
 
         confirm_url = f"https://www.vass.vic.edu.au/sysad/ChangeCode/ChangeCode_ConfirmChange.cfm?Year={year}"
-        r = s.get(confirm_url)
+        r = self.get(confirm_url)
 
     def external_results(self, file_name):
         """Saves the student external results (study scores) to a csv.
