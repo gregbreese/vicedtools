@@ -182,7 +182,7 @@ class VASSSession(requests.Session):
             r = self.get(school_results_metadata_url)
             try:
                 # get list of unit names
-                unit_name_list_pattern = r"""UnitNames\t= \[(.*?)];"""
+                unit_name_list_pattern = r"""UnitNames\t= \j;"""
                 unit_name_list_match = re.search(unit_name_list_pattern, r.text)
                 unit_name_pattern = r'"(.*?)"'
                 unit_name_matches = re.findall(unit_name_pattern,
@@ -339,3 +339,50 @@ class VASSSession(requests.Session):
                                                "School score", "Moderated score"
                                            ])
             df.to_csv(file_name, index=False)
+
+
+    def gat_summary(self, file_name: str) -> None:
+        """Extracts student GAT results and saves them to a csv.
+        
+        Args:
+            file_name: The file name for the csv to save the data to.
+        """
+        groups_url = 'https://www.vass.vic.edu.au/results/reports/GATResultsSummary/GATResultsSummary_Frameset.cfm?YearLevel=ALL&FormGroup='
+        r = self.get(groups_url)
+
+        form_groups_list_pattern = "saYearLevels = \[(.*?)]"
+        form_groups_list_match = re.search(form_groups_list_pattern, r.text)
+        form_groups_pattern = "'(.*?)'"
+        form_groups = re.findall(form_groups_pattern, form_groups_list_match.group(0))
+        year_lvl_list_pattern = "saFormGroups = \[(.*?)]"
+        year_lvl_list_match = re.search(year_lvl_list_pattern, r.text)
+        year_level_pattern = "'(.*?)'"
+        year_levels = re.findall(year_level_pattern, year_lvl_list_match.group(0))
+
+        students = []
+
+        total = len(year_levels)
+        for index, form_group, year_level in zip(range(1,total+1),year_levels,form_groups):
+            gat_results_url = f'https://www.vass.vic.edu.au/results/reports/GATResultsSummary/GATResultsSummary_Display.cfm?&yr={year_level}&form={form_group}&myIndex={index}&myTotal={total}'
+            r = self.get(gat_results_url)
+            
+            xml_start_pattern = r'<xml id="reportData">'
+            xml_start_match = re.search(xml_start_pattern, r.text)
+            xml_end_pattern = r'</xml>'
+            xml_end_match = re.search(xml_end_pattern, r.text)
+            start = xml_start_match.span(0)[1]
+            end = xml_end_match.span(0)[0]
+
+            root = ET.fromstring(r.text[start:end].strip())
+            for child in root.iter('student'):
+                students.append(child.attrib)
+
+        df = pd.DataFrame(students)
+        df.rename(columns={
+            "CandNum": "Student Number",
+            "name": "Student Name"
+        },
+                  inplace=True)
+        df.to_csv(file_name, index=False)
+
+    #TODO: predicted scores export
