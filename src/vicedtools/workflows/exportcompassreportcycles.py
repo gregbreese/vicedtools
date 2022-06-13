@@ -29,6 +29,8 @@ def export_compass_report_cycles(school_code: str,
         school_code: The compass school string. E.g. https://{school_code}.compass.education
         authenticator: An instance of CompassAuthenticator.
         file_name: The file name to save the json data to
+
+    :meta private:
     """
     s = CompassSession(school_code, authenticator)
     cycles = s.get_report_cycles()

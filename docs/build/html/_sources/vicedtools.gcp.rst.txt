@@ -20,7 +20,6 @@ vicedtools.gcp.format module
    :undoc-members:
    :show-inheritance:
 
-
 vicedtools.gcp.schema module
 ----------------------------
 
@@ -28,7 +27,6 @@ vicedtools.gcp.schema module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

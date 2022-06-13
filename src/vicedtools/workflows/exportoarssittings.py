@@ -35,6 +35,8 @@ def export_oars_sittings(from_date: str,
         school_code: An OARS school string. E.g. https://oars.acer.edu.au/{your school string}/...
         authenticator: An instance of OARSAuthenticator.
         pat_sittings_dir: The directory to save the sittings data in.
+
+    :meta private:
     """
     export_file = os.path.join(pat_sittings_dir,
                                f"sittings {from_date} {to_date}.json")

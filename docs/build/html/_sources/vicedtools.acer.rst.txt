@@ -4,7 +4,6 @@ vicedtools.acer package
 Submodules
 ----------
 
-
 vicedtools.acer.ewritesittings module
 -------------------------------------
 
@@ -45,7 +44,6 @@ vicedtools.acer.oarstests module
    :undoc-members:
    :show-inheritance:
 
-
 vicedtools.acer.patitems module
 -------------------------------
 
@@ -69,7 +67,6 @@ vicedtools.acer.patsittings module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 vicedtools.acer.plots module
 ----------------------------

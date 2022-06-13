@@ -14,7 +14,6 @@ Subpackages
    vicedtools.vce
    vicedtools.workflows
 
-
 Submodules
 ----------
 
@@ -25,7 +24,6 @@ vicedtools.educationperfect module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

@@ -22,6 +22,10 @@ import pandas as pd
 def create_pat_parent_letter_table(student_details_file: str,
                                    student_household_information_file: str,
                                    pat_scores_file: str):
+    """Creates the table.
+    
+    :meta private:
+    """
     student_details = pd.read_csv(student_details_file)
     household_information = pd.read_csv(student_household_information_file)
     pat_scores = pd.read_csv(pat_scores_file)
