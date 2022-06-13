@@ -12,3 +12,5 @@ Currently includes tools for:
 - uploading data to Google Cloud storage and BigQuery for use with Data Studio
 
 See workflows/sample_config.py for a sample config file.
+
+All previous WebDriver-based exporting modules have now had requests.Session based versions implemented!
