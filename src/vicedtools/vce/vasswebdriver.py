@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Functions for automating the export of data from VASS."""
+"""Functions for automating the export of data from VASS.
+
+Deprecated: The VASSWebDriver class is being replaced by VASSSession, a 
+requests.Sessions based class."""
 
 from __future__ import annotations
 
@@ -21,6 +24,7 @@ import re
 import requests
 import time
 import xml.etree.ElementTree as ET
+from warnings import warn
 
 import pandas as pd
 from selenium import webdriver
@@ -117,6 +121,9 @@ class VASSWebDriver(webdriver.Ie):
                  grid_password="",
                  os_type='win32'):
         """Creates a webdriver with VASS authentication completed.
+
+        Deprecated: Use the VASSSession class to reduce the reliance on
+        Internet Explorer.
     
         Creates an instance of selenium.webdriver.Ie and authenticates to VASS.
         
@@ -134,6 +141,9 @@ class VASSWebDriver(webdriver.Ie):
             An instance of selenium.webdriver.ie with authentication to
             VASS completed.
         """
+
+        warn(f'{self.__class__.__name__} will be deprecated. Use VASSSession', DeprecationWarning, stacklevel=2)
+
         options = webdriver.IeOptions()
         options.native_events = False
         #options.ignore_protected_mode_settings = True
