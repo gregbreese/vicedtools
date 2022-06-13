@@ -56,6 +56,8 @@ student_household_information_csv = os.path.join(
     compass_dir, "student details", "student household information.csv")
 # SDS export (has class enrolment data)
 sds_dir = os.path.join(compass_dir, "SDS export")
+# subject metadata
+subjects_dir = os.path.join(compass_dir, "subjects")
 # folders for reports/progress report/learning task exports
 progress_reports_dir = os.path.join(compass_dir, "progress reports")
 learning_tasks_dir = os.path.join(compass_dir, "learning tasks")
