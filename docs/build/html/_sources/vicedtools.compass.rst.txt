@@ -4,6 +4,14 @@ vicedtools.compass package
 Submodules
 ----------
 
+vicedtools.compass.compasssession module
+----------------------------------------
+
+.. automodule:: vicedtools.compass.compasssession
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 vicedtools.compass.compasswebdriver module
 ------------------------------------------
 

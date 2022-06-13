@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 # -- Project information -----------------------------------------------------
 
 project = 'VicEdTools'
-copyright = '2021, VidEdTools authors'
+copyright = '2022, VicEdTools authors'
 author = 'Greg Breese'
 
 # The full version, including alpha/beta/rc tags
@@ -32,6 +32,7 @@ release = '0.0.5'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx_autodoc_typehints',
     'sphinx.ext.napoleon',
 ]
 

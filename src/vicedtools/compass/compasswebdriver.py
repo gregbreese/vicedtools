@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Deprecated: Use CompassSession."""
+"""A WebDriver based class for exporting data from Compass.
+
+Deprecated: Use CompassSession.
+"""
 
 from __future__ import annotations
 

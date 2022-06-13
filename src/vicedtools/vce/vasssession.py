@@ -500,7 +500,10 @@ class VASSSession(requests.Session):
 
 
 def get_vceds_hidden_params(response: str) -> tuple[str, str, str]:
-    """Returns the hidden form fields for VCE data service pages."""
+    """Returns the hidden form fields for VCE data service pages.
+    
+    :meta private:
+    """
     viewstategenerator_pattern = '((__VIEWSTATEGENERATOR" value=")|(__VIEWSTATEGENERATOR\|))(?P<value>[A-Z0-9]*)["|]'
     m = re.search(viewstategenerator_pattern, response)
     if m:
@@ -523,7 +526,10 @@ def get_vceds_hidden_params(response: str) -> tuple[str, str, str]:
 
 
 def report17_subjects(response: str) -> list[tuple[str, str]]:
-    """Returns the subjects that can be selected for Report 17."""
+    """Returns the subjects that can be selected for Report 17.
+    
+    :meta private:
+    """
     subject_pattern = '<option (?:selected="selected" )?value="([0-9]{1,3})">(.*?)</option>'
     subjects = re.findall(subject_pattern, response)
     return subjects
@@ -532,7 +538,10 @@ def report17_subjects(response: str) -> list[tuple[str, str]]:
 def report17_select_year_payload(viewstate: str, viewstategenerator: str,
                                  eventvalidation: str,
                                  year: str) -> list[tuple[str, str]]:
-    """Returns the form data for selecting a new year in the VCE DS Report 17."""
+    """Returns the form data for selecting a new year in the VCE DS Report 17.
+    
+    :meta private:
+    """
     payload = [
         ("__EVENTTARGET", "ctl00$mainHolder$Report17$ddlYear"),
         ("__EVENTARGUMENT", ""),
@@ -559,7 +568,10 @@ def report17_select_year_payload(viewstate: str, viewstategenerator: str,
 def report17_select_subject_payload(
         viewstate: str, viewstategenerator: str, eventvalidation: str,
         year: str, subjects: list[str]) -> list[tuple[str, str]]:
-    """Returns the form data for selecting subjects in the VCE DS Report 17."""
+    """Returns the form data for selecting subjects in the VCE DS Report 17.
+    
+    :meta private:
+    """
     part1 = [
         ("__EVENTTARGET", "ctl00$mainHolder$Report17$lstSubjects"),
         ("__EVENTARGUMENT", ""),
@@ -587,7 +599,10 @@ def report17_select_subject_payload(
 def report17_results_button_payload(
         viewstate: str, viewstategenerator: str, eventvalidation: str,
         year: str, subjects: list[str]) -> list[tuple[str, str]]:
-    """Returns the form data for getting the first page of results for Report 17."""
+    """Returns the form data for getting the first page of results for Report 17.
+    
+    :meta private:
+    """
     part1 = [
         ("ctl00$ScriptManager1",
          "ctl00$mainHolder$UpdatePanel1|ctl00$mainHolder$btnReport"),
@@ -624,7 +639,10 @@ def report17_results_button_payload(
 def report17_next_results_payload(
         viewstate: str, viewstategenerator: str,
         eventvalidation: str) -> list[tuple[str, str]]:
-    """Returns the form data for getting the next page of results for Report 17."""
+    """Returns the form data for getting the next page of results for Report 17.
+    
+    :meta private:
+    """
     payload = [
         ("__EVENTTARGET", ""),
         ("__EVENTARGUMENT", ""),
@@ -653,7 +671,10 @@ def report17_next_results_payload(
 def report17_close_results_payload(
         viewstate: str, viewstategenerator: str,
         eventvalidation: str) -> list[tuple[str, str]]:
-    """Returns the form data for closing the results page for Report 17."""
+    """Returns the form data for closing the results page for Report 17.
+    
+    :meta private:
+    """
     payload = [
         ("__EVENTTARGET", ""),
         ("__EVENTARGUMENT", ""),
@@ -680,7 +701,10 @@ def report17_close_results_payload(
 
 
 def report17_extract_results(response: str, year: str) -> list[dict]:
-    """Returns the results from a results page of the VCE DS Report 17."""
+    """Returns the results from a results page of the VCE DS Report 17.
+    
+    :meta private:
+    """
     subject_name_pattern = r'>(?P<subject>[A-Za-z :\(\)]+):&nbsp;&nbsp;Student Results by Study'
     m = re.search(subject_name_pattern, response)
     subject = m.group('subject')

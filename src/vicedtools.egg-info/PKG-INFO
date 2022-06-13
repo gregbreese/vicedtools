@@ -1,12 +1,10 @@
 Metadata-Version: 2.1
 Name: vicedtools
-Version: 0.0.6.2
+Version: 0.0.7
 Summary: A collection of tools for school data in Victorian schools.
 Home-page: https://github.com/gregbreese/vicedtools
 Author: Greg Breese
-License: UNKNOWN
 Project-URL: Bug Tracker, https://github.com/gregbreese/vicedtools/issues
-Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: Apache Software License
 Classifier: Operating System :: OS Independent
@@ -29,5 +27,3 @@ Currently includes tools for:
 - uploading data to Google Cloud storage and BigQuery for use with Data Studio
 
 See workflows/sample_config.py for a sample config file.
-
-

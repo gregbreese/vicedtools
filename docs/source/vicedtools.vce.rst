@@ -12,6 +12,14 @@ vicedtools.vce.schoolscores module
    :undoc-members:
    :show-inheritance:
 
+vicedtools.vce.vasssession module
+---------------------------------
+
+.. automodule:: vicedtools.vce.vasssession
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 vicedtools.vce.vasswebdriver module
 -----------------------------------
 
