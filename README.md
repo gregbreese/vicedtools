@@ -11,6 +11,8 @@ Currently includes tools for:
 - extracting NAPLAN data from the SSSR data.js file
 - uploading data to Google Cloud storage and BigQuery for use with Data Studio
 
+The core export functions are provided by the CompassSession, OARSSession, VASSSession and DataServiceSession classes.
+
 See workflows/sample_config.py for a sample config file.
 
 All previous WebDriver-based exporting modules have now had requests.Session based versions implemented!
