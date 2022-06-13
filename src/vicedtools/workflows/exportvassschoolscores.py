@@ -16,7 +16,7 @@
 import argparse
 import os
 
-from vicedtools.vce import VASSWebDriver
+from vicedtools.vce import VASSSession
 
 if __name__ == "__main__":
     from config import (vass_username, vass_password, vass_grid_password,
@@ -35,10 +35,9 @@ if __name__ == "__main__":
     if not os.path.exists(vass_school_scores_dir):
         os.makedirs(vass_school_scores_dir)
 
-    driver = VASSWebDriver(iedriver_path=iedriver_path,
-                           username=vass_username,
-                           password=vass_password,
-                           grid_password=vass_grid_password)
+    driver = VASSSession(username=vass_username,
+                         password=vass_password,
+                         grid_password=vass_grid_password)
 
     for year in args.years:
         file_name = os.path.join(vass_school_scores_dir,
