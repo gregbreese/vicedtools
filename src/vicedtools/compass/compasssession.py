@@ -64,9 +64,11 @@ class CompassAuthenticationError(Exception):
     """Authentication with Compass failed."""
     pass
 
+
 class CompassLongRunningFileRequestError(Exception):
     """Long running file request failed."""
     pass
+
 
 class CompassConfigAuthenticator(CompassAuthenticator):
     """Authenticates using a provided username and password."""
@@ -182,7 +184,9 @@ class CompassSession(requests.sessions.Session):
             status = data['d']['requestStatus']
             poll_requests += 1
         if status != 3:
-            raise CompassLongRunningFileRequestError(f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}")
+            raise CompassLongRunningFileRequestError(
+                f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}"
+            )
         # get file details
         get_task_url = f"https://{self.school_code}.compass.education/Services/LongRunningFileRequest.svc/GetTask"
         payload = {"guid": guid}
@@ -413,7 +417,7 @@ class CompassSession(requests.sessions.Session):
         with open(file_name, 'wb') as f:
             f.write(r.content)
 
-    def get_classes_for_subject(self, subject_id:int) -> list[dict]:
+    def get_classes_for_subject(self, subject_id: int) -> list[dict]:
         """Downloads a CSV with subject metadata.
         
         Args:
@@ -443,7 +447,7 @@ class CompassSession(requests.sessions.Session):
             A list of dictionaries containing subject metadata.
         """
         headers = {'Content-Type': 'application/json; charset=utf-8'}
-        self.headers.update(headers)        
+        self.headers.update(headers)
         subjects_url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetSubjectsInAcademicGroup?sessionstate=readonly&_dc={current_ms_time}"
         payload = f'{{"academicGroupId":{academic_group},"includeDataSyncSubjects":true,"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"importIdentifier\\",\\"direction\\":\\"ASC\\"}}]"}}'
         r = self.post(subjects_url, data=payload)

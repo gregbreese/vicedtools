@@ -22,8 +22,8 @@ import os
 from vicedtools.compass import CompassSession, get_report_cycle_id
 
 if __name__ == "__main__":
-    from config import (reports_dir, compass_authenticator, 
-                        compass_school_code, report_cycles_json)
+    from config import (reports_dir, compass_authenticator, compass_school_code,
+                        report_cycles_json)
 
     parser = argparse.ArgumentParser(
         description='Export all Compass progress reports.')
@@ -52,4 +52,5 @@ if __name__ == "__main__":
         if (not os.path.exists(file_name) or args.forceall or
             (args.forcerecent and i == 0)) and cycle['type'] == 1:
             print(f"Exporting {cycle['year']} {cycle['name']}")
-            s.export_reports(cycle['id'], cycle['year'], cycle['name'], reports_dir)
+            s.export_reports(cycle['id'], cycle['year'], cycle['name'],
+                             reports_dir)

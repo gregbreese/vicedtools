@@ -14,8 +14,8 @@
 
 from vicedtools.compass.compasssession import (
     CompassSession, CompassAuthenticator, CompassAuthenticationError,
-    CompassLongRunningFileRequestError,
-    CompassConfigAuthenticator, CompassCLIAuthenticator,
-    CompassFirefoxCookieAuthenticator, get_report_cycle_id, sanitise_filename)
+    CompassLongRunningFileRequestError, CompassConfigAuthenticator,
+    CompassCLIAuthenticator, CompassFirefoxCookieAuthenticator,
+    get_report_cycle_id, sanitise_filename)
 
 from vicedtools.compass.reports import Reports, class_code_parser

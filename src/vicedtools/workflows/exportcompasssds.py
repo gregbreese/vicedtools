@@ -21,11 +21,14 @@ import sys
 from vicedtools.compass import CompassSession
 
 if __name__ == "__main__":
-    from config import (sds_dir, compass_authenticator, compass_school_code, academic_groups_json)
+    from config import (sds_dir, compass_authenticator, compass_school_code,
+                        academic_groups_json)
 
     parser = argparse.ArgumentParser(
         description='Export the SDS export from Compass')
-    parser.add_argument('-academicgroup', help='the name of the academic group, for example "2022 Academic"')
+    parser.add_argument(
+        '-academicgroup',
+        help='the name of the academic group, for example "2022 Academic"')
     args = parser.parse_args()
 
     if args.academicgroup:

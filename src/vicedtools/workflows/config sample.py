@@ -37,7 +37,8 @@ vass_predicted_scores_dir = os.path.join(vass_dir, "predicted scores")
 vass_school_scores_dir = os.path.join(vass_dir, "school scores")
 vass_gat_scores_dir = os.path.join(vass_dir, "gat scores")
 vass_external_scores_dir = os.path.join(vass_dir, "external scores")
-vass_moderated_coursework_scores_dir = os.path.join(vass_dir, "moderated coursework scores")
+vass_moderated_coursework_scores_dir = os.path.join(
+    vass_dir, "moderated coursework scores")
 
 # compass
 from vicedtools.compass.compasssession import CompassConfigAuthenticator
@@ -103,8 +104,6 @@ scale_constructs_json = os.path.join(oars_dir, "scaleconstructs.json")
 # files for combined PAT data
 pat_scores_csv = os.path.join(oars_dir, "pat scores.csv")
 pat_most_recent_csv = os.path.join(oars_dir, "pat most recent.csv")
-
-
 
 # gcp
 student_details_table_id = "abc-school-data.student_details.student_details"

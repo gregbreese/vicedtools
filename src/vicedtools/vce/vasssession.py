@@ -24,17 +24,20 @@ import xml.etree.ElementTree as ET
 
 import pandas as pd
 
+
 class VassLoginError(Exception):
     """Error with vass login."""
     pass
 
+
 class VASSSession(requests.Session):
 
-    def __init__(self,
-                 username="",
-                 password="",
-                 grid_password="",
-                 ):
+    def __init__(
+        self,
+        username="",
+        password="",
+        grid_password="",
+    ):
         """Creates a requests Session with VASS authentication completed.
     
         Args:
@@ -51,12 +54,16 @@ class VASSSession(requests.Session):
         """
         requests.sessions.Session.__init__(self)
 
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
-                "Accept":"text/html, application/xhtml+xml, image/jxr, */*"}
+        headers = {
+            "User-Agent":
+                "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
+            "Accept":
+                "text/html, application/xhtml+xml, image/jxr, */*"
+        }
         self.headers.update(headers)
 
         # username and password login
-        payload = {"Login":"Login", "password":password, "username":username}
+        payload = {"Login": "Login", "password": password, "username": username}
         submit_login_url = "https://www.vass.vic.edu.au/login/VerifyAuthLogin.cfm"
         r = self.post(submit_login_url, data=payload)
 
@@ -67,12 +74,13 @@ class VASSSession(requests.Session):
         # get passcode grid and login with grid code
         school_code_url = "https://www.vass.vic.edu.au/login/schoolcode.cfm"
         r = self.get(school_code_url)
-            
+
         pattern = r'passlist="(?P<s>.*?)"'
         m = re.search(pattern, r.text)
         grid_values = m.group('s').split(',')
-        grid_password = [(int(a), int(b)) for (a,b) in grid_password]
-        grid_response = "".join([grid_values[(b-1)*8 + (a-1)] for (a,b) in grid_password])
+        grid_password = [(int(a), int(b)) for (a, b) in grid_password]
+        grid_response = "".join(
+            [grid_values[(b - 1) * 8 + (a - 1)] for (a, b) in grid_password])
         payload = []
         for value in grid_values:
             payload.append(("PASSCODEGRID", value))
@@ -82,7 +90,7 @@ class VASSSession(requests.Session):
         school_code_submit_url = "https://www.vass.vic.edu.au/login/SchoolCodeAction.cfm"
         r = self.post(school_code_submit_url, data=payload)
         if "https://www.vass.vic.edu.au/menu/Home.cfm" not in r.text:
-            raise  VassLoginError()
+            raise VassLoginError()
         self.year = "2022"
 
     def change_year(self, year: str) -> None:
@@ -169,7 +177,6 @@ class VASSSession(requests.Session):
         df.fillna("", inplace=True)
         df.to_csv(file_name, index=False)
 
-
     def school_scores(self, file_name: str) -> None:
         """Extracts school score data for all GAs and saves to a csv.
         
@@ -188,28 +195,29 @@ class VASSSession(requests.Session):
                 unit_name_list_match = re.search(unit_name_list_pattern, r.text)
                 unit_name_pattern = r'"(.*?)"'
                 unit_name_matches = re.findall(unit_name_pattern,
-                                            unit_name_list_match.group(0))
+                                               unit_name_list_match.group(0))
                 # get list of unit codes
                 unit_code_list_pattern = r"""naUnits \t= \[(.*?)];"""
                 unit_code_list_match = re.search(unit_code_list_pattern, r.text)
                 unit_code_pattern = r"'(.*?)'"
                 unit_code_matches = re.findall(unit_code_pattern,
-                                            unit_code_list_match.group(0))
+                                               unit_code_list_match.group(0))
                 # get list of ga numbers
                 ga_number_list_pattern = r"""naGAs \t= \[.*?];"""
                 ga_number_list_match = re.search(ga_number_list_pattern, r.text)
                 ga_number_pattern = r"'(.*?)'"
                 ga_number_matches = re.findall(ga_number_pattern,
-                                            ga_number_list_match.group(0))
+                                               ga_number_list_match.group(0))
                 # get list of ga names
                 ga_name_list_pattern = r"""GANames \t= \[.*?];"""
                 ga_name_list_match = re.search(ga_name_list_pattern, r.text)
                 ga_name_pattern = r'"(.*?)"'
                 ga_name_matches = re.findall(ga_name_pattern,
-                                            ga_name_list_match.group(0))
+                                             ga_name_list_match.group(0))
                 # get list of max scores
                 max_scores_list_pattern = r"""naGAMaxScores\t= \[.*?];"""
-                max_scores_list_match = re.search(max_scores_list_pattern, r.text)
+                max_scores_list_match = re.search(max_scores_list_pattern,
+                                                  r.text)
                 max_scores_number_pattern = r"'(.*?)'"
                 max_scores_matches = re.findall(max_scores_number_pattern,
                                                 max_scores_list_match.group(0))
@@ -218,9 +226,10 @@ class VASSSession(requests.Session):
                 return
 
             # get all the results
-            
-            metadata = zip(unit_code_matches, unit_name_matches, ga_number_matches,
-                        ga_name_matches, max_scores_matches)
+
+            metadata = zip(unit_code_matches, unit_name_matches,
+                           ga_number_matches, ga_name_matches,
+                           max_scores_matches)
             for unit_code, unit_name, ga_number, ga_name, max_score in metadata:
                 results_url = f"https://www.vass.vic.edu.au/results/reports/SchoolAssessedResultsBySchool/SchoolAssessedResultsBySchoolCRS_Display.cfm?UnitCode={unit_code}&UnitName={unit_name}&GA={ga_number}&GAName={ga_name}&GAMaxScore={max_score}&AssessedElsewhere=false&AdjustPaper=true&myIndex=1&myTotal=1&ReportName=Ranked School Scores Report"
                 r = self.get(results_url)
@@ -342,7 +351,6 @@ class VASSSession(requests.Session):
                                            ])
             df.to_csv(file_name, index=False)
 
-
     def gat_summary(self, file_name: str) -> None:
         """Extracts student GAT results and saves them to a csv.
         
@@ -355,19 +363,22 @@ class VASSSession(requests.Session):
         form_groups_list_pattern = "saYearLevels = \[(.*?)]"
         form_groups_list_match = re.search(form_groups_list_pattern, r.text)
         form_groups_pattern = "'(.*?)'"
-        form_groups = re.findall(form_groups_pattern, form_groups_list_match.group(0))
+        form_groups = re.findall(form_groups_pattern,
+                                 form_groups_list_match.group(0))
         year_lvl_list_pattern = "saFormGroups = \[(.*?)]"
         year_lvl_list_match = re.search(year_lvl_list_pattern, r.text)
         year_level_pattern = "'(.*?)'"
-        year_levels = re.findall(year_level_pattern, year_lvl_list_match.group(0))
+        year_levels = re.findall(year_level_pattern,
+                                 year_lvl_list_match.group(0))
 
         students = []
 
         total = len(year_levels)
-        for index, form_group, year_level in zip(range(1,total+1),year_levels,form_groups):
+        for index, form_group, year_level in zip(range(1, total + 1),
+                                                 year_levels, form_groups):
             gat_results_url = f'https://www.vass.vic.edu.au/results/reports/GATResultsSummary/GATResultsSummary_Display.cfm?&yr={year_level}&form={form_group}&myIndex={index}&myTotal={total}'
             r = self.get(gat_results_url)
-            
+
             xml_start_pattern = r'<xml id="reportData">'
             xml_start_match = re.search(xml_start_pattern, r.text)
             xml_end_pattern = r'</xml>'
@@ -417,29 +428,44 @@ class VASSSession(requests.Session):
         r = self.get(url)
 
         # get results for each year in turn
-        headers = {"Referer": "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"}
+        headers = {
+            "Referer":
+                "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
+        }
         self.headers.update(headers)
         results = []
         for year in years:
             # select year and refresh subject list
-            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(r.text)
-            payload = report17_select_year_payload(viewstate, viewstategenerator, eventvalidation, year)
+            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(
+                r.text)
+            payload = report17_select_year_payload(viewstate,
+                                                   viewstategenerator,
+                                                   eventvalidation, year)
             url = "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
             r = self.post(url, data=payload)
             subjects = report17_subjects(r.text)
 
             # select all subjects
-            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(r.text)
-            payload = report17_select_subject_payload(viewstate, viewstategenerator, eventvalidation, year, subjects)
+            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(
+                r.text)
+            payload = report17_select_subject_payload(viewstate,
+                                                      viewstategenerator,
+                                                      eventvalidation, year,
+                                                      subjects)
             url = "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
             r = self.post(url, data=payload)
-            
+
             # open first results page
-            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(r.text)
-            payload = report17_results_button_payload(viewstate, viewstategenerator, eventvalidation, year, subjects)
-            headers = {"X-MicrosoftAjax": "Delta=true", 
-                    "X-Requested-With": "XMLHttpRequest"
-                    }
+            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(
+                r.text)
+            payload = report17_results_button_payload(viewstate,
+                                                      viewstategenerator,
+                                                      eventvalidation, year,
+                                                      subjects)
+            headers = {
+                "X-MicrosoftAjax": "Delta=true",
+                "X-Requested-With": "XMLHttpRequest"
+            }
             self.headers.update(headers)
             url = "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
             r = self.post(url, data=payload)
@@ -449,24 +475,28 @@ class VASSSession(requests.Session):
 
             for _ in subjects[1:]:
                 # get next subject
-                viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(r.text)
-                payload = report17_next_results_payload(viewstate, viewstategenerator, eventvalidation)
+                viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(
+                    r.text)
+                payload = report17_next_results_payload(viewstate,
+                                                        viewstategenerator,
+                                                        eventvalidation)
                 url = "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
                 r = self.post(url, data=payload)
                 results += report17_extract_results(r.text, year)
 
             # close results page
-            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(r.text)
-            payload = report17_close_results_payload(viewstate, viewstategenerator, eventvalidation)
+            viewstate, viewstategenerator, eventvalidation = get_vceds_hidden_params(
+                r.text)
+            payload = report17_close_results_payload(viewstate,
+                                                     viewstategenerator,
+                                                     eventvalidation)
             url = "https://vceds.vass.vic.edu.au/Reports/Display/Report17_StudentResultsByStudy.aspx"
             r = self.post(url, data=payload)
-            
+
         del self.headers["Referer"]
 
         df = pd.DataFrame.from_records(results)
         df.to_csv(file_name, index=False)
-
-
 
 
 def get_vceds_hidden_params(response: str) -> tuple[str, str, str]:
@@ -491,113 +521,163 @@ def get_vceds_hidden_params(response: str) -> tuple[str, str, str]:
         viewstate = ""
     return viewstate, viewstategenerator, eventvalidation
 
-def report17_subjects(response: str) -> list[tuple[str,str]]:
+
+def report17_subjects(response: str) -> list[tuple[str, str]]:
     """Returns the subjects that can be selected for Report 17."""
     subject_pattern = '<option (?:selected="selected" )?value="([0-9]{1,3})">(.*?)</option>'
     subjects = re.findall(subject_pattern, response)
     return subjects
 
-def report17_select_year_payload(viewstate: str, viewstategenerator: str, eventvalidation: str, year: str) -> list[tuple[str,str]]:
+
+def report17_select_year_payload(viewstate: str, viewstategenerator: str,
+                                 eventvalidation: str,
+                                 year: str) -> list[tuple[str, str]]:
     """Returns the form data for selecting a new year in the VCE DS Report 17."""
-    payload = [("__EVENTTARGET","ctl00$mainHolder$Report17$ddlYear"),
-               ("__EVENTARGUMENT",""),
-               ("__LASTFOCUS",""),
-               ("__VIEWSTATE",viewstate),
-               ("__VIEWSTATEGENERATOR",viewstategenerator),
-               ("__EVENTVALIDATION", eventvalidation),
-               ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$mainHolder$Report17$ddlYear", year),
-               ("ctl00$mainHolder$Report17$hfList", ""),
-              ]
+    payload = [
+        ("__EVENTTARGET", "ctl00$mainHolder$Report17$ddlYear"),
+        ("__EVENTARGUMENT", ""),
+        ("__LASTFOCUS", ""),
+        ("__VIEWSTATE", viewstate),
+        ("__VIEWSTATEGENERATOR", viewstategenerator),
+        ("__EVENTVALIDATION", eventvalidation),
+        ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$mainHolder$Report17$ddlYear", year),
+        ("ctl00$mainHolder$Report17$hfList", ""),
+    ]
     return payload
 
-def report17_select_subject_payload(viewstate: str, viewstategenerator: str, eventvalidation: str, year: str, subjects: list[str]) -> list[tuple[str,str]]:
+
+def report17_select_subject_payload(
+        viewstate: str, viewstategenerator: str, eventvalidation: str,
+        year: str, subjects: list[str]) -> list[tuple[str, str]]:
     """Returns the form data for selecting subjects in the VCE DS Report 17."""
-    part1 = [("__EVENTTARGET","ctl00$mainHolder$Report17$lstSubjects"),
-               ("__EVENTARGUMENT",""),
-               ("__LASTFOCUS",""),
-               ("__VIEWSTATE",viewstate),
-               ("__VIEWSTATEGENERATOR",viewstategenerator),
-               ("__EVENTVALIDATION", eventvalidation),
-               ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$mainHolder%24Report17$ddlYear", year)
-              ]
-    part2 = [("ctl00$mainHolder$Report17$lstSubjects", idx) for idx, name in subjects]
+    part1 = [
+        ("__EVENTTARGET", "ctl00$mainHolder$Report17$lstSubjects"),
+        ("__EVENTARGUMENT", ""),
+        ("__LASTFOCUS", ""), ("__VIEWSTATE", viewstate),
+        ("__VIEWSTATEGENERATOR", viewstategenerator),
+        ("__EVENTVALIDATION", eventvalidation),
+        ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState",
+         "false"), ("ctl00$mainHolder%24Report17$ddlYear", year)
+    ]
+    part2 = [
+        ("ctl00$mainHolder$Report17$lstSubjects", idx) for idx, name in subjects
+    ]
     part3 = [("ctl00$mainHolder$Report17$hfList", "")]
     return part1 + part2 + part3
 
-def report17_results_button_payload(viewstate: str, viewstategenerator: str, eventvalidation: str, year: str, subjects: list[str]) -> list[tuple[str,str]]:
+
+def report17_results_button_payload(
+        viewstate: str, viewstategenerator: str, eventvalidation: str,
+        year: str, subjects: list[str]) -> list[tuple[str, str]]:
     """Returns the form data for getting the first page of results for Report 17."""
-    part1 = [("ctl00$ScriptManager1", "ctl00$mainHolder$UpdatePanel1|ctl00$mainHolder$btnReport"),
-               ("__EVENTTARGET",""),
-               ("__EVENTARGUMENT",""),
-               ("__LASTFOCUS",""),
-               ("__VIEWSTATE",viewstate),
-               ("__VIEWSTATEGENERATOR",viewstategenerator),
-               ("__EVENTVALIDATION", eventvalidation),
-               ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$mainHolder$Report17$ddlYear", year),
-              ]
-    part2 = [("ctl00$mainHolder$Report17$lstSubjects", idx) for idx, name in subjects]
-    part3 = [("ctl00$mainHolder$Report17$rblSchoolType","0"),
-             ("ctl00$mainHolder$Report17$hfList", ""),
-             ("__ASYNCPOST","true"),
-             ("ctl00$mainHolder$btnReport","Report"),
-            ]
+    part1 = [
+        ("ctl00$ScriptManager1",
+         "ctl00$mainHolder$UpdatePanel1|ctl00$mainHolder$btnReport"),
+        ("__EVENTTARGET", ""),
+        ("__EVENTARGUMENT", ""),
+        ("__LASTFOCUS", ""),
+        ("__VIEWSTATE", viewstate),
+        ("__VIEWSTATEGENERATOR", viewstategenerator),
+        ("__EVENTVALIDATION", eventvalidation),
+        ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$mainHolder$Report17$ddlYear", year),
+    ]
+    part2 = [
+        ("ctl00$mainHolder$Report17$lstSubjects", idx) for idx, name in subjects
+    ]
+    part3 = [
+        ("ctl00$mainHolder$Report17$rblSchoolType", "0"),
+        ("ctl00$mainHolder$Report17$hfList", ""),
+        ("__ASYNCPOST", "true"),
+        ("ctl00$mainHolder$btnReport", "Report"),
+    ]
     return part1 + part2 + part3
 
-def report17_next_results_payload(viewstate: str, viewstategenerator: str, eventvalidation: str) -> list[tuple[str,str]]:
+
+def report17_next_results_payload(
+        viewstate: str, viewstategenerator: str,
+        eventvalidation: str) -> list[tuple[str, str]]:
     """Returns the form data for getting the next page of results for Report 17."""
-    payload = [("__EVENTTARGET",""),
-               ("__EVENTARGUMENT",""),
-               ("__VIEWSTATE",viewstate),
-               ("__VIEWSTATEGENERATOR",viewstategenerator),
-               ("__EVENTVALIDATION", eventvalidation),
-               ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$mainHolder$ReportHeader1$btnNext",">>"),
-               ("mainHolder_WebChartViewer1_JsChartViewerState","3*320\x1e2*490\x1e1*20\x1e0*50"),
-               ("mainHolder_WebChartViewer1_callBackURL", "/Reports/Display/Report17_StudentResultsByStudy.aspx?cdLoopBack=1"),
-              ]
+    payload = [
+        ("__EVENTTARGET", ""),
+        ("__EVENTARGUMENT", ""),
+        ("__VIEWSTATE", viewstate),
+        ("__VIEWSTATEGENERATOR", viewstategenerator),
+        ("__EVENTVALIDATION", eventvalidation),
+        ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$mainHolder$ReportHeader1$btnNext", ">>"),
+        ("mainHolder_WebChartViewer1_JsChartViewerState",
+         "3*320\x1e2*490\x1e1*20\x1e0*50"),
+        ("mainHolder_WebChartViewer1_callBackURL",
+         "/Reports/Display/Report17_StudentResultsByStudy.aspx?cdLoopBack=1"),
+    ]
     return payload
 
-def report17_close_results_payload(viewstate: str, viewstategenerator: str, eventvalidation: str) -> list[tuple[str,str]]:
+
+def report17_close_results_payload(
+        viewstate: str, viewstategenerator: str,
+        eventvalidation: str) -> list[tuple[str, str]]:
     """Returns the form data for closing the results page for Report 17."""
-    payload = [("__EVENTTARGET",""),
-               ("__EVENTARGUMENT",""),
-               ("__VIEWSTATE",viewstate),
-               ("__VIEWSTATEGENERATOR",viewstategenerator),
-               ("__EVENTVALIDATION", eventvalidation),
-               ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState","false"),
-               ("ctl00$mainHolder$ReportHeader1$btnClose","Close"),
-               ("mainHolder_WebChartViewer1_JsChartViewerState","3*320\x1e2*490\x1e1*20\x1e0*50"),
-               ("mainHolder_WebChartViewer1_callBackURL", "/Reports/Display/Report17_StudentResultsByStudy.aspx?cdLoopBack=1"),
-              ]
+    payload = [
+        ("__EVENTTARGET", ""),
+        ("__EVENTARGUMENT", ""),
+        ("__VIEWSTATE", viewstate),
+        ("__VIEWSTATEGENERATOR", viewstategenerator),
+        ("__EVENTVALIDATION", eventvalidation),
+        ("ctl00$pnlReports1to6_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports7to9_CollapsiblePanelExtender_ClientState", "false"),
+        ("ctl00$pnlReports10to14_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports15to16_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports17to18_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$pnlReports19to20_CollapsiblePanelExtender_ClientState",
+         "false"),
+        ("ctl00$mainHolder$ReportHeader1$btnClose", "Close"),
+        ("mainHolder_WebChartViewer1_JsChartViewerState",
+         "3*320\x1e2*490\x1e1*20\x1e0*50"),
+        ("mainHolder_WebChartViewer1_callBackURL",
+         "/Reports/Display/Report17_StudentResultsByStudy.aspx?cdLoopBack=1"),
+    ]
     return payload
+
 
 def report17_extract_results(response: str, year: str) -> list[dict]:
     """Returns the results from a results page of the VCE DS Report 17."""

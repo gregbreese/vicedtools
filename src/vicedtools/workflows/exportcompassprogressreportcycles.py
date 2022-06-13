@@ -19,10 +19,9 @@ import os
 
 from vicedtools.compass.compasssession import CompassSession, CompassAuthenticator
 
-
 if __name__ == "__main__":
-    from config import (progress_report_cycles_json,
-                        compass_authenticator, compass_school_code)
+    from config import (progress_report_cycles_json, compass_authenticator,
+                        compass_school_code)
     parent_dir = os.path.dirname(progress_report_cycles_json)
     if not os.path.exists(parent_dir):
         os.makedirs(parent_dir)

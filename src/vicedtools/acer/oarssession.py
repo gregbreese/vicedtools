@@ -156,7 +156,8 @@ class OARSSession(requests.sessions.Session):
                 r = self.get(ids_url)
                 ids = r.json()
 
-                self.headers.update({"Content-Type":"application/json;charset=utf-8"})
+                self.headers.update(
+                    {"Content-Type": "application/json;charset=utf-8"})
 
                 if ids:
                     sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
@@ -342,11 +343,10 @@ class OARSSession(requests.sessions.Session):
 
         upload_url = f"https://oars.acer.edu.au/api/{s.school}/staff/bulkUpdate"
         files = {'upload': open(staff_xlsx, 'rb')}
-        payload = {
-            'security_token': self.security_token
-        }
+        payload = {'security_token': self.security_token}
         r = self.post(upload_url, files=files, data=payload)
         return r.status_code == 200
+
 
 class SecurityTokenParser(HTMLParser):
     """Extracts the OARS security token from a page."""

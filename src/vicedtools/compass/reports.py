@@ -164,10 +164,10 @@ class Reports:
                 raise ValueError(
                     "Could not determine year for Learning Tasks export file.")
         temp_df["Year"] = year
-        temp_df["Time"] = temp_df.apply(
-            lambda x: cls._semester_date_mapper(x["Year"], x["ReportCycleName"]),
-            axis=1,
-            result_type='reduce')
+        temp_df["Time"] = temp_df.apply(lambda x: cls._semester_date_mapper(
+            x["Year"], x["ReportCycleName"]),
+                                        axis=1,
+                                        result_type='reduce')
         temp_df['Time'] = pd.to_datetime(temp_df['Time'])
 
         temp_df["Type"] = "Academic"  # differentiate from work habits
@@ -271,7 +271,7 @@ class Reports:
     @classmethod
     def _semester_date_mapper(cls, year: str, semester: str) -> str:
         # remove year-like strings from semester
-        semester = re.sub("[0-9]{4}","", semester)
+        semester = re.sub("[0-9]{4}", "", semester)
         # try to identify semester
         sem_one_pattern = "1|[Oo]ne"
         sem_two_pattern = "2|[Tt]wo"
@@ -310,8 +310,7 @@ class Reports:
             grade_score_mapper=grade_score_mapper,
             grade_dtype=grade_dtype,
             learning_task_filter=learning_task_filter,
-            replace_values=replace_values
-            )
+            replace_values=replace_values)
         self.data = pd.concat([self.data, temp.data], ignore_index=True)
         self.data.drop_duplicates(
             subset=["Time", "StudentCode", "ClassCode", "ResultName"],

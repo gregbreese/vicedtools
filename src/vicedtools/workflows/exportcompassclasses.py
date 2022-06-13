@@ -20,18 +20,21 @@ import os
 
 from vicedtools.compass.compasssession import CompassSession, CompassAuthenticator
 
-
 if __name__ == "__main__":
-    from config import (academic_groups_json,
-                        compass_authenticator, compass_school_code, class_details_dir)
+    from config import (academic_groups_json, compass_authenticator,
+                        compass_school_code, class_details_dir)
     if not os.path.exists(class_details_dir):
         os.makedirs(class_details_dir)
 
     parser = argparse.ArgumentParser(
-    description='Export Compass class metadata.')
-    parser.add_argument('academic_group', type=int, default=-1, nargs='?', help='the academic group to export')
-    args = parser.parse_args()    
-    
+        description='Export Compass class metadata.')
+    parser.add_argument('academic_group',
+                        type=int,
+                        default=-1,
+                        nargs='?',
+                        help='the academic group to export')
+    args = parser.parse_args()
+
     with open(academic_groups_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
     if args.academic_group != -1:
@@ -50,7 +53,6 @@ if __name__ == "__main__":
             if cycle['isRelevant']:
                 cycle_name = cycle['name']
                 break
-
 
     s = CompassSession(compass_school_code, compass_authenticator)
     cycles = s.get_classes(args.academic_group)

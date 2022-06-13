@@ -23,16 +23,16 @@ import time
 from vicedtools.compass import CompassSession, sanitise_filename
 
 if __name__ == "__main__":
-    from config import (compass_dir, compass_authenticator, 
-                        compass_school_code, academic_groups_json,
-                        subjects_dir)
+    from config import (compass_dir, compass_authenticator, compass_school_code,
+                        academic_groups_json, subjects_dir)
 
     parser = argparse.ArgumentParser(
         description='Export all Compass subject metadata.')
-    parser.add_argument('--forceall',
-                        '-a',
-                        action="store_true",
-                        help='force re-download existing subject metadata exports')
+    parser.add_argument(
+        '--forceall',
+        '-a',
+        action="store_true",
+        help='force re-download existing subject metadata exports')
     parser.add_argument('--forcecurrent',
                         '-c',
                         action="store_true",
@@ -48,12 +48,11 @@ if __name__ == "__main__":
     s = CompassSession(compass_school_code, compass_authenticator)
 
     for cycle in cycles:
-            sanitised_name = sanitise_filename(cycle['name'])
-            file_name = os.path.join(subjects_dir,
-                                    f"Subjects-{sanitised_name}.csv")
-            if not os.path.exists(file_name) or args.forceall or (
-                    args.forcecurrent and cycle['isRelevant']):
-                print(f"Exporting {cycle['name']}")
-                s.get_subject_metadata(file_name, cycle['id'])
-                
-                time.sleep(3)
+        sanitised_name = sanitise_filename(cycle['name'])
+        file_name = os.path.join(subjects_dir, f"Subjects-{sanitised_name}.csv")
+        if not os.path.exists(file_name) or args.forceall or (
+                args.forcecurrent and cycle['isRelevant']):
+            print(f"Exporting {cycle['name']}")
+            s.get_subject_metadata(file_name, cycle['id'])
+
+            time.sleep(3)

@@ -37,8 +37,8 @@ def export_compass_report_cycles(school_code: str,
 
 
 if __name__ == "__main__":
-    from config import (report_cycles_json,
-                        compass_authenticator, compass_school_code)
+    from config import (report_cycles_json, compass_authenticator,
+                        compass_school_code)
     parent_dir = os.path.dirname(report_cycles_json)
     if not os.path.exists(parent_dir):
         os.makedirs(parent_dir)

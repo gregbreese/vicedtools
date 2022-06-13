@@ -20,13 +20,13 @@ import pandas as pd
 from vicedtools.compass import Reports
 
 if __name__ == "__main__":
-    from config import (learning_tasks_dir, progress_reports_dir,
-                        reports_dir, replace_values, replace_subject_codes,
+    from config import (learning_tasks_dir, progress_reports_dir, reports_dir,
+                        replace_values, replace_subject_codes,
                         work_habits_result_mapper, learning_task_filter,
                         learning_tasks_result_mapper,
                         progress_report_result_mapper, results_dtype,
-                        progress_report_items, class_code_parser,
-                        subjects_file, reports_csv, reports_summary_csv)
+                        progress_report_items, class_code_parser, subjects_file,
+                        reports_csv, reports_summary_csv)
 
     reports = Reports()
 

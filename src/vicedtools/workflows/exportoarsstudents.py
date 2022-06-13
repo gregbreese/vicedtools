@@ -19,7 +19,8 @@ import os
 from vicedtools.acer import OARSSession
 
 if __name__ == "__main__":
-    from config import (oars_candidates_json, oars_authenticator, oars_school_code)
+    from config import (oars_candidates_json, oars_authenticator,
+                        oars_school_code)
 
     parent_dir = os.path.dirname(oars_candidates_json)
     if not os.path.exists(parent_dir):

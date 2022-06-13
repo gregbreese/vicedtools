@@ -142,7 +142,9 @@ class VASSWebDriver(webdriver.Ie):
             VASS completed.
         """
 
-        warn(f'{self.__class__.__name__} will be deprecated. Use VASSSession', DeprecationWarning, stacklevel=2)
+        warn(f'{self.__class__.__name__} will be deprecated. Use VASSSession',
+             DeprecationWarning,
+             stacklevel=2)
 
         options = webdriver.IeOptions()
         options.native_events = False
@@ -424,28 +426,29 @@ class VASSWebDriver(webdriver.Ie):
                 unit_name_list_match = re.search(unit_name_list_pattern, r.text)
                 unit_name_pattern = r'"(.*?)"'
                 unit_name_matches = re.findall(unit_name_pattern,
-                                            unit_name_list_match.group(0))
+                                               unit_name_list_match.group(0))
                 # get list of unit codes
                 unit_code_list_pattern = r"""naUnits \t= \[(.*?)];"""
                 unit_code_list_match = re.search(unit_code_list_pattern, r.text)
                 unit_code_pattern = r"'(.*?)'"
                 unit_code_matches = re.findall(unit_code_pattern,
-                                            unit_code_list_match.group(0))
+                                               unit_code_list_match.group(0))
                 # get list of ga numbers
                 ga_number_list_pattern = r"""naGAs \t= \[.*?];"""
                 ga_number_list_match = re.search(ga_number_list_pattern, r.text)
                 ga_number_pattern = r"'(.*?)'"
                 ga_number_matches = re.findall(ga_number_pattern,
-                                            ga_number_list_match.group(0))
+                                               ga_number_list_match.group(0))
                 # get list of ga names
                 ga_name_list_pattern = r"""GANames \t= \[.*?];"""
                 ga_name_list_match = re.search(ga_name_list_pattern, r.text)
                 ga_name_pattern = r'"(.*?)"'
                 ga_name_matches = re.findall(ga_name_pattern,
-                                            ga_name_list_match.group(0))
+                                             ga_name_list_match.group(0))
                 # get list of max scores
                 max_scores_list_pattern = r"""naGAMaxScores\t= \[.*?];"""
-                max_scores_list_match = re.search(max_scores_list_pattern, r.text)
+                max_scores_list_match = re.search(max_scores_list_pattern,
+                                                  r.text)
                 max_scores_number_pattern = r"'(.*?)'"
                 max_scores_matches = re.findall(max_scores_number_pattern,
                                                 max_scores_list_match.group(0))
@@ -454,9 +457,10 @@ class VASSWebDriver(webdriver.Ie):
                 return
 
             # get all the results
-            
-            metadata = zip(unit_code_matches, unit_name_matches, ga_number_matches,
-                        ga_name_matches, max_scores_matches)
+
+            metadata = zip(unit_code_matches, unit_name_matches,
+                           ga_number_matches, ga_name_matches,
+                           max_scores_matches)
             for unit_code, unit_name, ga_number, ga_name, max_score in metadata:
                 results_url = f"https://www.vass.vic.edu.au/results/reports/SchoolAssessedResultsBySchool/SchoolAssessedResultsBySchoolCRS_Display.cfm?UnitCode={unit_code}&UnitName={unit_name}&GA={ga_number}&GAName={ga_name}&GAMaxScore={max_score}&AssessedElsewhere=false&AdjustPaper=true&myIndex=1&myTotal=1&ReportName=Ranked School Scores Report"
                 r = s.get(results_url)
