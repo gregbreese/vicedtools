@@ -29,7 +29,7 @@ pip3 install vicedtools
 
 ### 
 
-Create a `config.py` file if using the workflow scripts. Use the [`config sample.py`](/src/vicedtools/workflows/config_sample.py) as a starting point.
+Create a `config.py` file if using the workflow scripts. Use the [`config_sample.py`](/src/vicedtools/workflows/config_sample.py) as a starting point.
 
 ## Usage
 
