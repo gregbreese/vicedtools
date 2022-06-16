@@ -41,11 +41,11 @@ vass_moderated_coursework_scores_dir = os.path.join(
     vass_dir, "moderated coursework scores")
 
 # compass
-from vicedtools.compass.compasssession import CompassConfigAuthenticator
+from vicedtools.compass.compasssession import CompassBasicAuthenticator
 
 compass_username = ""
 compass_password = """"""
-compass_authenticator = CompassConfigAuthenticator(compass_username,
+compass_authenticator = CompassBasicAuthenticator(compass_username,
                                                    compass_password)
 compass_school_code = "gwsc-vic"
 compass_dir = os.path.join(root_dir, "compass exports")
@@ -73,11 +73,11 @@ reports_file = os.path.join(compass_dir, "reports.csv")
 reports_summary_file = os.path.join(compass_dir, "reports_summary.csv")
 
 # naplan
-from vicedtools.naplan.dataservicesession import DataServiceConfigAuthenticator
+from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator
 
 dataservice_username = ""
 dataservice_password = ""
-dataservice_authenticator = DataServiceConfigAuthenticator(
+dataservice_authenticator = DataServiceBasicAuthenticator(
     dataservice_username, dataservice_password)
 # folders for saving NAPLAN exports
 naplan_dir = os.path.join(root_dir, "napla exports")
@@ -87,9 +87,9 @@ naplan_sssr_dir = os.path.join(naplan_dir, "sssr exports")
 # oars
 oars_username = ""
 oars_password = """"""
-from vicedtools.acer import OARSConfigAuthenaticator
+from vicedtools.acer import OARSBasicAuthenaticator
 
-oars_authenticator = OARSConfigAuthenaticator(oars_username, oars_password)
+oars_authenticator = OARSBasicAuthenaticator(oars_username, oars_password)
 oars_school_code = ""
 # sub-folder for all OARS exports
 oars_dir = os.path.join(root_dir, "OARS exports")
