@@ -83,10 +83,10 @@ class CompassConfigAuthenticator(CompassAuthenticator):
         login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
         # get viewstate
         r = s.get(login_url)
-        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/]*)"'
+        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
         m = re.search(pattern, r.text)
         viewstate = quote(m.group('viewstate'))
-        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/]*)"'
+        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/=]*)"'
         m = re.search(pattern, r.text)
         viewstategenerator = quote(m.group('viewstategenerator'))
         # url encode username and password
@@ -125,7 +125,6 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         if r.status_code != 200:
             raise CompassAuthenticationError
 
-
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
@@ -146,6 +145,7 @@ class CompassSession(requests.sessions.Session):
         self.school_code = school_code
 
         authenticator.authenticate(self)
+        self.MAX_POLL_REQUESTS = 100
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:
@@ -177,12 +177,14 @@ class CompassSession(requests.sessions.Session):
         r = self.post(poll_url, json=payload)
         data = r.json()
         status = data['d']['requestStatus']
-        while status == 2:
+        while status <= 2:
             time.sleep(6)
             r = self.post(poll_url, json=payload)
             data = r.json()
             status = data['d']['requestStatus']
             poll_requests += 1
+            if poll_requests > self.MAX_POLL_REQUESTS:
+                break
         if status != 3:
             raise CompassLongRunningFileRequestError(
                 f"Unexpected Compass response, after {poll_requests} poll requests received status: {status}"
