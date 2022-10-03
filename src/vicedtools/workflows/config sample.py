@@ -69,8 +69,8 @@ progress_report_cycles_json = os.path.join(compass_dir,
                                            "progress report cycles.json")
 report_cycles_json = os.path.join(compass_dir, "report cycles.json")
 # locations for saving files of combined report data
-reports_file = os.path.join(compass_dir, "reports.csv")
-reports_summary_file = os.path.join(compass_dir, "reports_summary.csv")
+reports_csv = os.path.join(compass_dir, "reports.csv")
+reports_summary_csv = os.path.join(compass_dir, "reports_summary.csv")
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceConfigAuthenticator
@@ -83,6 +83,7 @@ dataservice_authenticator = DataServiceConfigAuthenticator(
 naplan_dir = os.path.join(root_dir, "napla exports")
 naplan_outcomes_dir = os.path.join(naplan_dir, "outcomes exports")
 naplan_sssr_dir = os.path.join(naplan_dir, "sssr exports")
+naplan_outcomes_combined_csv = os.path.join(naplan_dir, "NAPLAN outcomes combined.csv")
 
 # oars
 oars_username = ""
@@ -106,6 +107,7 @@ pat_scores_csv = os.path.join(oars_dir, "pat scores.csv")
 pat_most_recent_csv = os.path.join(oars_dir, "pat most recent.csv")
 
 # gcp
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "path-to-your-credentials/credentials.json"
 student_details_table_id = "abc-school-data.student_details.student_details"
 student_enrolments_table_id = "abc-school-data.student_details.student_enrolments"
 pat_scores_table_id = "abc-school-data.student_results.pat_scores"
@@ -125,7 +127,7 @@ bucket = "abc-school-bucket"
 # A CSV with SubjectCode, SubjectName, LearningArea columns with metadata
 # for each subject in the school. Used for adding Learning Area data to
 # report summaries.
-subjects_file = "./subjects metadata.csv"
+subjects_metadata_csv = compass_dir = os.path.join(compass_dir, "subjects metadata.csv")
 
 # Replace subject names or grade names when combining report data.
 # Useful with subject names or grade names have changed over the years
