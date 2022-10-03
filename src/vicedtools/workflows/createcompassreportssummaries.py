@@ -11,12 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for exporting Compass progress report data."""
+"""Executable script for creating summaries of all Compass student results."""
 
 import glob
 import os
 
-import pandas as pd
 from vicedtools.compass import Reports
 
 if __name__ == "__main__":
@@ -25,7 +24,7 @@ if __name__ == "__main__":
                         work_habits_result_mapper, learning_task_filter,
                         learning_tasks_result_mapper,
                         progress_report_result_mapper, results_dtype,
-                        progress_report_items, class_code_parser, subjects_file,
+                        progress_report_items, class_code_parser, subjects_metadata_csv,
                         reports_csv, reports_summary_csv)
 
     reports = Reports()
@@ -33,31 +32,38 @@ if __name__ == "__main__":
     files = glob.glob(os.path.join(learning_tasks_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
-        reports.addLearningTasksExport(
-            filename,
-            grade_dtype=results_dtype,
-            replace_values=replace_values,
-            grade_score_mapper=learning_tasks_result_mapper,
-            learning_task_filter=learning_task_filter)
+        try:
+            reports.addLearningTasksExport(
+                filename,
+                grade_dtype=results_dtype,
+                replace_values=replace_values,
+                grade_score_mapper=learning_tasks_result_mapper,
+                learning_task_filter=learning_task_filter)
+        except ValueError:
+            pass
 
     files = glob.glob(os.path.join(reports_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
-        reports.addReportsExport(filename,
-                                 grade_dtype=results_dtype,
-                                 replace_values=replace_values,
-                                 grade_score_mapper=work_habits_result_mapper)
-
+        try:
+            reports.addReportsExport(filename,
+                                    grade_dtype=results_dtype,
+                                    replace_values=replace_values,
+                                    grade_score_mapper=work_habits_result_mapper)
+        except ValueError:
+            pass
     files = glob.glob(os.path.join(progress_reports_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
-        reports.addProgressReportsExport(
-            filename,
-            progress_report_items,
-            grade_dtype=results_dtype,
-            grade_score_mapper=progress_report_result_mapper)
-
-    reports.importSubjectsData(subjects_file,
+        try:
+            reports.addProgressReportsExport(
+                filename,
+                progress_report_items,
+                grade_dtype=results_dtype,
+                grade_score_mapper=progress_report_result_mapper)
+        except ValueError:
+            pass
+    reports.importSubjectsData(subjects_metadata_csv,
                                class_code_parser,
                                replace_values=replace_subject_codes)
 
