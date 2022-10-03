@@ -1,6 +1,6 @@
 from vicedtools.acer.ewritesittings import EWriteSittings
 from vicedtools.acer.oars import student_imports
-from vicedtools.acer.oarssession import OARSSession, OARSAuthenticator, OARSAuthenticateError, OARSConfigAuthenticator, OARSFirefoxCookieAuthenticator
+from vicedtools.acer.oarssession import OARSSession, OARSAuthenticator, OARSAuthenticateError, OARSBasicAuthenticator, OARSFirefoxCookieAuthenticator
 from vicedtools.acer.oarscandidates import OARSCandidate, OARSCandidates
 from vicedtools.acer.patitems import PATItem, PATItems
 from vicedtools.acer.patsittings import PATSitting, PATSittings

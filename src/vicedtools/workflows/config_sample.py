@@ -24,11 +24,34 @@ from pandas.api.types import CategoricalDtype
 root_dir = "."
 
 # vass
-iedriver_path = "./IEDriverServer.exe"  # download from https://www.selenium.dev/documentation/ie_driver_server/
 vass_grid_password = [('1', '1'), ('8', '1'), ('4', '5'), ('5', '5'),
                       ('1', '8'), ('8', '8')]
 vass_username = ""
 vass_password = """"""
+
+# compass
+from vicedtools.compass.compasssession import CompassBasicAuthenticator
+compass_username = ""
+compass_password = """"""
+compass_authenticator = CompassBasicAuthenticator(compass_username,
+                                                   compass_password)
+compass_school_code = "gwsc-vic"
+
+# naplan
+from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator
+dataservice_username = ""
+dataservice_password = ""
+dataservice_authenticator = DataServiceBasicAuthenticator(
+    dataservice_username, dataservice_password)
+
+# OARS (ACER tests)
+from vicedtools.acer import OARSBasicAuthenaticator
+oars_username = ""
+oars_password = """"""
+oars_authenticator = OARSBasicAuthenaticator(oars_username, oars_password)
+oars_school_code = ""
+
+# default vass directory structure
 vass_folder = "vass exports"
 vass_dir = os.path.join(root_dir, vass_folder)
 vass_student_details_dir = os.path.join(vass_dir, "personal details summary")
@@ -40,30 +63,17 @@ vass_external_scores_dir = os.path.join(vass_dir, "external scores")
 vass_moderated_coursework_scores_dir = os.path.join(
     vass_dir, "moderated coursework scores")
 
-# compass
-from vicedtools.compass.compasssession import CompassConfigAuthenticator
-
-compass_username = ""
-compass_password = """"""
-compass_authenticator = CompassConfigAuthenticator(compass_username,
-                                                   compass_password)
-compass_school_code = "gwsc-vic"
+# default compass directory structure
 compass_dir = os.path.join(root_dir, "compass exports")
-# student details export file
 student_details_csv = os.path.join(compass_dir, "student details",
                                    "student details.csv")
-# student household information file
 student_household_information_csv = os.path.join(
     compass_dir, "student details", "student household information.csv")
-# SDS export (has class enrolment data)
 sds_dir = os.path.join(compass_dir, "SDS export")
-# subject metadata
 subjects_dir = os.path.join(compass_dir, "subjects")
-# folders for reports/progress report/learning task exports
 progress_reports_dir = os.path.join(compass_dir, "progress reports")
 learning_tasks_dir = os.path.join(compass_dir, "learning tasks")
 reports_dir = os.path.join(compass_dir, "reports")
-# metadata on academic groups (e.g. timetable years), report cycles and progress report cycles
 academic_groups_json = os.path.join(compass_dir, "academic groups.json")
 progress_report_cycles_json = os.path.join(compass_dir,
                                            "progress report cycles.json")
@@ -72,57 +82,45 @@ report_cycles_json = os.path.join(compass_dir, "report cycles.json")
 reports_csv = os.path.join(compass_dir, "reports.csv")
 reports_summary_csv = os.path.join(compass_dir, "reports_summary.csv")
 
-# naplan
-from vicedtools.naplan.dataservicesession import DataServiceConfigAuthenticator
-
-dataservice_username = ""
-dataservice_password = ""
-dataservice_authenticator = DataServiceConfigAuthenticator(
-    dataservice_username, dataservice_password)
-# folders for saving NAPLAN exports
+# default directory structure for NAPLAN exports
 naplan_dir = os.path.join(root_dir, "napla exports")
 naplan_outcomes_dir = os.path.join(naplan_dir, "outcomes exports")
 naplan_sssr_dir = os.path.join(naplan_dir, "sssr exports")
 naplan_outcomes_combined_csv = os.path.join(naplan_dir, "NAPLAN outcomes combined.csv")
 
-# oars
-oars_username = ""
-oars_password = """"""
-from vicedtools.acer import OARSConfigAuthenaticator
-
-oars_authenticator = OARSConfigAuthenaticator(oars_username, oars_password)
-oars_school_code = ""
-# sub-folder for all OARS exports
+# default directory structure for OARS exports
 oars_dir = os.path.join(root_dir, "OARS exports")
-# student and staff details
 oars_staff_xlsx = os.path.join(oars_dir, f"{oars_school_code}-staff.xlsx")
 oars_candidates_json = os.path.join(oars_dir, "candidates.json")
-# folder for saving all PAT sitting exports
 pat_sittings_dir = os.path.join(oars_dir, "PAT sittings")
-# OARS metadata
 oars_tests_json = os.path.join(oars_dir, "tests.json")
 scale_constructs_json = os.path.join(oars_dir, "scaleconstructs.json")
 # files for combined PAT data
 pat_scores_csv = os.path.join(oars_dir, "pat scores.csv")
 pat_most_recent_csv = os.path.join(oars_dir, "pat most recent.csv")
 
-# gcp
+# Google Cloud Platform settings for uploading data to use with Data Studio
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "path-to-your-credentials/credentials.json"
-student_details_table_id = "abc-school-data.student_details.student_details"
-student_enrolments_table_id = "abc-school-data.student_details.student_enrolments"
-pat_scores_table_id = "abc-school-data.student_results.pat_scores"
-pat_most_recent_table_id = "abc-school-data.student_results.pat_most_recent"
-naplan_outcomes_table_id = "abc-school-data.student_results.naplan"
-reports_table_id = "abc-school-data.student_results.reports"
-reports_summary_table_id = "abc-school-data.student_results.reports_summary"
-gat_table_id = "abc-school-data.student_results.gat"
-ewrite_scores_table_id = "abc-school-data.student_results.ewrite_scores"
-ewrite_criteria_table_id = "abc-school-data.student_results.ewrite_criteria"
-vce_study_scores_table_id = "abc-school-data.vce_data.study_scores"
-vce_adjusted_scores_table_id = "abc-school-data.vce_data.adjusted_scores"
-bucket = "abc-school-bucket"
+gcp_project = "abc-school-data"
+general_dataset = "general_dataset"
+vce_dataset = "vce_dataset"
+gcs_bucket = "abc-school-bucket"
 
-# school specific
+#default table structure
+student_details_table_id = f"{gcp_project}.{general_dataset}.student_details"
+student_enrolments_table_id = f"{gcp_project}.{general_dataset}.student_enrolments"
+pat_scores_table_id = f"{gcp_project}.{general_dataset}.pat_scores"
+pat_most_recent_table_id = f"{gcp_project}.{general_dataset}.pat_most_recent"
+naplan_outcomes_table_id = f"{gcp_project}.{general_dataset}.naplan"
+reports_table_id = f"{gcp_project}.{general_dataset}.reports"
+reports_summary_table_id = f"{gcp_project}.{general_dataset}.reports_summary"
+gat_table_id = f"{gcp_project}.{general_dataset}.gat"
+ewrite_scores_table_id = f"{gcp_project}.{general_dataset}.ewrite_scores"
+ewrite_criteria_table_id = f"{gcp_project}.{general_dataset}.ewrite_criteria"
+vce_study_scores_table_id = f"{gcp_project}.{vce_dataset}.study_scores"
+vce_adjusted_scores_table_id = f"{gcp_project}.{vce_dataset}.adjusted_scores"
+
+# Functions to support the summarising of reporting data exported from COmpass
 
 # A CSV with SubjectCode, SubjectName, LearningArea columns with metadata
 # for each subject in the school. Used for adding Learning Area data to
@@ -165,7 +163,7 @@ progress_report_items = [
     "Uses feedback to improve"
 ]
 
-
+# Functions for mapping grades to numerical scores for aggregation
 def learning_tasks_result_mapper(result: str) -> float:
     """Maps report grade labels to a score."""
     if result == "Not Demonstrated":
@@ -186,7 +184,6 @@ def learning_tasks_result_mapper(result: str) -> float:
         return 1.0
     return float('nan')
 
-
 def work_habits_result_mapper(result: str) -> float:
     """Maps work habit grade labels to a score."""
     if result == "Unsatisfactory":
@@ -200,7 +197,6 @@ def work_habits_result_mapper(result: str) -> float:
     if result == "Excellent":
         return 1.0
     return np.nan
-
 
 def progress_report_result_mapper(result: str) -> float:
     """Maps progress report grade labels to a score."""

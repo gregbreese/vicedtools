@@ -42,7 +42,7 @@ class DataserviceAuthenticationError(Exception):
     pass
 
 
-class DataServiceConfigAuthenticator(DataserviceAuthenticator):
+class DataServiceBasicAuthenticator(DataserviceAuthenticator):
     """Authenticates using a provided username and password."""
 
     def __init__(self, username: str, password: str):

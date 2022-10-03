@@ -70,7 +70,7 @@ class CompassLongRunningFileRequestError(Exception):
     pass
 
 
-class CompassConfigAuthenticator(CompassAuthenticator):
+class CompassBasicAuthenticator(CompassAuthenticator):
     """Authenticates using a provided username and password."""
 
     def __init__(self, username: str, password: str):
@@ -128,6 +128,8 @@ class CompassCLIAuthenticator(CompassAuthenticator):
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
+    MIN_REQUEST_INTERVAL = 500000000 # 500 milliseconds in nanoseconds
+
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
         """Creates a requests Session with Compass authentication completed.
         
@@ -144,8 +146,28 @@ class CompassSession(requests.sessions.Session):
         self.headers.update(headers)
         self.school_code = school_code
 
+        self.last_request_time = 0
+
         authenticator.authenticate(self)
         self.MAX_POLL_REQUESTS = 100
+
+    def get(self, *args, **kwargs):
+        """Enforce a minimum delay between requests."""
+        now = time.ns_time()
+        wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
+        if wait_time > 0:
+            time.sleep(wait_time)
+        self.last_request_time = time.time_ns()
+        super().get(*args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        """Enforce a minimum delay between requests."""
+        now = time.ns_time()
+        wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
+        if wait_time > 0:
+            time.sleep(wait_time)
+        self.last_request_time = time.time_ns()
+        super().post(*args, **kwargs)
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:

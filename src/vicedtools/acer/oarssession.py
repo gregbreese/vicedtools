@@ -376,7 +376,7 @@ class OARSFirefoxCookieAuthenticator(OARSAuthenticator):
             s.cookies.update(c)
 
 
-class OARSConfigAuthenticator(OARSAuthenticator):
+class OARSBasicAuthenticator(OARSAuthenticator):
     """Authenticates using a provided username and password."""
 
     def __init__(self, username: str, password: str):

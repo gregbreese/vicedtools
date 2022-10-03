@@ -14,7 +14,7 @@
 
 from vicedtools.compass.compasssession import (
     CompassSession, CompassAuthenticator, CompassAuthenticationError,
-    CompassLongRunningFileRequestError, CompassConfigAuthenticator,
+    CompassLongRunningFileRequestError, CompassBasicAuthenticator,
     CompassCLIAuthenticator, CompassFirefoxCookieAuthenticator,
     get_report_cycle_id, sanitise_filename)
 
