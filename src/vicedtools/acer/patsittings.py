@@ -55,7 +55,6 @@ class PATSitting(dict):
             data[key] = extract_response(value)
         data['Score'] = self['score']['score']
         data['Scale'] = self['score']['scale']
-        data['Score'] = self['score']['score']
         data['Stanine'] = self['score']['norms'][1]['stanine']
         data['Percentile'] = self['score']['norms'][1]['percentile']
 
@@ -102,6 +101,7 @@ class PATSitting(dict):
         data['Test'] = test_name_stub[test_name]
         data['Test form'] = form_name
         data['Scale'] = self['score']['scale']
+        data["Error"] = self['score']['error']
         data['Score category'] = score_categoriser(
             data['Test'], data['Year level (at time of test)'],
             data['Completed'], data['Scale'])
