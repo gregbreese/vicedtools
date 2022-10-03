@@ -23,7 +23,7 @@ import time
 from vicedtools.compass import CompassSession, sanitise_filename
 
 if __name__ == "__main__":
-    from config import (compass_dir, compass_authenticator, compass_school_code,
+    from config import (compass_authenticator, compass_school_code,
                         academic_groups_json, subjects_dir)
 
     parser = argparse.ArgumentParser(
