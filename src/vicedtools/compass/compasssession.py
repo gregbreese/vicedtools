@@ -78,10 +78,9 @@ class CompassBasicAuthenticator(CompassAuthenticator):
         self.password = password
 
     def authenticate(self, s: CompassSession):
-
-        login_url = f"https://{s.school_code}.compass.education/login.aspx"
+        home_url = f"https://{s.school_code}.compass.education"
+        r = s.get(home_url)
         # get viewstate
-        r = s.get(login_url)
         pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
         m = re.search(pattern, r.text)
         viewstate = quote(m.group('viewstate'))
@@ -89,11 +88,12 @@ class CompassBasicAuthenticator(CompassAuthenticator):
         m = re.search(pattern, r.text)
         viewstategenerator = quote(m.group('viewstategenerator'))
         # url encode username and password
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        s.headers.update(headers)
         username = quote(self.username)
         password = quote(self.password)
         # auth
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        s.headers.update(headers)
+        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
         payload = f'__EVENTTARGET=button1&__EVENTARGUMENT=&__VIEWSTATE={viewstate}&browserFingerprint=3597254041&username={username}&password={password}&g-recaptcha-response=&rememberMeChk=on&__VIEWSTATEGENERATOR={viewstategenerator}'
         r = s.post(login_url, data=payload)
         if r.status_code != 200:
@@ -150,7 +150,7 @@ class CompassSession(requests.sessions.Session):
         requests.sessions.Session.__init__(self)
         headers = {
             "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.34"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0"
         }
         self.headers.update(headers)
         self.school_code = school_code
