@@ -128,6 +128,10 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         r = s.post(login_url, data=payload)
         if r.status_code != 200:
             raise CompassAuthenticationError
+        pattern = "Sorry - your username and/or password was incorrect"
+        m = re.search(pattern, r.text)
+        if m:
+            raise CompassAuthenticationError
 
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
