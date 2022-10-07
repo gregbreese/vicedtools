@@ -97,6 +97,10 @@ class CompassBasicAuthenticator(CompassAuthenticator):
         r = s.post(login_url, data=payload)
         if r.status_code != 200:
             raise CompassAuthenticationError
+        pattern = "Sorry - your username and/or password was incorrect"
+        m = re.search(pattern, r.text)
+        if m:
+            raise CompassAuthenticationError
 
 
 class CompassCLIAuthenticator(CompassAuthenticator):
@@ -141,7 +145,11 @@ class CompassSession(requests.sessions.Session):
         requests.sessions.Session.__init__(self)
         headers = {
             "User-Agent":
+<<<<<<< Updated upstream
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.34"
+=======
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0"
+>>>>>>> Stashed changes
         }
         self.headers.update(headers)
         self.school_code = school_code
@@ -156,7 +164,11 @@ class CompassSession(requests.sessions.Session):
         now = time.time_ns()
         wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
+<<<<<<< Updated upstream
             time.sleep(wait_time/1000000000)
+=======
+            time.sleep(wait_time / 1000000000)
+>>>>>>> Stashed changes
         self.last_request_time = time.time_ns()
         return super().get(*args, **kwargs)
 
@@ -165,9 +177,16 @@ class CompassSession(requests.sessions.Session):
         now = time.time_ns()
         wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
+<<<<<<< Updated upstream
             time.sleep(wait_time/1000000000)
         self.last_request_time = time.time_ns()
         return super().post(*args, **kwargs)
+=======
+            time.sleep(wait_time / 1000000000)
+        self.last_request_time = time.time_ns()
+        return super().post(*args, **kwargs)
+
+>>>>>>> Stashed changes
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:
