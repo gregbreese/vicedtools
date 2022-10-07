@@ -80,7 +80,7 @@ class CompassBasicAuthenticator(CompassAuthenticator):
     def authenticate(self, s: CompassSession):
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         s.headers.update(headers)
-        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
+        login_url = f"https://{s.school_code}.compass.education/login.aspx"
         # get viewstate
         r = s.get(login_url)
         pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
@@ -110,10 +110,10 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
         # get viewstate
         r = s.get(login_url)
-        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/]*)"'
+        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
         m = re.search(pattern, r.text)
         viewstate = quote(m.group('viewstate'))
-        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/]*)"'
+        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/=]*)"'
         m = re.search(pattern, r.text)
         viewstategenerator = quote(m.group('viewstategenerator'))
         # url encode username and password
@@ -141,7 +141,7 @@ class CompassSession(requests.sessions.Session):
         requests.sessions.Session.__init__(self)
         headers = {
             "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.34"
         }
         self.headers.update(headers)
         self.school_code = school_code
@@ -153,21 +153,21 @@ class CompassSession(requests.sessions.Session):
 
     def get(self, *args, **kwargs):
         """Enforce a minimum delay between requests."""
-        now = time.ns_time()
+        now = time.time_ns()
         wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
-            time.sleep(wait_time)
+            time.sleep(wait_time/1000000000)
         self.last_request_time = time.time_ns()
-        super().get(*args, **kwargs)
+        return super().get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
         """Enforce a minimum delay between requests."""
-        now = time.ns_time()
+        now = time.time_ns()
         wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
-            time.sleep(wait_time)
+            time.sleep(wait_time/1000000000)
         self.last_request_time = time.time_ns()
-        super().post(*args, **kwargs)
+        return super().post(*args, **kwargs)
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:
@@ -188,6 +188,7 @@ class CompassSession(requests.sessions.Session):
                     print(
                         f"File request error. Retrying {max_attempts - i - 1} more times."
                     )
+                    print(r.text)
                 else:
                     print('File request failed.')
                     return ""
