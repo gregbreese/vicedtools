@@ -45,10 +45,10 @@ dataservice_authenticator = DataServiceBasicAuthenticator(
     dataservice_username, dataservice_password)
 
 # OARS (ACER tests)
-from vicedtools.acer import OARSBasicAuthenaticator
+from vicedtools.acer import OARSBasicAuthenticator
 oars_username = ""
 oars_password = """"""
-oars_authenticator = OARSBasicAuthenaticator(oars_username, oars_password)
+oars_authenticator = OARSBasicAuthenticator(oars_username, oars_password)
 oars_school_code = ""
 
 # default vass directory structure
