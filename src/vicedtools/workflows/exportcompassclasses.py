@@ -18,6 +18,8 @@ import json
 import sys
 import os
 
+import pandas as pd
+
 from vicedtools.compass.compasssession import CompassSession, CompassAuthenticator
 
 if __name__ == "__main__":
@@ -55,9 +57,14 @@ if __name__ == "__main__":
                 break
 
     s = CompassSession(compass_school_code, compass_authenticator)
-    cycles = s.get_classes(args.academic_group)
+    classes = s.get_classes(args.academic_group)
     filename = os.path.join(class_details_dir, f"{cycle_name} classes.json")
     with open(filename, "w", encoding='utf-8') as f:
-        json.dump(cycles, f)
+        json.dump(classes, f)
+
+    df = pd.DataFrame.from_records(classes)
+    filename = os.path.join(class_details_dir, f"{cycle_name} classes.csv")
+    with open(filename, "w", encoding='utf-8') as f:
+        df.to_csv(filename, index=False)    
 
     sys.exit(0)

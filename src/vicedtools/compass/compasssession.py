@@ -484,11 +484,22 @@ class CompassSession(requests.sessions.Session):
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
         subjects_url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetSubjectsInAcademicGroup?sessionstate=readonly&_dc={current_ms_time}"
-        payload = f'{{"academicGroupId":{academic_group},"includeDataSyncSubjects":true,"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"importIdentifier\\",\\"direction\\":\\"ASC\\"}}]"}}'
+
+        subjects = []
+        page = 1
+        payload = f'{{"academicGroupId":{academic_group},"includeDataSyncSubjects":true,"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"importIdentifier\\",\\"direction\\":\\"ASC\\"}}]"}}'
         r = self.post(subjects_url, data=payload)
+        new_subjects = r.json()['d']['data']
+        subjects += new_subjects
+        while len(new_subjects) == 50:
+            page += 1
+            payload = f'{{"academicGroupId":{academic_group},"includeDataSyncSubjects":true,"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"importIdentifier\\",\\"direction\\":\\"ASC\\"}}]"}}'
+            r = self.post(subjects_url, data=payload)
+            new_subjects = r.json()['d']['data']
+            subjects += new_subjects
+
         del self.headers['Content-Type']
-        decoded_response = r.json()['d']['data']
-        return decoded_response
+        return subjects
 
     def get_classes(self, academic_group: int = -1) -> list[dict]:
         """Gets a list of all classes in an academic group.
