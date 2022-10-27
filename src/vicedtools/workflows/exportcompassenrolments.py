@@ -66,7 +66,11 @@ if __name__ == "__main__":
     enrolments = []
 
     for c in classes[:20]:
-        class_metadata = {"id":c["id"], "name":c["name"], "academic group":cycle_name}
+        class_metadata = {"id":c["id"], "name":c["name"], 
+                          "facultyName":c["facultyName"], 
+                          "teacherCode":c["managerImportIdentifier"], 
+                          "academicGroup":cycle_name,
+                          }
         new_enrolments = s.get_class_enrolments(c["id"])
         for enrolment in new_enrolments:
             enrolment.update(class_metadata)
