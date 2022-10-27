@@ -28,7 +28,7 @@ from vicedtools.acer.oarstests import OARSTests
 class PATSitting(dict):
     """A class for storing a PAT sitting result."""
 
-    def group_report(self, tests: PATTests) -> dict:
+    def group_report(self, tests: OARSTests) -> dict:
         """Returns the data provided in a PAT group report export for this sitting."""
         data = {}
         try:
@@ -68,7 +68,7 @@ class PATSitting(dict):
 
         return data
 
-    def summary(self, tests: PATTests) -> dict:
+    def summary(self, tests: OARSTests) -> dict:
         """Extracts a summary of the results.
         
         Args:
@@ -120,7 +120,7 @@ class PATSittings(list):
         else:
             raise TypeError(f"Unsupported type: {type(sittings)}")
 
-    def group_report(self, tests: PATTests, test_name: str,
+    def group_report(self, tests: OARSTests, test_name: str,
                      form_name: str) -> list:
         """Extracts data for the preparation of a group report spreadsheet.
         
@@ -143,7 +143,7 @@ class PATSittings(list):
         return data
 
     def summary(self,
-                tests: PATTests,
+                tests: OARSTests,
                 recent_only: bool = False) -> pd.DataFrame:
         """Extracts a basic summary of results.
         
