@@ -483,7 +483,7 @@ class CompassSession(requests.sessions.Session):
         """
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
-        subjects_url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetSubjectsInAcademicGroup?sessionstate=readonly&_dc={current_ms_time}"
+        subjects_url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetSubjectsInAcademicGroup?sessionstate=readonly&_dc={current_ms_time()}"
 
         subjects = []
         page = 1
@@ -518,6 +518,30 @@ class CompassSession(requests.sessions.Session):
             classes += new_classes
         return classes
 
+    def get_class_enrolments(self, activity_id: int, add_activity_id:bool = False) -> list[dict]:
+        """Gets a list of all enrolments in a class.
+        
+        Args:
+            activity_id: An activity id for one lesson for the class.
+        
+        Returns:
+            A list of dictionaries containing student metadata.
+        """
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
+
+        payload = f'{{"activityId":{activity_id},"page":1,"start":0,"limit":25}}'
+        url = f"https://{self.school_code}.compass.education/Services/Activity.svc/GetEnrolmentsByActivityId?sessionstate=readonly&_dc={current_ms_time()}"
+        r = self.post(url, data=payload)
+        new_enrolments = r.json()['d']
+        if add_activity_id:
+            for enrolment in new_enrolments:
+                enrolment.update({"activity_id":activity_id})
+
+        del self.headers['Content-Type']
+
+        return new_enrolments
+        
 
 def get_report_cycle_id(cycles, year, name):
     for c in cycles:
