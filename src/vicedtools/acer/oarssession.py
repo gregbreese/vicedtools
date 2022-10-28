@@ -125,58 +125,6 @@ class OARSSession(requests.sessions.Session):
 
     def get_all_pat_sittings(self, from_date: str, to_date: str) -> PATSittings:
         """Downloads the results for all PAT sittings between the given dates.
-        
-        Includes both PAT Maths 4th Edition and PAT Reading 5th Edition.
-        
-        Args:
-            from_date: The start date to download results for in 
-                dd-mm-yyyy format.
-            to_date: The end date to download results for in dd-mm-yyyy format.
-            
-        Returns:
-            A list of test sittings.
-        """
-        test_names = ["PAT Maths 4th Edition", 
-                      "PAT Reading 5th Edition"]
-
-        sittings = []
-
-        for test_name in test_names:
-            test = self.tests.get_test_from_name(test_name)
-            test_id = test['testId']
-            scale_id = test['scale_id']
-            scale_slug = self.scale_constructs[scale_id]['slug']
-
-            forms = test['forms']
-            for form in forms:
-                form_id = form['formId']
-                form_name = form['name']
-
-                ids_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingIdsByTestForm/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
-                ids_url = ids_url.replace(" ", "%20")
-                r = self.get(ids_url)
-                ids = r.json()
-
-                self.headers.update(
-                    {"Content-Type": "application/json;charset=utf-8"})
-
-                if ids:
-                    sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getGroupReportSittingsByIds.ajax/?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&from={from_date}&to={to_date}&match_criterion=all&date-type=between&form_name={form_name}&test_name={test_name}&report_type=pat&tag_year_match_criterion=and&report_template=pat"
-                    sittings_url = sittings_url.replace(" ", "%20")
-
-                    for i in range(0, len(ids[test_id][form_id]), 100):
-                        payload = {
-                            'ids': ids[test_id][form_id][i:i + 100],
-                            'security_token': self.security_token
-                        }
-                        r = self.post(sittings_url, json=payload)
-                        sittings += r.json()
-
-                del self.headers["Content-Type"]
-        return PATSittings(sittings)
-
-    def updated_get_all_pat_sittings(self, from_date: str, to_date: str) -> PATSittings:
-        """Downloads the results for all PAT sittings between the given dates.
                 
         Args:
             from_date: The start date to download results for in 
@@ -197,8 +145,6 @@ class OARSSession(requests.sessions.Session):
                 test_names.append(t['name'])
 
         sittings = []
-        responses = []
-
 
         for test_name in test_names:
             test = self.tests.get_test_from_name(test_name)
@@ -222,28 +168,28 @@ class OARSSession(requests.sessions.Session):
                 if ids:
                     sittings_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getScaleReportSittingsByIds.ajax?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}&extra_candidate_fields=true&include_sitting_responses=true"
                     sittings_url = sittings_url.replace(" ", "%20")
-
+                    responses_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingResponses.ajax?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}"
+                    responses_url = responses_url.replace(" ", "%20")
+                    
                     for i in range(0, len(ids[test_id][form_id]), 100):
                         payload = {
                             'ids': ids[test_id][form_id][i:i + 100],
                             'security_token': self.security_token
                         }
                         r = self.post(sittings_url, json=payload)
-                        sittings += r.json()
-
-                    responses_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingResponses.ajax?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}"
-                    responses_url = sittings_url.replace(" ", "%20")
-
-                    for i in range(0, len(ids[test_id][form_id]), 100):
-                        payload = {
-                            'ids': ids[test_id][form_id][i:i + 100],
-                            'security_token': self.security_token
-                        }
+                        new_sittings = r.json()
+                        
                         r = self.post(responses_url, json=payload)
-                        responses += r.json()
+                        responses = r.json()
+                        
+                        for sitting in new_sittings:
+                            sitting["responses"] = responses[sitting["sittingId"]]["responses"]
+                        
+                        sittings += new_sittings
 
-                del self.headers["Content-Type"]
-        return PATSittings2(sittings, responses)        
+        del self.headers["Content-Type"]
+
+        return PATSittings(sittings)        
 
     def get_ewrite_sittings(self, candidates: OARSCandidates, from_date: str,
                             to_date: str) -> EWriteSittings:
@@ -413,7 +359,7 @@ class OARSSession(requests.sessions.Session):
         """
         del self.headers['Content-Type']
 
-        upload_url = f"https://oars.acer.edu.au/api/{s.school}/staff/bulkUpdate"
+        upload_url = f"https://oars.acer.edu.au/api/{self.school}/staff/bulkUpdate"
         files = {'upload': open(staff_xlsx, 'rb')}
         payload = {'security_token': self.security_token}
         r = self.post(upload_url, files=files, data=payload)
