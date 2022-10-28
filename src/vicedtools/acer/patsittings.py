@@ -85,26 +85,23 @@ class PATSitting(dict):
             "eWrite": "eWrite"
         }
 
-        test_id = self['sitting']['test_id']
-        form_id = self['sitting']['form_id']
-        test = tests.get_test_from_id(test_id)
-        test_name = test['name']
-        form_name = test.get_form_name_from_id(form_id)
-
         data = {}
         data['Username'] = self['username']
         data['Completed'] = datetime.strptime(
-            time.ctime(self['sitting']['completed']), "%a %b %d %H:%M:%S %Y")
+            time.ctime(self['sittingTimeStamp']), "%a %b %d %H:%M:%S %Y")
         data[
-            'Year level (at time of test)'] = "Year " + year_level_at_time_of_test(
-                self['yearLevel'], self['sitting']['updated'])
-        data['Test'] = test_name_stub[test_name]
-        data['Test form'] = form_name
-        data['Scale'] = self['score']['scale']
-        data["Error"] = self['score']['error']
-        data['Score category'] = score_categoriser(
-            data['Test'], data['Year level (at time of test)'],
-            data['Completed'], data['Scale'])
+            'Year level (at time of test)'] = self['yearLevel']
+        data['Scale'] = self['scaleScore']
+        data["Error"] = self['scaleScoreErrorMargin']
+        data['Test form'] = self['formName']
+        try:
+            data['Test'] = test_name_stub[self['testName']]
+            data['Score category'] = score_categoriser(
+                data['Test'], data['Year level (at time of test)'],
+                data['Completed'], data['Scale'])
+        except KeyError:
+            data['Test'] = self['testName']
+            data["Score category"] = ""
 
         return data
 
