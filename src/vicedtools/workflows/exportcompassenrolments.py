@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     enrolments = []
 
-    for c in classes[:20]:
+    for c in classes:
         class_metadata = {"id":c["id"], "name":c["name"], 
                           "facultyName":c["facultyName"], 
                           "teacherCode":c["managerImportIdentifier"], 
