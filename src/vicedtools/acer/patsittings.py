@@ -82,15 +82,19 @@ class PATSitting(dict):
             "PAT Reading 5th Edition": "Reading",
             "PAT Maths Adaptive": "Maths",
             "PAT Reading Adaptive": "Reading",
-            "eWrite": "eWrite"
+            "PAT-R Comprehension": "Reading",
+            "PAT Maths Plus": "Maths",
+            "eWrite": "eWrite",
+            "AGAT 1st Edition": "AGAT",
+            "PAT Vocabulary Skills": "Vocabulary",
+            "PAT Grammar and Punctuation": "Grammar and Punctuation"
         }
 
         data = {}
         data['Username'] = self['username']
         data['Completed'] = datetime.strptime(
             time.ctime(self['sittingTimeStamp']), "%a %b %d %H:%M:%S %Y")
-        data[
-            'Year level (at time of test)'] = self['yearLevel']
+        data['Year level (at time of test)'] = self['yearLevel']
         data['Scale'] = self['scaleScore']
         data["Error"] = self['scaleScoreErrorMargin']
         data['Test form'] = self['formName']
