@@ -27,10 +27,12 @@ if __name__ == "__main__":
     files = glob.glob(os.path.join(subjects_dir, "*.csv"))
     for file in files:
         temp_df = pd.read_csv(file)
-        temp_df.rename(columns={"FacultyCode":"LearningArea", "SubjectShortName": "SubjectName"}, inplace=True)
-        df = pd.concat([df,temp_df[columns]])
+        temp_df.rename(columns={
+            "FacultyCode": "LearningArea",
+            "SubjectShortName": "SubjectName"
+        },
+                       inplace=True)
+        df = pd.concat([df, temp_df[columns]])
 
     df.drop_duplicates(subset=["SubjectCode"], keep="last", inplace=True)
     df.to_csv(subjects_metadata_csv, index=False)
-
-

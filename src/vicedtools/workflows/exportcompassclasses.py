@@ -65,6 +65,6 @@ if __name__ == "__main__":
     df = pd.DataFrame.from_records(classes)
     filename = os.path.join(class_details_dir, f"{cycle_name} classes.csv")
     with open(filename, "w", encoding='utf-8') as f:
-        df.to_csv(filename, index=False)    
+        df.to_csv(filename, index=False)
 
     sys.exit(0)

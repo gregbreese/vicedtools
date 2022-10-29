@@ -24,7 +24,7 @@ from vicedtools.compass.compasssession import CompassSession, CompassAuthenticat
 
 if __name__ == "__main__":
     from config import (academic_groups_json, compass_authenticator,
-                        compass_school_code, class_details_dir, 
+                        compass_school_code, class_details_dir,
                         enrolment_details_dir)
     if not os.path.exists(enrolment_details_dir):
         os.makedirs(enrolment_details_dir)
@@ -60,25 +60,28 @@ if __name__ == "__main__":
     filename = os.path.join(class_details_dir, f"{cycle_name} classes.json")
     with open(filename, "r", encoding='utf-8') as f:
         classes = json.load(f)
-        
+
     s = CompassSession(compass_school_code, compass_authenticator)
 
     enrolments = []
 
     for c in classes:
-        class_metadata = {"id":c["id"], "name":c["name"], 
-                          "facultyName":c["facultyName"], 
-                          "teacherCode":c["managerImportIdentifier"], 
-                          "academicGroup":cycle_name,
-                          }
+        class_metadata = {
+            "id": c["id"],
+            "name": c["name"],
+            "facultyName": c["facultyName"],
+            "teacherCode": c["managerImportIdentifier"],
+            "academicGroup": cycle_name,
+        }
         new_enrolments = s.get_class_enrolments(c["id"])
         for enrolment in new_enrolments:
             enrolment.update(class_metadata)
         enrolments += new_enrolments
 
     df = pd.DataFrame.from_records(enrolments)
-    filename = os.path.join(enrolment_details_dir, f"{cycle_name} enrolments.csv")
+    filename = os.path.join(enrolment_details_dir,
+                            f"{cycle_name} enrolments.csv")
     with open(filename, "w", encoding='utf-8') as f:
-        df.to_csv(filename, index=False) 
+        df.to_csv(filename, index=False)
 
     sys.exit(0)

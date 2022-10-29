@@ -24,8 +24,8 @@ if __name__ == "__main__":
                         work_habits_result_mapper, learning_task_filter,
                         learning_tasks_result_mapper,
                         progress_report_result_mapper, results_dtype,
-                        progress_report_items, class_code_parser, subjects_metadata_csv,
-                        reports_csv, reports_summary_csv)
+                        progress_report_items, class_code_parser,
+                        subjects_metadata_csv, reports_csv, reports_summary_csv)
 
     reports = Reports()
 
@@ -46,10 +46,11 @@ if __name__ == "__main__":
     for filename in files:
         print("importing ", filename)
         try:
-            reports.addReportsExport(filename,
-                                    grade_dtype=results_dtype,
-                                    replace_values=replace_values,
-                                    grade_score_mapper=work_habits_result_mapper)
+            reports.addReportsExport(
+                filename,
+                grade_dtype=results_dtype,
+                replace_values=replace_values,
+                grade_score_mapper=work_habits_result_mapper)
         except ValueError:
             pass
     files = glob.glob(os.path.join(progress_reports_dir, "*.csv"))

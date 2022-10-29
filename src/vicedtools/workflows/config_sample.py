@@ -31,14 +31,16 @@ vass_password = """"""
 
 # compass
 from vicedtools.compass.compasssession import CompassBasicAuthenticator
+
 compass_username = ""
 compass_password = """"""
 compass_authenticator = CompassBasicAuthenticator(compass_username,
-                                                   compass_password)
+                                                  compass_password)
 compass_school_code = "gwsc-vic"
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator
+
 dataservice_username = ""
 dataservice_password = ""
 dataservice_authenticator = DataServiceBasicAuthenticator(
@@ -46,6 +48,7 @@ dataservice_authenticator = DataServiceBasicAuthenticator(
 
 # OARS (ACER tests)
 from vicedtools.acer import OARSBasicAuthenticator
+
 oars_username = ""
 oars_password = """"""
 oars_authenticator = OARSBasicAuthenticator(oars_username, oars_password)
@@ -86,7 +89,8 @@ reports_summary_csv = os.path.join(compass_dir, "reports_summary.csv")
 naplan_dir = os.path.join(root_dir, "napla exports")
 naplan_outcomes_dir = os.path.join(naplan_dir, "outcomes exports")
 naplan_sssr_dir = os.path.join(naplan_dir, "sssr exports")
-naplan_outcomes_combined_csv = os.path.join(naplan_dir, "NAPLAN outcomes combined.csv")
+naplan_outcomes_combined_csv = os.path.join(naplan_dir,
+                                            "NAPLAN outcomes combined.csv")
 
 # default directory structure for OARS exports
 oars_dir = os.path.join(root_dir, "OARS exports")
@@ -125,7 +129,8 @@ vce_adjusted_scores_table_id = f"{gcp_project}.{vce_dataset}.adjusted_scores"
 # A CSV with SubjectCode, SubjectName, LearningArea columns with metadata
 # for each subject in the school. Used for adding Learning Area data to
 # report summaries.
-subjects_metadata_csv = compass_dir = os.path.join(compass_dir, "subjects metadata.csv")
+subjects_metadata_csv = compass_dir = os.path.join(compass_dir,
+                                                   "subjects metadata.csv")
 
 # Replace subject names or grade names when combining report data.
 # Useful with subject names or grade names have changed over the years
@@ -163,6 +168,7 @@ progress_report_items = [
     "Uses feedback to improve"
 ]
 
+
 # Functions for mapping grades to numerical scores for aggregation
 def learning_tasks_result_mapper(result: str) -> float:
     """Maps report grade labels to a score."""
@@ -184,6 +190,7 @@ def learning_tasks_result_mapper(result: str) -> float:
         return 1.0
     return float('nan')
 
+
 def work_habits_result_mapper(result: str) -> float:
     """Maps work habit grade labels to a score."""
     if result == "Unsatisfactory":
@@ -197,6 +204,7 @@ def work_habits_result_mapper(result: str) -> float:
     if result == "Excellent":
         return 1.0
     return np.nan
+
 
 def progress_report_result_mapper(result: str) -> float:
     """Maps progress report grade labels to a score."""

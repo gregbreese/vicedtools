@@ -17,9 +17,9 @@ from vicedtools.gcp import (upload_csv_to_bigquery, NAPLAN_OUTCOMES_SCHEMA,
                             NAPLAN_OUTCOMES_CLUSTERING_FIELDS)
 
 if __name__ == "__main__":
-    from config import (naplan_outcomes_combined_csv,
-                        naplan_outcomes_table_id, bucket)
+    from config import (naplan_outcomes_combined_csv, naplan_outcomes_table_id,
+                        bucket)
 
     upload_csv_to_bigquery(naplan_outcomes_combined_csv, NAPLAN_OUTCOMES_SCHEMA,
-                           NAPLAN_OUTCOMES_CLUSTERING_FIELDS, naplan_outcomes_table_id, bucket)
-
+                           NAPLAN_OUTCOMES_CLUSTERING_FIELDS,
+                           naplan_outcomes_table_id, bucket)

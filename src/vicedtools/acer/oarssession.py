@@ -58,7 +58,7 @@ class OARSSession(requests.sessions.Session):
         r = self.get(f"https://oars.acer.edu.au/{school}/reports-new")
         pattern = r'"securityToken":"(?P<token>[\$0-9A-Za-z+/\.\\]*)"'
         m = re.search(pattern, r.text)
-        self.security_token = m.group('token').replace('\\/','/')
+        self.security_token = m.group('token').replace('\\/', '/')
 
         self._get_test_metadata()
         self._get_scale_constructs()
@@ -134,11 +134,6 @@ class OARSSession(requests.sessions.Session):
         Returns:
             A list of test sittings.
         """
-        test_names = ["PAT Maths 4th Edition", 
-                      "PAT Reading 5th Edition",
-                      "PAT Maths Adaptive",
-                      "PAT Reading Adaptive"]
-
         test_names = []
         for t in self.tests:
             if t['reportType'] == "Pat":
@@ -170,7 +165,7 @@ class OARSSession(requests.sessions.Session):
                     sittings_url = sittings_url.replace(" ", "%20")
                     responses_url = f"https://oars.acer.edu.au/api/{self.school}/reports-new/getSittingResponses.ajax?scale_slug={scale_slug}&test_id={test_id}&form_id={form_id}"
                     responses_url = responses_url.replace(" ", "%20")
-                    
+
                     for i in range(0, len(ids[test_id][form_id]), 100):
                         payload = {
                             'ids': ids[test_id][form_id][i:i + 100],
@@ -178,18 +173,19 @@ class OARSSession(requests.sessions.Session):
                         }
                         r = self.post(sittings_url, json=payload)
                         new_sittings = r.json()
-                        
+
                         r = self.post(responses_url, json=payload)
                         responses = r.json()
-                        
+
                         for sitting in new_sittings:
-                            sitting["responses"] = responses[sitting["sittingId"]]["responses"]
-                        
+                            sitting["responses"] = responses[
+                                sitting["sittingId"]]["responses"]
+
                         sittings += new_sittings
 
         del self.headers["Content-Type"]
 
-        return PATSittings(sittings)        
+        return PATSittings(sittings)
 
     def get_ewrite_sittings(self, candidates: OARSCandidates, from_date: str,
                             to_date: str) -> EWriteSittings:

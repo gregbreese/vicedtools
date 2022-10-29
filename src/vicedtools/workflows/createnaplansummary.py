@@ -21,7 +21,6 @@ import pandas as pd
 if __name__ == "__main__":
     from config import (naplan_outcomes_combined_csv, naplan_outcomes_dir)
 
-
     files = glob.glob(os.path.join(naplan_outcomes_dir, "*Outcome*.csv"))
     columns = [
         "APS Year", "Reporting Test", "First Name", "Second Name", "Surname",

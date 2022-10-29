@@ -134,10 +134,11 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         if m:
             raise CompassAuthenticationError
 
+
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
-    MIN_REQUEST_INTERVAL = 500000000 # 500 milliseconds in nanoseconds
+    MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
 
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
         """Creates a requests Session with Compass authentication completed.
@@ -177,7 +178,6 @@ class CompassSession(requests.sessions.Session):
             time.sleep(wait_time / 1000000000)
         self.last_request_time = time.time_ns()
         return super().post(*args, **kwargs)
-
 
     def long_running_file_request(self, request_payload: str,
                                   save_dir: str) -> str:
@@ -518,7 +518,9 @@ class CompassSession(requests.sessions.Session):
             classes += new_classes
         return classes
 
-    def get_class_enrolments(self, activity_id: int, add_activity_id:bool = False) -> list[dict]:
+    def get_class_enrolments(self,
+                             activity_id: int,
+                             add_activity_id: bool = False) -> list[dict]:
         """Gets a list of all enrolments in a class.
         
         Args:
@@ -536,12 +538,12 @@ class CompassSession(requests.sessions.Session):
         new_enrolments = r.json()['d']
         if add_activity_id:
             for enrolment in new_enrolments:
-                enrolment.update({"activity_id":activity_id})
+                enrolment.update({"activity_id": activity_id})
 
         del self.headers['Content-Type']
 
         return new_enrolments
-        
+
 
 def get_report_cycle_id(cycles, year, name):
     for c in cycles:
