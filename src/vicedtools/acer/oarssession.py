@@ -308,18 +308,23 @@ class OARSSession(requests.sessions.Session):
         r = self.get(ids_url)
         ids = r.json()
 
+        headers = {'Content-Type': 'application/json; charset=utf-8'}
+        self.headers.update(headers)
+
         candidates = []
         if ids:
             candidates_url = f"https://oars.acer.edu.au/api/{self.school}/candidates/getCandidatesByIds/"
             for i in range(0, len(ids), 50):
                 payload = {
-                    'extraFields': ['password_visible'],
                     'ids': ids[i:i + 50],
-                    'security_token': self.security_token,
-                    'withForms': 'true'
+                    'extraFields': ['password_visible'],
+                    'withForms': 'true',
+                    'security_token': self.security_token
                 }
                 r = self.post(candidates_url, json=payload)
                 candidates += r.json()
+
+        del self.headers["Content-Type"]
 
         return OARSCandidates(candidates)
 
