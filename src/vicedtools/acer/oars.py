@@ -101,7 +101,7 @@ def student_imports(student_details_file: str, student_enrolment_file: str,
     student_details_df["Middle names"] = ""
     student_details_df["Password"] = student_details_df["Date of birth"]
     student_details_df["Unique ID"] = student_details_df["Username"]
-    student_details_df["School year"] = datetime.today().stftime('%Y')
+    student_details_df["School year"] = datetime.today().strftime('%Y')
     student_details_df["Enrolled"] = "Enrolled"
 
     student_enrolment_df[[
