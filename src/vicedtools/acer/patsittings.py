@@ -100,11 +100,13 @@ class PATSitting(dict):
         data['Test form'] = self['formName']
         try:
             data['Test'] = test_name_stub[self['testName']]
+        except KeyError:
+            data['Test'] = self['testName']
+        try:
             data['Score category'] = score_categoriser(
                 data['Test'], data['Year level (at time of test)'],
                 data['Completed'], data['Scale'])
         except KeyError:
-            data['Test'] = self['testName']
             data["Score category"] = ""
 
         return data
