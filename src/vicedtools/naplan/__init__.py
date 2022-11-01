@@ -13,6 +13,6 @@
 # limitations under the License.
 
 from vicedtools.naplan.dataservicesession import (
-    DataserviceSession, DataserviceAuthenticator,
-    DataServiceBasicAuthenticator, DataserviceAuthenticationError)
+    DataserviceSession, DataserviceAuthenticator, DataServiceBasicAuthenticator,
+    DataserviceAuthenticationError)
 from vicedtools.naplan.sssrdata import SSSRdata
