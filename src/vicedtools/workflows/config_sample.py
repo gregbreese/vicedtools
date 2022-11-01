@@ -54,6 +54,15 @@ oars_password = """"""
 oars_authenticator = OARSBasicAuthenticator(oars_username, oars_password)
 oars_school_code = ""
 
+# Compass Academic Cycles to add enrolment tags for
+# E.g. [ "2022 Academic",  "2021 Academic"]
+oars_tag_enrolment_cycles = []
+# Regex to select classes to include enrolment tags for
+oars_tag_enrolment_class_pattern = "(?P<class_code>1?[0789]M[ABC][ABCDEFGH]|10VM[ABC]|1[12]M[FGMS][ABCDEFG]|1[12]V[LN][ABCDEF]|1?[012789]E[AEN][ABCDEFGH]|[789]L4[EL][ABCDEFGH]+|[789]LS[ABCDEFGH]+|[789]NU[ABCDEFG][ABCDEFG])"
+# List of tags to preserve when reimporting students
+# E.g. ["utor", "MYLNS", "2022 Year 8 Disengaged", "SEAL"]
+oars_tag_to_keep_patterns = []
+
 # default vass directory structure
 vass_folder = "vass exports"
 vass_dir = os.path.join(root_dir, vass_folder)
