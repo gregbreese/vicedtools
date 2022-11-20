@@ -25,7 +25,7 @@ def pat_scores_to_most_recent(pat_scores_csv: str, pat_most_recent_csv: str):
 
     Args:
         pat_scores_csv: The location of the pat scores csv.
-        pat_most_recent_csv: The locatoin to save the summary.
+        pat_most_recent_csv: The location to save the summary.
     """
     summary_df = pd.read_csv(pat_scores_csv)
     # get only most recent result for each test
