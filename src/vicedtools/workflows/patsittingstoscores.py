@@ -29,7 +29,7 @@ if __name__ == "__main__":
     with open(oars_tests_json, 'r', encoding='utf-8') as fp:
         tests = json.load(fp)
     tests = OARSTests(tests)
-    # import all settings exports and combine
+    # import all sittings exports and combine
     filenames = glob.glob(os.path.join(pat_sittings_dir, "sittings*.json"))
     sittings = PATSittings([])
     for filename in filenames:
