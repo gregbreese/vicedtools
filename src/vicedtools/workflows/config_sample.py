@@ -36,7 +36,7 @@ compass_username = ""
 compass_password = """"""
 compass_authenticator = CompassBasicAuthenticator(compass_username,
                                                   compass_password)
-compass_school_code = "gwsc-vic"
+compass_school_code = "yourschool-vic"
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator
