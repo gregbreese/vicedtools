@@ -78,7 +78,7 @@ s.get_staff_xlsx("oars_staff.xlsx")
 ```
 Export test results.
 ```python
-sittings = s.get_all_pat_sittings("01=01-2020", "31-12-2021)
+sittings = s.get_all_pat_sittings("01=01-2020", "31-12-2021")
 with open("sittings 01-01-2020 31-12-2021.json", 'w') as f:
     json.dump(sittings, f)
 ```
