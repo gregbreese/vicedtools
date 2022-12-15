@@ -26,7 +26,7 @@ if __name__ == "__main__":
                         report_cycles_json)
 
     parser = argparse.ArgumentParser(
-        description='Export all Compass progress reports.')
+        description='Export all Compass reports.')
     parser.add_argument('--forceall',
                         '-a',
                         action="store_true",
