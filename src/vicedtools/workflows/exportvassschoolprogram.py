@@ -39,4 +39,3 @@ if __name__ == "__main__":
         file_name = os.path.join(vass_school_program_dir,
                                  f"school program summary {year}.csv")
         driver.school_program_summary(file_name)
-    driver.quit()

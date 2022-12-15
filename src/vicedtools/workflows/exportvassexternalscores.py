@@ -40,4 +40,3 @@ if __name__ == "__main__":
         file_name = os.path.join(vass_external_scores_dir,
                                  f"external scores {year}.csv")
         driver.external_results(file_name)
-    driver.quit()

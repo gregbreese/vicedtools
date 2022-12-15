@@ -45,4 +45,3 @@ if __name__ == "__main__":
         if not os.path.exists(file_name) or args.force:
             driver.change_year(year)
             driver.school_scores(file_name)
-    driver.quit()

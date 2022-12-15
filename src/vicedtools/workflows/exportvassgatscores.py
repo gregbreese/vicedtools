@@ -39,4 +39,3 @@ if __name__ == "__main__":
         driver.change_year(year)
         file_name = os.path.join(vass_gat_scores_dir, f"gat scores {year}.csv")
         driver.gat_summary(file_name)
-    driver.quit()

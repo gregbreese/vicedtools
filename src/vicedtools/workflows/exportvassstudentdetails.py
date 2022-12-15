@@ -40,4 +40,3 @@ if __name__ == "__main__":
         file_name = os.path.join(vass_student_details_dir,
                                  f"personal details summary {year}.csv")
         driver.personal_details_summary(file_name)
-    driver.quit()
