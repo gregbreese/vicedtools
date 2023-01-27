@@ -38,15 +38,16 @@ def pat_scores_to_bq(table_id: str, bucket: str, scores_file: str):
         "Test form": "TestForm",
         "Score category": "ScoreCategory"
     }
+    columns_to_select = ["StudentCode", "Date", "YearLevel", "Test", "TestForm", "Scale", "ScoreCategory"]
     df = pd.read_csv(scores_file)
     df.rename(columns=column_rename, inplace=True)
-    df.to_csv(temp_file, index=False)
-    upload_csv_to_bigquery(scores_file, PAT_SCORES_SCHEMA,
+    df[columns_to_select].to_csv(temp_file, index=False)
+    upload_csv_to_bigquery(temp_file, PAT_SCORES_SCHEMA,
                            PAT_SCORES_CLUSTERING_FIELDS, table_id, bucket)
     os.remove(temp_file)
 
 
 if __name__ == "__main__":
-    from config import (pat_scores_csv, pat_scores_table_id, bucket)
+    from config import (pat_scores_csv, pat_scores_table_id, gcs_bucket)
 
-    pat_scores_to_bq(pat_scores_table_id, bucket, pat_scores_csv)
+    pat_scores_to_bq(pat_scores_table_id, gcs_bucket, pat_scores_csv)

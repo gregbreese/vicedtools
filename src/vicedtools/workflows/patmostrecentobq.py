@@ -40,17 +40,21 @@ def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
         "Maths Test form": "MathsTestForm",
         "Reading Test form": "ReadingTestForm",
         "Maths Score category": "MathsScoreCategory",
-        "Reading Score category": "ReadingScoreCategory"
+        "Reading Score category": "ReadingScoreCategory",
+        "Maths Scale": "MathsScale",
+        "Reading Scale": "ReadingScale"
     }
+    columns_to_select = ["StudentCode","MathsDate","ReadingDate", "MathsYearLevel",
+    "ReadingYearLevel", "MathsTestForm", "ReadingTestForm","MathsScale", "ReadingScale", "MathsScoreCategory","ReadingScoreCategory"]
     df = pd.read_csv(scores_file)
     df.rename(columns=column_rename, inplace=True)
-    df.to_csv(temp_file, index=False)
-    upload_csv_to_bigquery(scores_file, PAT_MOST_RECENT_SCHEMA,
+    df[columns_to_select].to_csv(temp_file, index=False)
+    upload_csv_to_bigquery(temp_file, PAT_MOST_RECENT_SCHEMA,
                            PAT_MOST_RECENT_CLUSTERING_FIELDS, table_id, bucket)
     os.remove(temp_file)
 
 
 if __name__ == "__main__":
-    from config import (pat_most_recent_csv, pat_most_recent_table_id, bucket)
+    from config import (pat_most_recent_csv, pat_most_recent_table_id, gcs_bucket)
 
-    pat_most_recent_to_bq(pat_most_recent_table_id, bucket, pat_most_recent_csv)
+    pat_most_recent_to_bq(pat_most_recent_table_id, gcs_bucket, pat_most_recent_csv)
