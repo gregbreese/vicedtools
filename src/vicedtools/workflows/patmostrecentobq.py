@@ -40,7 +40,9 @@ def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
         "Maths Test form": "MathsTestForm",
         "Reading Test form": "ReadingTestForm",
         "Maths Score category": "MathsScoreCategory",
-        "Reading Score category": "ReadingScoreCategory"
+        "Reading Score category": "ReadingScoreCategory",
+        "Maths Scale": "MathsScale",
+        "Reading Scale": "ReadingScale"
     }
     
     fields = [f.name for f in PAT_MOST_RECENT_SCHEMA]
