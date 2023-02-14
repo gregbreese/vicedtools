@@ -40,4 +40,3 @@ if __name__ == "__main__":
         file_name = os.path.join(vass_predicted_scores_dir,
                                  f"predicted scores {year}.csv")
         driver.predicted_scores(file_name)
-    driver.quit()
