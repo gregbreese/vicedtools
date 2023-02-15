@@ -20,7 +20,7 @@ from vicedtools.vce import VASSSession
 
 if __name__ == "__main__":
     from config import (vass_username, vass_password, vass_grid_password,
-                        iedriver_path, vass_moderated_coursework_scores_dir)
+                        vass_moderated_coursework_scores_dir)
 
     parser = argparse.ArgumentParser(
         description='Export VASS moderated coursework scores.')
