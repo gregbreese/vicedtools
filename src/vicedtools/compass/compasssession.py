@@ -341,7 +341,7 @@ class CompassSession(requests.sessions.Session):
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
-        learning_tasks_admin_url = f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx"
+        learning_tasks_admin_url = f"https://{self.school_code}.compass.education/Learn/Subjects.aspx"
         r = self.get(learning_tasks_admin_url)
         pattern = "Compass.referenceDataCacheKeys.schoolConfigKey = '(?P<key>[0-9a-z-]*)'"
         m = re.search(pattern, r.text)
@@ -357,6 +357,8 @@ class CompassSession(requests.sessions.Session):
             academic_groups_url = f"https://{self.school_code}.compass.education/Services/ReferenceDataCache.svc/GetAllAcademicGroups?sessionstate=readonly&v={key}&page={page}&start={25*(page-1)}&limit=25"
             r = self.get(academic_groups_url)
             new_groups = r.json()['d']
+            if new_groups[0]['id'] != 25 * (page - 1):
+                break
             groups += new_groups
         return groups
 
