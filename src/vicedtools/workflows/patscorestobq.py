@@ -49,6 +49,6 @@ def pat_scores_to_bq(table_id: str, bucket: str, scores_file: str):
 
 
 if __name__ == "__main__":
-    from config import (pat_scores_csv, pat_scores_table_id, bucket)
+    from config import (pat_scores_csv, pat_scores_table_id, gcs_bucket)
 
-    pat_scores_to_bq(pat_scores_table_id, bucket, pat_scores_csv)
+    pat_scores_to_bq(pat_scores_table_id, gcs_bucket, pat_scores_csv)

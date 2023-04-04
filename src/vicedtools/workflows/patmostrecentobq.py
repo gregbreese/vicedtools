@@ -56,6 +56,6 @@ def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
 
 
 if __name__ == "__main__":
-    from config import (pat_most_recent_csv, pat_most_recent_table_id, bucket)
+    from config import (pat_most_recent_csv, pat_most_recent_table_id, gcs_bucket)
 
-    pat_most_recent_to_bq(pat_most_recent_table_id, bucket, pat_most_recent_csv)
+    pat_most_recent_to_bq(pat_most_recent_table_id, gcs_bucket, pat_most_recent_csv)
