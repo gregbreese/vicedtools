@@ -44,7 +44,7 @@ def pat_most_recent_to_bq(table_id: str, bucket: str, scores_file: str):
         "Maths Scale": "MathsScale",
         "Reading Scale": "ReadingScale"
     }
-    
+
     fields = [f.name for f in PAT_MOST_RECENT_SCHEMA]
 
     df = pd.read_csv(scores_file)

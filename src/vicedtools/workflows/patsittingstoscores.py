@@ -23,7 +23,8 @@ import pandas as pd
 from vicedtools.acer import OARSTests, PATSittings
 
 if __name__ == "__main__":
-    from config import (oars_tests_json, pat_sittings_dir, pat_scores_csv, student_details_csv)
+    from config import (oars_tests_json, pat_sittings_dir, pat_scores_csv,
+                        student_details_csv)
 
     # import test metadata
     with open(oars_tests_json, 'r', encoding='utf-8') as fp:
@@ -43,13 +44,16 @@ if __name__ == "__main__":
     # attempt to fix any missing year level values
     students = pd.read_csv(student_details_csv)
     students = students.loc[students["Status"] == "Active"].copy()
-    students.rename(columns={"SUSSI ID":"Username"}, inplace=True)
+    students.rename(columns={"SUSSI ID": "Username"}, inplace=True)
     students['Year level value'] = students['Year Level'].str[-2:].astype(int)
-    df = df.merge(students[["Username","Year level value"]], on="Username")
+    df = df.merge(students[["Username", "Year level value"]], on="Username")
     this_year = datetime.today().year
-    df["Year level (calculated)"] = df["Year level value"] - (this_year - df["Completed"].dt.year)
+    df["Year level (calculated)"] = df["Year level value"] - (
+        this_year - df["Completed"].dt.year)
     rows = df["Year level (at time of test)"] == ""
-    df.loc[rows,"Year level (at time of test)"] = df.loc[rows,"Year level (calculated)"]
+    df.loc[rows,
+           "Year level (at time of test)"] = df.loc[rows,
+                                                    "Year level (calculated)"]
 
     folder = os.path.dirname(pat_scores_csv)
     if not os.path.exists(folder):

@@ -18,8 +18,8 @@ import re
 import pandas as pd
 
 
-def create_sportstrak_student_import(student_details_csv: str, 
-                                     destination_xlsx: str, 
+def create_sportstrak_student_import(student_details_csv: str,
+                                     destination_xlsx: str,
                                      house_map: dict[str, str] = {}) -> None:
     """Creates a student import spreadsheet for SportsTrak.
 
@@ -38,10 +38,12 @@ def create_sportstrak_student_import(student_details_csv: str,
     df["Year Level"] = df["Year Level"].str[5:]
     df["Gender"] = df["Gender"].str[0]
     df["Date of birth"] = pd.to_datetime(df["Date of birth"], format="%d/%m/%Y")
-    columns = ["SUSSI ID", "Last Name", "Preferred Name","Middle Name", 
-               "Date of birth", "Gender", "House", "Year Level"]
+    columns = [
+        "SUSSI ID", "Last Name", "Preferred Name", "Middle Name",
+        "Date of birth", "Gender", "House", "Year Level"
+    ]
     df = df[columns]
 
-    writer = pd.ExcelWriter(destination_xlsx,  datetime_format='DD/MM/YYYY')
+    writer = pd.ExcelWriter(destination_xlsx, datetime_format='DD/MM/YYYY')
     df.to_excel(writer, "Sheet1", index=False)
     writer.close()

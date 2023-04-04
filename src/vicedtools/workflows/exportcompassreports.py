@@ -25,8 +25,7 @@ if __name__ == "__main__":
     from config import (reports_dir, compass_authenticator, compass_school_code,
                         report_cycles_json)
 
-    parser = argparse.ArgumentParser(
-        description='Export all Compass reports.')
+    parser = argparse.ArgumentParser(description='Export all Compass reports.')
     parser.add_argument('--forceall',
                         '-a',
                         action="store_true",
