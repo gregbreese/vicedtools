@@ -18,11 +18,11 @@ from vicedtools.gcp import (upload_csv_to_bigquery, REPORTS_SCHEMA,
                             REPORTS_SUMMARY_CLUSTERING_FIELDS)
 
 if __name__ == "__main__":
-    from config import (reports_file, reports_summary_file, reports_table_id,
+    from config import (reports_csv, reports_summary_csv, reports_table_id,
                         reports_summary_table_id, bucket)
 
-    upload_csv_to_bigquery(reports_file, REPORTS_SCHEMA,
+    upload_csv_to_bigquery(reports_csv, REPORTS_SCHEMA,
                            REPORTS_CLUSTERING_FIELDS, reports_table_id, bucket)
-    upload_csv_to_bigquery(reports_summary_file, REPORTS_SUMMARY_SCHEMA,
+    upload_csv_to_bigquery(reports_summary_csv, REPORTS_SUMMARY_SCHEMA,
                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
                            reports_summary_table_id, bucket)
