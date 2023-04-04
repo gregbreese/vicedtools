@@ -53,6 +53,7 @@ if __name__ == "__main__":
         if not os.path.exists(file_name) or args.forceall or (
                 args.forcecurrent and cycle['isRelevant']):
             print(f"Exporting {cycle['name']}")
-            s.get_subject_metadata(file_name, cycle['id'])
-
+            subjects = s.get_subjects(cycle['id'])
+            subjects_df = pd.DataFrame.from_records(subjects)
+            subjects_df.to_csv(file_name)
             time.sleep(3)

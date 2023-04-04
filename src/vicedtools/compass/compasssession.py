@@ -441,19 +441,6 @@ class CompassSession(requests.sessions.Session):
                     zip_ref.extract(content, path=save_dir)
         os.remove(archive_file_name)
 
-    def get_subject_metadata(self, file_name: str, academic_group: int = -1):
-        """Downloads a CSV with subject metadata.
-        
-        Args:
-            file_name: The file name to save the CSV to.
-            academic_group: Optional, the academic group id to download the
-                metadata for. Defaults to the currently active academic group.
-        """
-        url = f"https://{self.school_code}.compass.education/Learn/Subjects.aspx?action=export-csv&academicGroup={academic_group}"
-        r = self.get(url)
-        with open(file_name, 'wb') as f:
-            f.write(r.content)
-
     def get_classes_for_subject(self, subject_id: int) -> list[dict]:
         """Downloads a CSV with subject metadata.
         
