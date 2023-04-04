@@ -57,7 +57,6 @@ class PATSitting(dict):
         data['Scale'] = self['score']['scale']
         data['Stanine'] = self['score']['norms'][1]['stanine']
         data['Percentile'] = self['score']['norms'][1]['percentile']
-
         test_id = self['sitting']['test_id']
         form_id = self['sitting']['form_id']
         test_name = tests.get_name_from_id(test_id)
@@ -97,6 +96,8 @@ class PATSitting(dict):
         data['Year level (at time of test)'] = self['yearLevel']
         data['Scale'] = self['scaleScore']
         data["Error"] = self['scaleScoreErrorMargin']
+        data['rawScore'] = self['rawScore']
+
         data['Test form'] = self['formName']
         try:
             data['Test'] = test_name_stub[self['testName']]
