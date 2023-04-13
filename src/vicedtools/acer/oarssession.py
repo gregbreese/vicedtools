@@ -15,25 +15,22 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 from datetime import datetime
 from html.parser import HTMLParser
 import json
 import re
 import requests
 import time
-from typing import Protocol
 from urllib.parse import quote
 
 import pandas as pd
 
-import browser_cookie3
-
 from vicedtools.acer.ewritesittings import EWriteSittings
+from vicedtools.acer.oarsauthenticators import OARSAuthenticator, OARSBasicAuthenticator, OARSAuthenticateError
 from vicedtools.acer.oarscandidates import OARSCandidates
+from vicedtools.acer.oarstests import OARSTests
 from vicedtools.acer.patitems import PATItems
 from vicedtools.acer.patsittings import PATSittings
-from vicedtools.acer.oarstests import OARSTests
 
 
 class OARSSession(requests.sessions.Session):
@@ -374,54 +371,3 @@ class SecurityTokenParser(HTMLParser):
         if 'oarsData' in data:
             data = json.loads(data[22:])
             self.security_token = data['securityToken']
-
-
-class OARSAuthenticator(Protocol):
-    """An abstract class for generic OARS authenticators."""
-
-    @abstractmethod
-    def authenticate(self, session: OARSSession):
-        raise NotImplementedError
-
-
-class OARSFirefoxCookieAuthenticator(OARSAuthenticator):
-    """An OARS authenticator that gets login details from the local Firefox installation."""
-
-    def authenticate(self, s: OARSSession):
-        cj = browser_cookie3.firefox(domain_name='oars.acer.edu.au')
-
-        for cookie in cj:
-            c = {cookie.name: cookie.value}
-            s.cookies.update(c)
-
-
-class OARSBasicAuthenticator(OARSAuthenticator):
-    """Authenticates using a provided username and password."""
-
-    def __init__(self, username: str, password: str):
-        self.username = username
-        self.password = password
-
-    def authenticate(self, s: OARSSession):
-
-        login_url = f"https://oars.acer.edu.au/{s.school}"
-        # get security token
-        r = s.get(login_url)
-        pattern = r'name="security\[token\]" value="(?P<token>[\$0-9A-Za-z+/\.\\]*)"'
-        m = re.search(pattern, r.text)
-        security_token = quote(m.group('token'))
-        # url encode username and password
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        s.headers.update(headers)
-        username = quote(self.username)
-        password = quote(self.password)
-        # auth
-        payload = f'security%5Btoken%5D={security_token}&username={username}&password={password}'
-        r = s.post(login_url, data=payload)
-        if r.status_code != 200:
-            raise OARSAuthenticateError
-
-
-class OARSAuthenticateError(Exception):
-    """Raised if an error occurs related to OARS authentication."""
-    pass

@@ -19,8 +19,7 @@ import os
 from vicedtools.vce import VASSSession
 
 if __name__ == "__main__":
-    from config import (vass_username, vass_password, vass_grid_password,
-                        vass_school_program_dir)
+    from config import (vass_authenticator, vass_school_program_dir)
 
     parser = argparse.ArgumentParser(description='Export VASS student details.')
     parser.add_argument('years',
@@ -31,9 +30,7 @@ if __name__ == "__main__":
     if not os.path.exists(vass_school_program_dir):
         os.makedirs(vass_school_program_dir)
 
-    driver = VASSSession(username=vass_username,
-                         password=vass_password,
-                         grid_password=vass_grid_password)
+    driver = VASSSession(vass_authenticator)
     for year in args.years:
         driver.change_year(year)
         file_name = os.path.join(vass_school_program_dir,

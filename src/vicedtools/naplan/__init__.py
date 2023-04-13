@@ -15,4 +15,4 @@
 from vicedtools.naplan.dataservicesession import (
     DataserviceSession, DataserviceAuthenticator, DataServiceBasicAuthenticator,
     DataserviceAuthenticationError)
-from vicedtools.naplan.sssrdata import SSSRdata
+#from vicedtools.naplan.sssrdata import SSSRdata

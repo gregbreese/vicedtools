@@ -53,6 +53,8 @@ if __name__ == "__main__":
         print("Required arguments are: from_date to_date")
         print("Dates to be given as dd-mm-yyyy")
         sys.exit(2)
+    #else: # grab results from most recent end date to yesterday
+
     from_date = sys.argv[1]
     to_date = sys.argv[2]
     if to_date[2] != "-" or to_date[5] != "-" or from_date[

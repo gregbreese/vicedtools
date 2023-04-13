@@ -19,7 +19,7 @@ import os
 from vicedtools.vce import VASSSession
 
 if __name__ == "__main__":
-    from config import (vass_username, vass_password, vass_grid_password,
+    from config import (vass_authenticator,
                         vass_moderated_coursework_scores_dir)
 
     parser = argparse.ArgumentParser(
@@ -36,9 +36,7 @@ if __name__ == "__main__":
     if not os.path.exists(vass_moderated_coursework_scores_dir):
         os.makedirs(vass_moderated_coursework_scores_dir)
 
-    driver = VASSSession(username=vass_username,
-                         password=vass_password,
-                         grid_password=vass_grid_password)
+    driver = VASSSession(vass_authenticator)
 
     for year in args.years:
         file_name = os.path.join(vass_moderated_coursework_scores_dir,

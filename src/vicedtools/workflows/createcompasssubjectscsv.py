@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Executable script for creating a Compass metadata csv."""
+"""Executable script for creating a Compass subjects metadata csv."""
 
 import glob
 import os
@@ -19,7 +19,7 @@ import os
 import pandas as pd
 
 if __name__ == "__main__":
-    from config import (subjects_metadata_csv, subjects_dir)
+    from config import (subjects_csv, subjects_dir)
 
     columns = ["SubjectCode", "SubjectName", "LearningArea"]
     df = pd.DataFrame(columns=columns)
@@ -40,4 +40,4 @@ if __name__ == "__main__":
             pass
 
     df.drop_duplicates(subset=["SubjectCode"], keep="last", inplace=True)
-    df.to_csv(subjects_metadata_csv, index=False)
+    df.to_csv(subjects_csv, index=False)
