@@ -26,9 +26,9 @@ from vicedtools.scripts._config import (student_details_csv,
 
 
 def main():
-    student_details = pd.read_csv(student_details_file)
-    household_information = pd.read_csv(student_household_information_file)
-    pat_scores = pd.read_csv(pat_scores_file)
+    student_details = pd.read_csv(student_details_csv)
+    household_information = pd.read_csv(student_household_information_csv)
+    pat_scores = pd.read_csv(pat_scores_csv)
 
     student_details.rename(columns={"SUSSI ID": "StudentCode"}, inplace=True)
     student_details_columns = [
@@ -92,7 +92,7 @@ def main():
     ]:
         merged[col].fillna("N/a", inplace=True)
 
-    save_path = os.path.join(os.path.dirname(pat_scores_file),
+    save_path = os.path.join(os.path.dirname(pat_scores_csv),
                              "parent letter mail merge.csv")
     merged.to_csv(save_path, index=False)
 
