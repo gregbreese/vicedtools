@@ -25,7 +25,7 @@ pip3 install vicedtools
 
 ### 
 
-To use the bundled scripts for performing exports and aggregating exported data, make a copy of ['config-sample.toml'](/src/vicedtools/config-sample.toml), update it with your credentials and then set the VICEDTOOLS_CONFIG environment variable to point to the config file.
+To use the bundled scripts for performing exports and aggregating exported data, make a copy of ['config-sample.toml'](/src/vicedtools/config-sample.toml), update it with your credentials, and then set the VICEDTOOLS_CONFIG environment variable to point to the config file.
 
 ## Usage
 
@@ -95,3 +95,51 @@ Export the SSSR.
 ```python
 s.export_sssr("2021, "./naplan sssr/")
 ```
+
+### Bundled command-line utilities
+
+The following command-line utilities are bundled with the package.
+
+- compassreportstobq
+- compassstudentdetailstobq
+- compassstudentenrolmenttobq
+- createcompassreportssummaries
+- createcompasssubjectsmetadatacsv
+- createnaplansummary
+- createoarsstudentimports
+- createpatparentlettertable
+- ewritescorestobq
+- ewritesittingstoscores
+- exportcompassacademicgroups
+- exportcompassclasses
+- exportcompassenrolments
+- exportcompasslearningtask
+- exportcompasslearningtasks
+- exportcompassprogressreport
+- exportcompassprogressreportcycles
+- exportcompassprogressreports
+- exportcompassreport
+- exportcompassreportcycles
+- exportcompassreports
+- exportcompasssds
+- exportcompassstudenthouseholdinformation
+- exportcompassstudents
+- exportcompasssubjectmetadata
+- exportnaplanoutcomes
+- exportnaplansssr
+- exportoarsmetadata
+- exportoarssittings
+- exportoarsstaff
+- exportoarsstudents
+- exportvassexternalscores
+- exportvassgatscores
+- exportvassmoderatedscores
+- exportvasspredictedscores
+- exportvassschoolprogram
+- exportvassschoolscores
+- exportvassstudentdetails
+- naplanoutcomestobq
+- patmostrecentobq
+- patscorestobq
+- patscorestomostrecent
+- patsittingstoscores
