@@ -145,18 +145,3 @@ def learning_task_filter(temp_df: pd.DataFrame) -> pd.DataFrame:
     temp_df = temp_df.loc[
         temp_df["ReportCycleName"].isin(["Semester One", "Semester Two"]), :]
     return temp_df
-
-
-def class_code_parser(class_code, pattern_string):
-    m = re.search(pattern_string, class_code)
-    if m:
-        subject_code = m.group('code')
-        # test for Global Goodies vs Geography
-        if subject_code == "10GG":
-            m = re.search("10GGD[12345]", class_code)
-            if m:
-                subject_code = "10GL"
-        return subject_code
-    else:
-        print(class_code + " not found")
-        return ""
