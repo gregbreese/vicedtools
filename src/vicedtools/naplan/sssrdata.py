@@ -18,7 +18,7 @@ import time
 import urllib3
 import os.path
 
-import demjson
+import demjson3
 import numpy as np
 import pandas as pd
 
@@ -44,7 +44,7 @@ class SSSRdata:
         """
         with open(js_file, 'r', encoding='utf8') as f:
             js_data = f.readline()
-        self.data = demjson.decode(js_data[11:])
+        self.data = demjson3.decode(js_data[11:])
 
         self.domains = pd.DataFrame(self.data['domains'])
         self.domains.set_index("domainId", inplace=True)
@@ -98,7 +98,7 @@ class SSSRdata:
 
         if path[-1] not in {'/', '\\'}:
             path += '/'
-        for index, row in self.questions.iterrows():
+        for _index, row in self.questions.iterrows():
             if type(row["exemplarItemImageFile"]) is str:
                 filename = path + row["exemplarItemImageFile"]
                 if not os.path.isfile(filename):
