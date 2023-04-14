@@ -11,8 +11,8 @@ Subpackages
    vicedtools.compass
    vicedtools.gcp
    vicedtools.naplan
+   vicedtools.scripts
    vicedtools.vce
-   vicedtools.workflows
 
 Submodules
 ----------

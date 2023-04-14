@@ -20,6 +20,14 @@ vicedtools.acer.oars module
    :undoc-members:
    :show-inheritance:
 
+vicedtools.acer.oarsauthenticators module
+-----------------------------------------
+
+.. automodule:: vicedtools.acer.oarsauthenticators
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 vicedtools.acer.oarscandidates module
 -------------------------------------
 

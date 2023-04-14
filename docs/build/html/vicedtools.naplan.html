@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vicedtools.naplan package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.naplan package &mdash; VicEdTools 0.0.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,14 +12,12 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="vicedtools.vce package" href="vicedtools.vce.html" />
+    <link rel="next" title="vicedtools.scripts package" href="vicedtools.scripts.html" />
     <link rel="prev" title="vicedtools.gcp package" href="vicedtools.gcp.html" /> 
 </head>
 
@@ -28,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,8 +49,8 @@
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gcp.html">vicedtools.gcp package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.naplan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.scripts.html">vicedtools.scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
@@ -73,10 +75,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.naplan package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.naplan package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.naplan.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,13 +97,13 @@
 <span id="vicedtools-naplan-dataservicesession-module"></span><h2>vicedtools.naplan.dataservicesession module<a class="headerlink" href="#module-vicedtools.naplan.dataservicesession" title="Permalink to this heading"></a></h2>
 <p>A requests.requests.Session class for accessing the VCAA data service.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.naplan.dataservicesession.DataServiceConfigAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.naplan.dataservicesession.</span></span><span class="sig-name descname"><span class="pre">DataServiceConfigAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.naplan.dataservicesession.DataServiceConfigAuthenticator" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.naplan.dataservicesession.DataServiceBasicAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.naplan.dataservicesession.</span></span><span class="sig-name descname"><span class="pre">DataServiceBasicAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.naplan.dataservicesession.DataServiceBasicAuthenticator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#vicedtools.naplan.dataservicesession.DataserviceAuthenticator" title="vicedtools.naplan.dataservicesession.DataserviceAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataserviceAuthenticator</span></code></a></p>
 <p>Authenticates using a provided username and password.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.naplan.dataservicesession.DataServiceConfigAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.naplan.dataservicesession.DataServiceConfigAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.naplan.dataservicesession.DataServiceBasicAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.naplan.dataservicesession.DataServiceBasicAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -132,7 +134,7 @@
 <p>A requests Session extension with methods for accessing data from the VCAA data service.</p>
 <p>Creates a requests Session with Data Service authentication completed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>authenticator</strong> – An instance of DataserviceAuthenticator to perform the
 required authentication.</p>
 </dd>
@@ -144,7 +146,7 @@ required authentication.</p>
 <p>Prepends the year to the filenames.
 Currently only downloads Year 7 and Year 9.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>year</strong> – The test year to download.encoding=</p></li>
 <li><p><strong>save_dir</strong> – The folder to save the exports in.</p></li>
@@ -213,7 +215,7 @@ all students.</p>
 
 <p>Parses the data contained in the data.js file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>js_file</strong> – The path to the SSSR data.js file.</p>
 </dd>
 </dl>
@@ -225,7 +227,7 @@ all students.</p>
 downloaded. Images are named with the corresponding question
 identifier.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> – The folder to save the images in.</p>
 </dd>
 </dl>
@@ -254,13 +256,13 @@ identifier.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="vicedtools.gcp.html" class="btn btn-neutral float-left" title="vicedtools.gcp package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="vicedtools.vce.html" class="btn btn-neutral float-right" title="vicedtools.vce package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vicedtools.scripts.html" class="btn btn-neutral float-right" title="vicedtools.scripts package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, VicEdTools authors.</p>
+    <p>&#169; Copyright 2023, VicEdTools authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

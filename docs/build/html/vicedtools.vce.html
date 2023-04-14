@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vicedtools.vce package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.vce package &mdash; VicEdTools 0.0.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,15 +12,12 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="vicedtools.workflows package" href="vicedtools.workflows.html" />
-    <link rel="prev" title="vicedtools.naplan package" href="vicedtools.naplan.html" /> 
+    <link rel="prev" title="vicedtools.scripts package" href="vicedtools.scripts.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -28,11 +25,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,8 +48,8 @@
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gcp.html">vicedtools.gcp package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.naplan.html">vicedtools.naplan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.scripts.html">vicedtools.scripts package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.vce package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
@@ -73,10 +74,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.vce package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.vce package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.vce.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,14 +102,14 @@
 <p>VASS school score exports contain scores in a HTML table. This function
 reads the relevant values into a DataFrame.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The path of the school scores export.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A DataFrame containing the total score results from the VASS export.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_name</strong> – The path of the school scores export.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A DataFrame containing the total score results from the VASS export.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -117,23 +118,47 @@ reads the relevant values into a DataFrame.</p>
 <section id="module-vicedtools.vce.vasssession">
 <span id="vicedtools-vce-vasssession-module"></span><h2>vicedtools.vce.vasssession module<a class="headerlink" href="#module-vicedtools.vce.vasssession" title="Permalink to this heading"></a></h2>
 <p>A requests Session class for exporting data from VASS.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSAuthenticationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VASSAuthenticationError</span></span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSAuthenticationError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Authentication with VASS failed.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VASSAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>An abstract class for generic VASS authenticators.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSAuthenticator.authenticate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSBasicAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VASSBasicAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSBasicAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.vce.vasssession.VASSAuthenticator" title="vicedtools.vce.vasssession.VASSAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">VASSAuthenticator</span></code></a></p>
+<p>Authenticates using a provided username, password and grid password.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSBasicAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSBasicAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="vicedtools.vce.vasssession.VASSSession">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VASSSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VASSSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></p>
 <p>Creates a requests Session with VASS authentication completed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>username</strong> – The username to login with</p></li>
-<li><p><strong>password</strong> – The password to login with</p></li>
-<li><p><strong>grid_password</strong> – The grid password to login with. A sequence of
-tuples, each tuple being the grid coordinate of the next
-password character. Must be given in top-&gt; bottom, left-&gt;
-right order.</p></li>
-</ul>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>authenticator</strong> – A VASSAuthenticator instance.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>An instance of requests.Session with authentication to
 VASS completed.</p>
 </dd>
@@ -143,11 +168,11 @@ VASS completed.</p>
 <span class="sig-name descname"><span class="pre">change_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.change_year" title="Permalink to this definition"></a></dt>
 <dd><p>Changes the year in VASS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>year</strong> – The year to change to.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>year</strong> – The year to change to.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -157,7 +182,7 @@ VASS completed.</p>
 <span class="sig-name descname"><span class="pre">external_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.external_results" title="Permalink to this definition"></a></dt>
 <dd><p>Saves the student external results (study scores) to a csv.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file_name</strong> – The file name to save the data as.</p>
 </dd>
 </dl>
@@ -168,11 +193,11 @@ VASS completed.</p>
 <span class="sig-name descname"><span class="pre">gat_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.gat_summary" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts student GAT results and saves them to a csv.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The file name for the csv to save the data to.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_name</strong> – The file name for the csv to save the data to.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -182,11 +207,11 @@ VASS completed.</p>
 <span class="sig-name descname"><span class="pre">moderated_coursework_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.moderated_coursework_scores" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts moderated scores for school scores for all GAs and saves to a csv.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The filename to save the data to.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_name</strong> – The filename to save the data to.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -196,7 +221,7 @@ VASS completed.</p>
 <span class="sig-name descname"><span class="pre">personal_details_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.personal_details_summary" title="Permalink to this definition"></a></dt>
 <dd><p>Saves the student personal details summary to a csv file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>file_name</strong> – The file name to save the data to.</p>
 </dd>
 </dl>
@@ -208,7 +233,7 @@ VASS completed.</p>
 <dd><p>Exports student achieved and predicted scores from Report 17.</p>
 <p>Defaults to downloading data for the currently selected year in VASS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_name</strong> – The csv to save to.</p></li>
 <li><p><strong>year</strong> – Optional, download data for the given year.</p></li>
@@ -224,7 +249,7 @@ ignored if the parameter year is given.</p></li>
 <span class="sig-name descname"><span class="pre">school_program_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vce'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.school_program_summary" title="Permalink to this definition"></a></dt>
 <dd><p>Saves the school program summary to a csv file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_name</strong> – The file name to save the data to.</p></li>
 <li><p><strong>report</strong> – “vce”, “vet” or “vcal”</p></li>
@@ -238,233 +263,15 @@ ignored if the parameter year is given.</p></li>
 <span class="sig-name descname"><span class="pre">school_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasssession.VASSSession.school_scores" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts school score data for all GAs and saves to a csv.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The filename to save the data to.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.vce.vasssession.VassLoginError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasssession.</span></span><span class="sig-name descname"><span class="pre">VassLoginError</span></span><a class="headerlink" href="#vicedtools.vce.vasssession.VassLoginError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Error with vass login.</p>
-</dd></dl>
-
-</section>
-<section id="module-vicedtools.vce.vasswebdriver">
-<span id="vicedtools-vce-vasswebdriver-module"></span><h2>vicedtools.vce.vasswebdriver module<a class="headerlink" href="#module-vicedtools.vce.vasswebdriver" title="Permalink to this heading"></a></h2>
-<p>Functions for automating the export of data from VASS.</p>
-<p>Deprecated: The VASSWebDriver class is being replaced by VASSSession, a
-requests.Sessions based class.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasswebdriver.</span></span><span class="sig-name descname"><span class="pre">VASSWebDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iedriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">os_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'win32'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WebDriver</span></code></p>
-<p>Creates a webdriver with VASS authentication completed.</p>
-<p>Deprecated: Use the VASSSession class to reduce the reliance on
-Internet Explorer.</p>
-<p>Creates an instance of selenium.webdriver.Ie and authenticates to VASS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>iedriver_path</strong> – The path to geckodriver.exe</p></li>
-<li><p><strong>username</strong> – The username to login with</p></li>
-<li><p><strong>password</strong> – The password to login with</p></li>
-<li><p><strong>grid_password</strong> – The grid password to login with. A sequence of
-tuples, each tuple being the grid coordinate of the next
-password character. Must be given in top-&gt; bottom, left-&gt;
-right order.</p></li>
-<li><p><strong>os_type</strong> – The os type, defaults to win32 as win64 is slow</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An instance of selenium.webdriver.ie with authentication to
-VASS completed.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.change_year">
-<span class="sig-name descname"><span class="pre">change_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.change_year" title="Permalink to this definition"></a></dt>
-<dd><p>Changes the year in VASS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>year</strong> – The year to change to.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_name</strong> – The filename to save the data to.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.execute_click">
-<span class="sig-name descname"><span class="pre">execute_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.execute_click" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.external_results">
-<span class="sig-name descname"><span class="pre">external_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.external_results" title="Permalink to this definition"></a></dt>
-<dd><p>Saves the student external results (study scores) to a csv.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The file name to save the data as.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.gat_summary">
-<span class="sig-name descname"><span class="pre">gat_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.gat_summary" title="Permalink to this definition"></a></dt>
-<dd><p>Extracts student GAT results and saves them to a csv.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The file name for the csv to save the data to.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.moderated_coursework_scores">
-<span class="sig-name descname"><span class="pre">moderated_coursework_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.moderated_coursework_scores" title="Permalink to this definition"></a></dt>
-<dd><p>Extracts moderated scores for school scores for all GAs and saves to a csv.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The filename to save the data to.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.personal_details_summary">
-<span class="sig-name descname"><span class="pre">personal_details_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.personal_details_summary" title="Permalink to this definition"></a></dt>
-<dd><p>Saves the student personal details summary to a csv file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The file name to save the data to.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.predicted_scores">
-<span class="sig-name descname"><span class="pre">predicted_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.predicted_scores" title="Permalink to this definition"></a></dt>
-<dd><p>Exports student achieved and predicted scores from Report 17.</p>
-<p>Uses the currently selected year in VASS even though the Report 17 UI
-allows for year selection.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The csv to save to.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.school_program_summary">
-<span class="sig-name descname"><span class="pre">school_program_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vce'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.school_program_summary" title="Permalink to this definition"></a></dt>
-<dd><p>Saves the school program summary to a csv file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_name</strong> – The file name to save the data to.</p></li>
-<li><p><strong>report</strong> – “vce”, “vet” or “vcal”</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.VASSWebDriver.school_scores">
-<span class="sig-name descname"><span class="pre">school_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.VASSWebDriver.school_scores" title="Permalink to this definition"></a></dt>
-<dd><p>Extracts school score data for all GAs and saves to a csv.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The filename to save the data to.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.click_with_retry">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasswebdriver.</span></span><span class="sig-name descname"><span class="pre">click_with_retry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.click_with_retry" title="Permalink to this definition"></a></dt>
-<dd><p>Tries fives times to click a webdriver element, stopping if test passes.</p>
-<p>Used to deal with IE driver unreliability.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>element</strong> – A webdriver element.</p></li>
-<li><p><strong>test</strong> – A function that returns True if click was successful.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Whether click was successful.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.current_frame">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasswebdriver.</span></span><span class="sig-name descname"><span class="pre">current_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.current_frame" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the name of the webdriver’s current frame.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.find_window">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasswebdriver.</span></span><span class="sig-name descname"><span class="pre">find_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_title</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.find_window" title="Permalink to this definition"></a></dt>
-<dd><p>Find the window handle with a particular title.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – A webdriver instance.</p></li>
-<li><p><strong>window_title</strong> – The window title to locate.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The window handle of the window, if found. Otherwise, None.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.vce.vasswebdriver.is_menu_item_displayed">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.vce.vasswebdriver.</span></span><span class="sig-name descname"><span class="pre">is_menu_item_displayed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpath_expr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.vce.vasswebdriver.is_menu_item_displayed" title="Permalink to this definition"></a></dt>
-<dd><p>Tests to see if a given menu item is displayed in VASS.</p>
-<p>Used to deal with unreliable clicks in IE.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of VASSWebDriver.</p></li>
-<li><p><strong>xpath_expr</strong> – An xpath expression that matches the menu item.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
 </dd></dl>
 
 </section>
@@ -477,14 +284,13 @@ allows for year selection.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="vicedtools.naplan.html" class="btn btn-neutral float-left" title="vicedtools.naplan package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="vicedtools.workflows.html" class="btn btn-neutral float-right" title="vicedtools.workflows package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vicedtools.scripts.html" class="btn btn-neutral float-left" title="vicedtools.scripts package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, VicEdTools authors.</p>
+    <p>&#169; Copyright 2023, VicEdTools authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

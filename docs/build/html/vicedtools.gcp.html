@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vicedtools.gcp package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.gcp package &mdash; VicEdTools 0.0.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,10 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,8 +49,8 @@
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.gcp package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.naplan.html">vicedtools.naplan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.scripts.html">vicedtools.scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
@@ -73,10 +75,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.gcp package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.gcp package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.gcp.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,8 +103,11 @@
 <p>Uploads the file to GSC, imports it into BigQuery and then deletes the file
 from GSC.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>source_file</strong> – The path to the csv file to import.</p></li>
 <li><p><strong>schema</strong> – The BigQuery schema to use.</p></li>
 <li><p><strong>clustering_fields</strong> – A list of fields to use for clustering.</p></li>
@@ -112,9 +117,6 @@ import.</p></li>
 <li><p><strong>blob_name</strong> – The name of the GSC blob to use when uploading the source
 file to GSC.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -128,16 +130,16 @@ file to GSC.</p></li>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.gcp.format.</span></span><span class="sig-name descname"><span class="pre">create_student_details_gc_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compass_student_details_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.gcp.format.create_student_details_gc_csv" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a csv for uploading to GC.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>compass_student_details</strong> – a student details export csv from Compass. Can be
 downloaded using vicedtools.compass.export_student_details or directly
 from <a class="reference external" href="https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37">https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37</a></p></li>
 <li><p><strong>save_path</strong> – the path to save the csv</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -162,7 +164,7 @@ from <a class="reference external" href="https://[schoolID].compass.education/Se
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, VicEdTools authors.</p>
+    <p>&#169; Copyright 2023, VicEdTools authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

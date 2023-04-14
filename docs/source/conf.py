@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.abspath('../../src'))
 # -- Project information -----------------------------------------------------
 
 project = 'VicEdTools'
-copyright = '2022, VicEdTools authors'
+copyright = '2023, VicEdTools authors'
 author = 'Greg Breese'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.5'
+release = '0.0.8'
 
 
 # -- General configuration ---------------------------------------------------
