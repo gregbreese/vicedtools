@@ -9,13 +9,9 @@ Currently includes tools for:
 - automating the exporting of data from Compass, ACER's OARS site, the VCAA data service (NAPLAN) and VASS (VCE results).
 - tools for working with ACER's OARS site, such as working with PAT data
 - extracting NAPLAN data from the SSSR data.js file
-- uploading data to Google Cloud storage and BigQuery for use with Data Studio
+- uploading data to Google Cloud storage and BigQuery for use with Looker Studio
 
 The core export functions are provided by the CompassSession, OARSSession, VASSSession and DataServiceSession classes.
-
-See workflows/sample_config.py for a sample config file.
-
-All previous WebDriver-based exporting modules have now had requests.Session based versions implemented!
 
 ## Getting started
 
@@ -29,7 +25,7 @@ pip3 install vicedtools
 
 ### 
 
-Create a `config.py` file if using the workflow scripts. Use the [`config_sample.py`](/src/vicedtools/workflows/config_sample.py) as a starting point.
+To use the bundled scripts for performing exports and aggregating exported data, make a copy of ['config-sample.toml'](/src/vicedtools/config-sample.toml), update it with your credentials and then set the VICEDTOOLS_CONFIG environment variable to point to the config file.
 
 ## Usage
 
