@@ -20,15 +20,16 @@ from vicedtools.gcp import (upload_csv_to_bigquery, REPORTS_SCHEMA,
                             REPORTS_SUMMARY_CLUSTERING_FIELDS)
 from vicedtools.scripts._config import (reports_csv, reports_summary_csv,
                                         reports_table_id,
-                                        reports_summary_table_id, bucket)
+                                        reports_summary_table_id, gcs_bucket)
 
 
 def main():
     upload_csv_to_bigquery(reports_csv, REPORTS_SCHEMA,
-                           REPORTS_CLUSTERING_FIELDS, reports_table_id, bucket)
+                           REPORTS_CLUSTERING_FIELDS, reports_table_id, gcs_bucket)
     upload_csv_to_bigquery(reports_summary_csv, REPORTS_SUMMARY_SCHEMA,
                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
-                           reports_summary_table_id, bucket)
+                           reports_summary_table_id, gcs_bucket)
+
 
 
 if __name__ == "__main__":

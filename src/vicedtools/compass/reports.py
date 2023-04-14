@@ -139,7 +139,7 @@ class Reports:
             cls,
             filename: str,
             year: str = None,
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             learning_task_filter: Callable[[pd.DataFrame], pd.DataFrame] = None,
             replace_values: dict[str, dict] = None) -> Reports:
@@ -202,7 +202,7 @@ class Reports:
             progress_report_items: list[str],
             year: str = None,
             term: str = None,
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass progress reports export."""
@@ -410,7 +410,7 @@ class Reports:
                              on=["ClassCode", "Year"])
         if replace_values:
             self.data.replace(replace_values, inplace=True)
-        self.data.drop(columns="Year", inplace=False)
+        self.data.drop(columns="Year", inplace=True)
 
     def updateFromClassDetails(self) -> None:
         """Infills TeacherCode data with data available from other reports."""
@@ -423,7 +423,10 @@ class Reports:
 
     def summary(self) -> pd.DataFrame:
         """Aggregates Academic and Work Habits results to produce a summary."""
-        grpd = self.data.groupby([
+        columns = ['Time', 'ClassCode', 'StudentCode',
+       'ResultScore', 'Type', 'LearningArea', 'SubjectCode',
+       'SubjectName', 'TeacherCode']
+        grpd = self.data[columns].groupby([
             'Time', 'ClassCode', 'StudentCode', 'Type', 'SubjectCode',
             'SubjectName', 'LearningArea', 'TeacherCode'
         ],

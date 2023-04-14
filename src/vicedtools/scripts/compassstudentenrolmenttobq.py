@@ -47,7 +47,8 @@ def main():
     current_enrolments.rename(columns=column_renaming, inplace=True)
 
     temp_file = os.path.join(compass_dir, "temp.csv")
-    current_enrolments.to_csv(temp_file, index=False)
+    column_order = ["ClassCode", "StudentCode"]
+    current_enrolments[column_order].to_csv(temp_file, index=False)
 
     upload_csv_to_bigquery(temp_file, STUDENT_ENROLMENTS_SCHEMA,
                            STUDENT_ENROLMENTS_CLUSTERING_FIELDS,

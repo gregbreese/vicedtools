@@ -22,8 +22,8 @@ from vicedtools.compass import Reports
 from vicedtools.scripts._config import (config, learning_tasks_dir,
                                         progress_reports_dir, reports_dir,
                                         learning_task_filter, grade_dtype,
-                                        class_code_parser, classes_csv,
-                                        reports_csv, reports_summary_csv)
+                                        classes_csv, reports_csv, 
+                                        reports_summary_csv)
 
 
 def main():
@@ -69,7 +69,7 @@ def main():
             pass
     reports.importSubjectsData(
         classes_csv,
-        replace_values=config['compass']['reports']['result_values'])
+        replace_values=config['compass']['replace_values'])
 
     reports.saveReports(reports_csv)
     reports.saveSummary(reports_summary_csv)
