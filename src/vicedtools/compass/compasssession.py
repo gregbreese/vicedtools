@@ -292,6 +292,46 @@ class CompassSession(requests.sessions.Session):
         with open(file_name, "wb") as f:
             f.write(r.content)
 
+    def export_student_custom_flags(
+            self, file_name: str = "student custom flags.csv") -> None:
+        '''Exports student flags that have been added to Compass.
+
+        Note: Doesn't include flags imported through CASES.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=17"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
+    def export_student_demographic_details(
+            self, file_name: str = "student custom flags.csv") -> None:
+        '''Exports student demographic details.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=54"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+            
+    def export_parent_mailmerge(
+            self, file_name: str = "parent mailmerge.csv") -> None:
+        '''Exports each parent contact for use in mail merges.
+
+        The basic export includes student address, parent names and parent contact details.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=24"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
     def export_student_household_information(
             self, file_name: str = "student household information.csv") -> None:
         '''Exports student household information from Compass.
