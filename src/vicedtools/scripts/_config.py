@@ -118,6 +118,9 @@ oars_candidates_json = os.path.join(oars_dir,
                                     config['oars']['oars_candidates_json'])
 oars_staff_xlsx = os.path.join(oars_dir, f"{oars_school_code}-staff.xlsx")
 
+# sportstrak
+sportstrak_dir = os.path.join(root_dir, config['sportstrak']['dir'])
+
 # gcp
 gcp_project = config['gcp']['project']
 general_dataset = config['gcp']['general_dataset']
