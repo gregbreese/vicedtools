@@ -28,7 +28,7 @@ def main():
                            REPORTS_CLUSTERING_FIELDS, reports_table_id, gcs_bucket)
     upload_csv_to_bigquery(reports_summary_csv, REPORTS_SUMMARY_SCHEMA,
                            REPORTS_SUMMARY_CLUSTERING_FIELDS,
-                           reports_summary_table_id, gcs_bucket)
+                           reports_summary_table_id, gcs_bucket)    
 
 
 
