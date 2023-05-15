@@ -411,6 +411,8 @@ class Reports:
         if replace_values:
             self.data.replace(replace_values, inplace=True)
         self.data.drop(columns="Year", inplace=True)
+        # Force learning area names to all caps
+        self.data['LearningArea'] = self.data['LearningArea'].str.upper()
 
     def updateFromClassDetails(self) -> None:
         """Infills TeacherCode data with data available from other reports."""
