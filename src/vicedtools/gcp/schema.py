@@ -30,11 +30,11 @@ STUDENT_DETAILS_CLUSTERING_FIELDS = [
 ]
 
 STUDENT_ENROLMENTS_SCHEMA = [
-    bigquery.SchemaField("ClassCode", "STRING"),
+    bigquery.SchemaField("EnrolmentClassCode", "STRING"),
     bigquery.SchemaField("StudentCode", "STRING")
 ]
 
-STUDENT_ENROLMENTS_CLUSTERING_FIELDS = ["ClassCode", "StudentCode"]
+STUDENT_ENROLMENTS_CLUSTERING_FIELDS = ["EnrolmentClassCode", "StudentCode"]
 
 REPORTS_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),
