@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from vicedtools.compass.compassauthenticators import (
+    CompassAuthenticator, CompassAuthenticationError, CompassBasicAuthenticator,
+    CompassCLIAuthenticator)
 from vicedtools.compass.compasssession import (
-    CompassSession, CompassAuthenticator, CompassAuthenticationError,
-    CompassLongRunningFileRequestError, CompassBasicAuthenticator,
-    CompassCLIAuthenticator, CompassFirefoxCookieAuthenticator,
-    get_report_cycle_id, sanitise_filename)
+    CompassSession, CompassLongRunningFileRequestError, get_report_cycle_id,
+    sanitise_filename)
 
 from vicedtools.compass.reports import Reports, class_code_parser

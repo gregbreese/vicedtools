@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>vicedtools.workflows package &mdash; VicEdTools 0.0.5 documentation</title>
@@ -12,10 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,11 +25,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -72,10 +74,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.workflows package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.workflows package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.workflows.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -102,7 +104,7 @@
 <span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.compassstudentdetailstobq.</span></span><span class="sig-name descname"><span class="pre">compass_student_details_to_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_details_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.compassstudentdetailstobq.compass_student_details_to_bq" title="Permalink to this definition"></a></dt>
 <dd><p>Imports student details to BQ from Compass student details export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table_id</strong> – The BQ table id for the enrolments data</p></li>
 <li><p><strong>bucket</strong> – A GCS bucket for temporarily storing the csv for import into BQ.</p></li>
@@ -122,7 +124,7 @@
 <span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.compassstudentenrolmenttobq.</span></span><span class="sig-name descname"><span class="pre">compass_student_enrolments_to_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sds_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.compassstudentenrolmenttobq.compass_student_enrolments_to_bq" title="Permalink to this definition"></a></dt>
 <dd><p>Imports student enrolments to BQ from Compass SDS export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table_id</strong> – The BQ table id for the enrolments data</p></li>
 <li><p><strong>bucket</strong> – A GCS bucket for temporarily storing the csv for import into BQ.</p></li>
@@ -143,8 +145,13 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vicedtools.workflows.config.learning_task_filter">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.config.</span></span><span class="sig-name descname"><span class="pre">learning_task_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.config.learning_task_filter" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.config.</span></span><span class="sig-name descname"><span class="pre">learning_task_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.config.learning_task_filter" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="vicedtools.workflows.config.learning_tasks_result_mapper">
@@ -167,16 +174,11 @@
 </section>
 <section id="module-vicedtools.workflows.createcompassreportssummaries">
 <span id="vicedtools-workflows-createcompassreportssummaries-module"></span><h2>vicedtools.workflows.createcompassreportssummaries module<a class="headerlink" href="#module-vicedtools.workflows.createcompassreportssummaries" title="Permalink to this heading"></a></h2>
-<p>Executable script for exporting Compass progress report data.</p>
+<p>Executable script for creating summaries of all Compass student results.</p>
 </section>
 <section id="module-vicedtools.workflows.createpatparentlettertable">
 <span id="vicedtools-workflows-createpatparentlettertable-module"></span><h2>vicedtools.workflows.createpatparentlettertable module<a class="headerlink" href="#module-vicedtools.workflows.createpatparentlettertable" title="Permalink to this heading"></a></h2>
 <p>Executable script for creating an xlsx for mailmerging a parent letter with PAT results.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.workflows.createpatparentlettertable.create_pat_parent_letter_table">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.createpatparentlettertable.</span></span><span class="sig-name descname"><span class="pre">create_pat_parent_letter_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">student_details_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_household_information_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pat_scores_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.createpatparentlettertable.create_pat_parent_letter_table" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </section>
 <section id="module-vicedtools.workflows.ewritescorestobq">
 <span id="vicedtools-workflows-ewritescorestobq-module"></span><h2>vicedtools.workflows.ewritescorestobq module<a class="headerlink" href="#module-vicedtools.workflows.ewritescorestobq" title="Permalink to this heading"></a></h2>
@@ -230,21 +232,6 @@ scale score achieved for each criteria for each sitting.</p>
 <section id="module-vicedtools.workflows.exportcompassreportcycles">
 <span id="vicedtools-workflows-exportcompassreportcycles-module"></span><h2>vicedtools.workflows.exportcompassreportcycles module<a class="headerlink" href="#module-vicedtools.workflows.exportcompassreportcycles" title="Permalink to this heading"></a></h2>
 <p>Executable script for exporting Compass report cycles.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.workflows.exportcompassreportcycles.export_compass_report_cycles">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.exportcompassreportcycles.</span></span><span class="sig-name descname"><span class="pre">export_compass_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.exportcompassreportcycles.export_compass_report_cycles" title="Permalink to this definition"></a></dt>
-<dd><p>Exports metadata for Compass report cycles to a json file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>school_code</strong> – The compass school string. E.g. <a class="reference external" href="https:/">https:/</a>/{school_code}.compass.education</p></li>
-<li><p><strong>authenticator</strong> – An instance of CompassAuthenticator.</p></li>
-<li><p><strong>file_name</strong> – The file name to save the json data to</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="module-vicedtools.workflows.exportcompassreports">
 <span id="vicedtools-workflows-exportcompassreports-module"></span><h2>vicedtools.workflows.exportcompassreports module<a class="headerlink" href="#module-vicedtools.workflows.exportcompassreports" title="Permalink to this heading"></a></h2>
@@ -281,24 +268,6 @@ scale score achieved for each criteria for each sitting.</p>
 <section id="module-vicedtools.workflows.exportoarssittings">
 <span id="vicedtools-workflows-exportoarssittings-module"></span><h2>vicedtools.workflows.exportoarssittings module<a class="headerlink" href="#module-vicedtools.workflows.exportoarssittings" title="Permalink to this heading"></a></h2>
 <p>Executable script for exporting PAT sitting data from OARS.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.workflows.exportoarssittings.export_oars_sittings">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.exportoarssittings.</span></span><span class="sig-name descname"><span class="pre">export_oars_sittings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pat_sittings_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.exportoarssittings.export_oars_sittings" title="Permalink to this definition"></a></dt>
-<dd><p>Exports completed PAT Sittings and saves them in sittings.json.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>from_date</strong> – The start date to download results for in
-dd-mm-yyyy format.</p></li>
-<li><p><strong>to_date</strong> – The end date to download results for in dd-mm-yyyy format.</p></li>
-<li><p><strong>school_code</strong> – An OARS school string. E.g. <a class="reference external" href="https://oars.acer.edu.au">https://oars.acer.edu.au</a>/{your school string}/…</p></li>
-<li><p><strong>authenticator</strong> – An instance of OARSAuthenticator.</p></li>
-<li><p><strong>pat_sittings_dir</strong> – The directory to save the sittings data in.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="module-vicedtools.workflows.exportoarsstaff">
 <span id="vicedtools-workflows-exportoarsstaff-module"></span><h2>vicedtools.workflows.exportoarsstaff module<a class="headerlink" href="#module-vicedtools.workflows.exportoarsstaff" title="Permalink to this heading"></a></h2>
@@ -342,23 +311,6 @@ dd-mm-yyyy format.</p></li>
 <section id="module-vicedtools.workflows.naplanoutcomestobq">
 <span id="vicedtools-workflows-naplanoutcomestobq-module"></span><h2>vicedtools.workflows.naplanoutcomestobq module<a class="headerlink" href="#module-vicedtools.workflows.naplanoutcomestobq" title="Permalink to this heading"></a></h2>
 <p>Executable script for uploading NAPLAN outcomes BigQuery.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.workflows.naplanoutcomestobq.naplan_outcomes_to_bq">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.naplanoutcomestobq.</span></span><span class="sig-name descname"><span class="pre">naplan_outcomes_to_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">naplan_outcomes_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combined_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.naplanoutcomestobq.naplan_outcomes_to_bq" title="Permalink to this definition"></a></dt>
-<dd><p>Merges NAPLAN outcomes exports and uploads a combined table to Bigquery.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>table_id</strong> – The BQ table id for the NAPLAN data</p></li>
-<li><p><strong>bucket</strong> – A GCS bucket for temporarily storing the csv for import into BQ.</p></li>
-<li><p><strong>naplan_outcomes_dir</strong> – The folder containing the outcomes exports.</p></li>
-<li><p><strong>combined_file</strong> – If provided, save a csv containing the merged outcomes
-to this filename.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="module-vicedtools.workflows.patmostrecentobq">
 <span id="vicedtools-workflows-patmostrecentobq-module"></span><h2>vicedtools.workflows.patmostrecentobq module<a class="headerlink" href="#module-vicedtools.workflows.patmostrecentobq" title="Permalink to this heading"></a></h2>
@@ -368,7 +320,7 @@ to this filename.</p></li>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.patmostrecentobq.</span></span><span class="sig-name descname"><span class="pre">pat_most_recent_to_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.patmostrecentobq.pat_most_recent_to_bq" title="Permalink to this definition"></a></dt>
 <dd><p>Imports most recent PAT results table to BQ.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table_id</strong> – The BQ table id for the enrolments data</p></li>
 <li><p><strong>bucket</strong> – A GCS bucket for temporarily storing the csv for import into BQ.</p></li>
@@ -387,7 +339,7 @@ to this filename.</p></li>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.patscorestobq.</span></span><span class="sig-name descname"><span class="pre">pat_scores_to_bq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.patscorestobq.pat_scores_to_bq" title="Permalink to this definition"></a></dt>
 <dd><p>Imports PAT scores  table to BQ.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>table_id</strong> – The BQ table id for the enrolments data</p></li>
 <li><p><strong>bucket</strong> – A GCS bucket for temporarily storing the csv for import into BQ.</p></li>
@@ -407,10 +359,10 @@ to this filename.</p></li>
 <dd><p>Creates a summary table with only the most recent PAT results.</p>
 <p>Creates a wide table with columns for reading and maths.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pat_scores_csv</strong> – The location of the pat scores csv.</p></li>
-<li><p><strong>pat_most_recent_csv</strong> – The locatoin to save the summary.</p></li>
+<li><p><strong>pat_most_recent_csv</strong> – The location to save the summary.</p></li>
 </ul>
 </dd>
 </dl>
@@ -420,11 +372,6 @@ to this filename.</p></li>
 <section id="module-vicedtools.workflows.patsittingstoscores">
 <span id="vicedtools-workflows-patsittingstoscores-module"></span><h2>vicedtools.workflows.patsittingstoscores module<a class="headerlink" href="#module-vicedtools.workflows.patsittingstoscores" title="Permalink to this heading"></a></h2>
 <p>Executable script for creating a table of student PAT scores.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.workflows.patsittingstoscores.pat_sittings_to_scores">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.workflows.patsittingstoscores.</span></span><span class="sig-name descname"><span class="pre">pat_sittings_to_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">oars_tests_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pat_sittings_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pat_scores_csv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.workflows.patsittingstoscores.pat_sittings_to_scores" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </section>
 <section id="module-vicedtools.workflows">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-vicedtools.workflows" title="Permalink to this heading"></a></h2>

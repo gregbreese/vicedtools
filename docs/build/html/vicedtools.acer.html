@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vicedtools.acer package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.acer package &mdash; VicEdTools 0.0.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,10 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,13 +49,13 @@
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.compass.html">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gcp.html">vicedtools.gcp package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.naplan.html">vicedtools.naplan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.scripts.html">vicedtools.scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools.educationperfect">vicedtools.educationperfect module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-vicedtools">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#vicedtools-educationperfect-module">vicedtools.educationperfect module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vicedtools.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -73,10 +75,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.acer package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.acer package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.acer.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -104,7 +106,7 @@
 <span class="sig-name descname"><span class="pre">group_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.ewritesittings.EWriteSitting.group_report" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the data provided in a eWrite group report export for this sitting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd>
 </dl>
@@ -122,18 +124,18 @@
 <span class="sig-name descname"><span class="pre">group_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.ewritesittings.EWriteSittings.group_report" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts data for the preparation of a group report spreadsheet.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>tests</strong> – A OARSTests instance containing the relevant test metadata.</p></li>
 <li><p><strong>test_name</strong> – The name of the test to export. E.g. “eWrite”</p></li>
 <li><p><strong>form_name</strong> – The name of the form to export. E.g. “Task C Report (Years 5-8)”</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of dictionaries containing the relevant columns for each sitting.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing the relevant columns for each sitting.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -149,14 +151,14 @@
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oars.</span></span><span class="sig-name descname"><span class="pre">class_selector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oars.class_selector" title="Permalink to this definition"></a></dt>
 <dd><p>Identifies whether a given class name is an english or maths class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>class_string</strong> – a class code string</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas Series containing two items, “Maths”/”English” and the class code.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>class_string</strong> – a class code string</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas Series containing two items, “Maths”/”English” and the class code.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -168,8 +170,11 @@
 <p>Creates two separate files, one to update the details of existing students
 in the database and one to add new students.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>student_details_file</strong> – a student details export csv from Compass. Can be
 downloaded using vicedtools.compass.export_student_details or directly
 from <a class="reference external" href="https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37">https://[schoolID].compass.education/Services/FileDownload/CsvRequestHandler?type=37</a></p></li>
@@ -180,10 +185,42 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <li><p><strong>update_students_file</strong> – the filename to save the update students import for OARS</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="module-vicedtools.acer.oarsauthenticators">
+<span id="vicedtools-acer-oarsauthenticators-module"></span><h2>vicedtools.acer.oarsauthenticators module<a class="headerlink" href="#module-vicedtools.acer.oarsauthenticators" title="Permalink to this heading"></a></h2>
+<p>Authenticator functions for the OARSSession class.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="vicedtools.acer.oarsauthenticators.OARSAuthenticateError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarsauthenticators.</span></span><span class="sig-name descname"><span class="pre">OARSAuthenticateError</span></span><a class="headerlink" href="#vicedtools.acer.oarsauthenticators.OARSAuthenticateError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised if an error occurs related to OARS authentication.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.acer.oarsauthenticators.OARSAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarsauthenticators.</span></span><span class="sig-name descname"><span class="pre">OARSAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarsauthenticators.OARSAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>An abstract class for generic OARS authenticators.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.acer.oarsauthenticators.OARSAuthenticator.authenticate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarsauthenticators.OARSAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="vicedtools.acer.oarsauthenticators.OARSBasicAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarsauthenticators.</span></span><span class="sig-name descname"><span class="pre">OARSBasicAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarsauthenticators.OARSBasicAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.acer.oarsauthenticators.OARSAuthenticator" title="vicedtools.acer.oarsauthenticators.OARSAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSAuthenticator</span></code></a></p>
+<p>Authenticates using a provided username and password.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.acer.oarsauthenticators.OARSBasicAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarsauthenticators.OARSBasicAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -219,11 +256,11 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <dd><p>Extracts the sitting information from the candiates.</p>
 <p>Provides the completion status of all assigned sittings.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A pandas DataFrame with the sitting details.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A pandas DataFrame with the sitting details.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -234,14 +271,14 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <dd><p>Extracts the student details data export from the candidates.</p>
 <p>Columns match the export provided by OARS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>include_tests</strong> – If true, adds an additional column listing any incomplete sittings.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas DataFrame with the student details table.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>include_tests</strong> – If true, adds an additional column listing any incomplete sittings.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with the student details table.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -252,49 +289,6 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <section id="module-vicedtools.acer.oarssession">
 <span id="vicedtools-acer-oarssession-module"></span><h2>vicedtools.acer.oarssession module<a class="headerlink" href="#module-vicedtools.acer.oarssession" title="Permalink to this heading"></a></h2>
 <p>A requests.requests.Session class for accessing the OARS API.</p>
-<dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSAuthenticateError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarssession.</span></span><span class="sig-name descname"><span class="pre">OARSAuthenticateError</span></span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSAuthenticateError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised if an error occurs related to OARS authentication.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarssession.</span></span><span class="sig-name descname"><span class="pre">OARSAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>An abstract class for generic OARS authenticators.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSAuthenticator.authenticate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSConfigAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarssession.</span></span><span class="sig-name descname"><span class="pre">OARSConfigAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSConfigAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.acer.oarssession.OARSAuthenticator" title="vicedtools.acer.oarssession.OARSAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSAuthenticator</span></code></a></p>
-<p>Authenticates using a provided username and password.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSConfigAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSConfigAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSFirefoxCookieAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarssession.</span></span><span class="sig-name descname"><span class="pre">OARSFirefoxCookieAuthenticator</span></span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSFirefoxCookieAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.acer.oarssession.OARSAuthenticator" title="vicedtools.acer.oarssession.OARSAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSAuthenticator</span></code></a></p>
-<p>An OARS authenticator that gets login details from the local Firefox installation.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSFirefoxCookieAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSFirefoxCookieAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSSession">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.acer.oarssession.</span></span><span class="sig-name descname"><span class="pre">OARSSession</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession" title="Permalink to this definition"></a></dt>
@@ -302,7 +296,7 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <p>A requests Session extension with methods for accessing data from OARS.</p>
 <p>Creates a requests Session with OARS authentication completed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>school</strong> – An OARS school string. E.g. <a class="reference external" href="https://oars.acer.edu.au">https://oars.acer.edu.au</a>/{your school string}/…</p></li>
 <li><p><strong>authenticator</strong> – An instance of OARSAuthenticator.</p></li>
@@ -313,7 +307,7 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSSession.get_all_items">
 <span class="sig-name descname"><span class="pre">get_all_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.get_all_items" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
@@ -323,20 +317,19 @@ Can be downloaded using vicedtools.compass.export_student_enrolments</p></li>
 <dt class="sig sig-object py" id="vicedtools.acer.oarssession.OARSSession.get_all_pat_sittings">
 <span class="sig-name descname"><span class="pre">get_all_pat_sittings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.get_all_pat_sittings" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads the results for all PAT sittings between the given dates.</p>
-<p>Includes both PAT Maths 4th Edition and PAT Reading 5th Edition.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patsittings.PATSittings" title="vicedtools.acer.patsittings.PATSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATSittings</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>from_date</strong> – The start date to download results for in
 dd-mm-yyyy format.</p></li>
 <li><p><strong>to_date</strong> – The end date to download results for in dd-mm-yyyy format.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of test sittings.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patsittings.PATSittings" title="vicedtools.acer.patsittings.PATSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATSittings</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of test sittings.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -346,15 +339,15 @@ dd-mm-yyyy format.</p></li>
 <span class="sig-name descname"><span class="pre">get_candidates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enrolled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.get_candidates" title="Permalink to this definition"></a></dt>
 <dd><p>Gets candidate data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>enrolled</strong> – 0 for unenrolled students, 1 for enrolled students and
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.oarscandidates.OARSCandidates" title="vicedtools.acer.oarscandidates.OARSCandidates"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSCandidates</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>enrolled</strong> – 0 for unenrolled students, 1 for enrolled students and
 2 for pre-enrolled students.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An instance of OARSCandidates.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.oarscandidates.OARSCandidates" title="vicedtools.acer.oarscandidates.OARSCandidates"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSCandidates</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of OARSCandidates.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -365,8 +358,11 @@ dd-mm-yyyy format.</p></li>
 <dd><p>Downloads the results for eWrite sittings for the candidates.</p>
 <p>Downloads results between to_date and from_date.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.ewritesittings.EWriteSittings" title="vicedtools.acer.ewritesittings.EWriteSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">EWriteSittings</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>candidates</strong> – A OARSCandidates instance with the candidates to get
 results for.</p></li>
 <li><p><strong>from_date</strong> – The start date to download results for in
@@ -374,11 +370,8 @@ dd-mm-yyyy format.</p></li>
 <li><p><strong>to_date</strong> – The end date to download results for in dd-mm-yyyy format.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of test sittings.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.ewritesittings.EWriteSittings" title="vicedtools.acer.ewritesittings.EWriteSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">EWriteSittings</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of test sittings.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -388,8 +381,11 @@ dd-mm-yyyy format.</p></li>
 <span class="sig-name descname"><span class="pre">get_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sitting_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.get_items" title="Permalink to this definition"></a></dt>
 <dd><p>Gets PAT Item metadata.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patitems.PATItems" title="vicedtools.acer.patitems.PATItems"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATItems</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>test_id</strong> – The id of the test to get item metadata for.</p></li>
 <li><p><strong>form_id</strong> – The id of the form to get item metadata for.</p></li>
 <li><p><strong>sitting_id</strong> – The sitting id for a sitting of this test form.</p></li>
@@ -397,11 +393,6 @@ dd-mm-yyyy format.</p></li>
 </dd>
 </dl>
 <p>Returns:</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patitems.PATItems" title="vicedtools.acer.patitems.PATItems"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATItems</span></code></a></p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -409,8 +400,11 @@ dd-mm-yyyy format.</p></li>
 <span class="sig-name descname"><span class="pre">get_pat_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_date</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.get_pat_results" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads the results for a single PAT test.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patsittings.PATSittings" title="vicedtools.acer.patsittings.PATSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATSittings</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>test_name</strong> – The name of the test. E.g. “PAT Maths 4th Edition”</p></li>
 <li><p><strong>form_name</strong> – The form to download. E.g. “PAT Maths Test 6”</p></li>
 <li><p><strong>from_date</strong> – The start date to download results for in
@@ -418,11 +412,8 @@ dd-mm-yyyy format.</p></li>
 <li><p><strong>to_date</strong> – The end date to download results for in dd-mm-yyyy format.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of test sittings.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patsittings.PATSittings" title="vicedtools.acer.patsittings.PATSittings"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATSittings</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of test sittings.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -440,15 +431,15 @@ interface.</p>
 <span class="sig-name descname"><span class="pre">update_staff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">staff_xlsx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarssession.OARSSession.update_staff" title="Permalink to this definition"></a></dt>
 <dd><p>Uploads a staff details to OARS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>staff_xlsx</strong> – The path to a correctly formatted XLSX with staff
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>staff_xlsx</strong> – The path to a correctly formatted XLSX with staff
 details.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True if the upload was successful.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the upload was successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -492,14 +483,14 @@ are automatically converted to the corresponding Unicode characters.</p>
 <span class="sig-name descname"><span class="pre">get_form_from_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_from_id" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a form from it’s id.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The the form metadata in a dictionary</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>form_id</strong> – The id of the form</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The the form metadata in a dictionary</p>
 </dd>
 </dl>
 </dd></dl>
@@ -509,14 +500,14 @@ are automatically converted to the corresponding Unicode characters.</p>
 <span class="sig-name descname"><span class="pre">get_form_id_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_id_from_name" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a form’s id from its name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_name</strong> – The name of the form. E.g. “PAT Maths Test 6”</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The id of the form.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>form_name</strong> – The name of the form. E.g. “PAT Maths Test 6”</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The id of the form.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -526,14 +517,14 @@ are automatically converted to the corresponding Unicode characters.</p>
 <span class="sig-name descname"><span class="pre">get_form_name_from_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTest.get_form_name_from_id" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a form’s name from it’s id.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>form_id</strong> – The id of the form</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The name of the form. E.g. “PAT Maths Test 6”</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>form_id</strong> – The id of the form</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the form. E.g. “PAT Maths Test 6”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -550,7 +541,7 @@ are automatically converted to the corresponding Unicode characters.</p>
 <span class="sig-name descname"><span class="pre">ewrite_criteria_scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.ewrite_criteria_scores" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a lookup table for scale scores for each eWrite criteria.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A pandas DataFrame with columns ‘Criteria’, ‘Scores’, and ‘Scale’.</p>
 </dd>
 </dl>
@@ -561,15 +552,15 @@ are automatically converted to the corresponding Unicode characters.</p>
 <span class="sig-name descname"><span class="pre">get_id_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_id_from_name" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a test’s id from its name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>test_name</strong> – The name of the test to locate.
 E.g “PAT Maths 4th Edition”</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The id string for the test.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The id string for the test.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -579,14 +570,14 @@ E.g “PAT Maths 4th Edition”</p>
 <span class="sig-name descname"><span class="pre">get_name_from_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_name_from_id" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a test’s name from its id.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_id</strong> – The id of the test to locate.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The name ofr the test. E.g “PAT Maths 4th Edition”</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>test_id</strong> – The id of the test to locate.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name ofr the test. E.g “PAT Maths 4th Edition”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -596,14 +587,14 @@ E.g “PAT Maths 4th Edition”</p>
 <span class="sig-name descname"><span class="pre">get_test_from_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_test_from_id" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a test’s metadata.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_id</strong> – The testId of the test to locate.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A OARSTest containing metadata about the particular test.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.oarstests.OARSTest" title="vicedtools.acer.oarstests.OARSTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSTest</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>test_id</strong> – The testId of the test to locate.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A OARSTest containing metadata about the particular test.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -613,15 +604,15 @@ E.g “PAT Maths 4th Edition”</p>
 <span class="sig-name descname"><span class="pre">get_test_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.oarstests.OARSTests.get_test_from_name" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a test’s metadata.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>test_name</strong> – The name of the test to locate.
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.oarstests.OARSTest" title="vicedtools.acer.oarstests.OARSTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSTest</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>test_name</strong> – The name of the test to locate.
 E.g. “PAT Maths 4th Edition”</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An OARSTest containing metadata about the particular test</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.oarstests.OARSTest" title="vicedtools.acer.oarstests.OARSTest"><code class="xref py py-class docutils literal notranslate"><span class="pre">OARSTest</span></code></a></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An OARSTest containing metadata about the particular test</p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,14 +705,14 @@ particular test.</p>
 <p>The test (Reading/Maths) and test number must match those of the group
 report.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> – The path to the group report xlsx.</p>
-</dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><strong>ValueError</strong> – Group report test and number do not match.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>filename</strong> – The path to the group report xlsx.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Group report test and number do not match.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -731,14 +722,14 @@ report.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_group_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResults.from_group_report" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a PATResults instance from a single group report.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> – The path to the group report xlsx.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A PATResults instance.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patresults.PATResults" title="vicedtools.acer.patresults.PATResults"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATResults</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>filename</strong> – The path to the group report xlsx.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A PATResults instance.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -748,7 +739,7 @@ report.</p>
 <span class="sig-name descname"><span class="pre">scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResults.scores" title="Permalink to this definition"></a></dt>
 <dd><p>Returns just the score data from the stored results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A pandas Dataframe containing the scores and student identification
 columns.</p>
 </dd>
@@ -776,12 +767,12 @@ indexed by their test number as a string.</p>
 <span class="sig-name descname"><span class="pre">add_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patresults</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResultsCollection.add_results" title="Permalink to this definition"></a></dt>
 <dd><p>Adds a PATResults to the collection.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>patresults</strong> – The PATResults instance to incorporate into the
-collection.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>patresults</strong> – The PATResults instance to incorporate into the
+collection.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -791,15 +782,15 @@ collection.</p>
 <span class="sig-name descname"><span class="pre">export_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResultsCollection.export_scores" title="Permalink to this definition"></a></dt>
 <dd><p>Exports all PAT scores as a single DataFrame.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>recent</strong> – if true, only export each student’s most recent result</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas DataFrame containing just the score information from all
-tests.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>recent</strong> – if true, only export each student’s most recent result</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame containing just the score information from all
+tests.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -809,18 +800,18 @@ tests.</p>
 <span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResultsCollection.get_results" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the PATResults for a particular test and number.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>test</strong> – “Maths” or “Reading”</p></li>
 <li><p><strong>number</strong> – The test number as a string.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The corresponding instance of PATResults contained in the
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The corresponding instance of PATResults contained in the
 collection, if one exists.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -829,7 +820,7 @@ collection, if one exists.</p>
 <dt class="sig sig-object py" id="vicedtools.acer.patresults.PATResultsCollection.scores">
 <span class="sig-name descname"><span class="pre">scores</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.PATResultsCollection.scores" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
@@ -844,18 +835,18 @@ collection, if one exists.</p>
 <p>Searches through the group report cells and finds the columns containing
 question difficulty scale scores.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A dictionary containing each question number (str) as a key and the
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing each question number (str) as a key and the
 corresponding scale score (float) as values.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – DataFrame did not contain expected question scales.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DataFrame did not contain expected question scales.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -867,14 +858,14 @@ corresponding scale score (float) as values.</p>
 <p>Looks at the top left cell and extracts the relevant test (Reading/
 Maths) and test number data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tuple of (test, number), each as strings.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple of (test, number), each as strings.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -884,18 +875,18 @@ Maths) and test number data.</p>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.patresults.</span></span><span class="sig-name descname"><span class="pre">group_reports_to_patresults</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.group_reports_to_patresults" title="Permalink to this definition"></a></dt>
 <dd><p>Reads all PAT group reports in path.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patresults.PATResultsCollection" title="vicedtools.acer.patresults.PATResultsCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATResultsCollection</span></code></a></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>path</strong> – The directory to search for group report files.</p></li>
 <li><p><strong>verbose</strong> – If True, then print the path to each file  as it is parsed.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A PATResultsCollection containg the results from all group reports in
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A PATResultsCollection containg the results from all group reports in
 the directory.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#vicedtools.acer.patresults.PATResultsCollection" title="vicedtools.acer.patresults.PATResultsCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATResultsCollection</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -906,14 +897,14 @@ the directory.</p>
 <dd><p>Tests whether a given xlsx file contains a PAT Group Report.</p>
 <p>Only looks for PAT Reading 5th edition and PAT Maths 4th edition.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_location</strong> – The path to the group report xlsx.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Whether the given xlsx is a PAT group report export.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_location</strong> – The path to the group report xlsx.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether the given xlsx is a PAT group report export.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -923,17 +914,17 @@ the directory.</p>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.patresults.</span></span><span class="sig-name descname"><span class="pre">locate_header_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.locate_header_row" title="Permalink to this definition"></a></dt>
 <dd><p>Identifies the row in a group report containing the column headings.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The row number containing the column headings.</p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>df</strong> – A pandas DataFrame containing the data from a PAT group report xlsx.</p>
 </dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – DataFrame did not contain the expected header row.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The row number containing the column headings.</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – DataFrame did not contain the expected header row.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -943,8 +934,11 @@ the directory.</p>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.patresults.</span></span><span class="sig-name descname"><span class="pre">score_categoriser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datetime_completed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patresults.score_categoriser" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a qualitative description of a PAT testing result.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>test</strong> – “Maths” or “Reading”</p></li>
 <li><p><strong>year_level</strong> – “Year 5”, “Year 6”, “Year 7”, …, “Year 10”
 the year level of the student when they sat the test</p></li>
@@ -952,11 +946,8 @@ the year level of the student when they sat the test</p></li>
 <li><p><strong>score</strong> – the PAT scale score the student achieved</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>One of “Very low”, “Low”, “Average”, “High”, or “Very high”.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of “Very low”, “Low”, “Average”, “High”, or “Very high”.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -975,8 +966,8 @@ the year level of the student when they sat the test</p></li>
 <span class="sig-name descname"><span class="pre">group_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.PATSitting.group_report" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the data provided in a PAT group report export for this sitting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -986,14 +977,14 @@ the year level of the student when they sat the test</p></li>
 <span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.PATSitting.summary" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts a summary of the results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tests</strong> – An instance of PATTests containing the relevant test metadata.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A dictionary containing the summary.</p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tests</strong> – An instance of PATTests containing the relevant test metadata.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary containing the summary.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1010,18 +1001,18 @@ the year level of the student when they sat the test</p></li>
 <span class="sig-name descname"><span class="pre">group_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">form_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.PATSittings.group_report" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts data for the preparation of a group report spreadsheet.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>tests</strong> – A PATTests instance containing the relevant test metadata.</p></li>
 <li><p><strong>test_name</strong> – The name of the test to export. E.g. “PAT Maths 4th Edition”</p></li>
 <li><p><strong>form_name</strong> – The name of the form to export. E.g. “PAT Maths Test 6”</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of dictionaries containing the relevant columns for each sitting.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>list</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing the relevant columns for each sitting.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1031,17 +1022,17 @@ the year level of the student when they sat the test</p></li>
 <span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recent_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.PATSittings.summary" title="Permalink to this definition"></a></dt>
 <dd><p>Extracts a basic summary of results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>tests</strong> – A PATTests instance containing the relevant test metadata.</p></li>
 <li><p><strong>recent_only</strong> – If True, only give the most recent result for each student.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A pandas DataFrame with the summary.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>pd.DataFrame</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas DataFrame with the summary.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1052,7 +1043,7 @@ the year level of the student when they sat the test</p></li>
 <dt class="sig sig-object py" id="vicedtools.acer.patsittings.extract_response">
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.patsittings.</span></span><span class="sig-name descname"><span class="pre">extract_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.extract_response" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
@@ -1062,7 +1053,7 @@ the year level of the student when they sat the test</p></li>
 <dt class="sig sig-object py" id="vicedtools.acer.patsittings.year_level_at_time_of_test">
 <span class="sig-prename descclassname"><span class="pre">vicedtools.acer.patsittings.</span></span><span class="sig-name descname"><span class="pre">year_level_at_time_of_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year_levels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_of_test</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.patsittings.year_level_at_time_of_test" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
@@ -1081,20 +1072,20 @@ PAT scale score and the question’s scale score, with their responses.
 The correct response is expected to be selected more often by students with
 higher scale scores.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>pat_results</strong> – An instance of PATResults to analyse.</p></li>
 <li><p><strong>question</strong> – The question number to produce a plot for.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the matplotlib figure and axes for the plot</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the matplotlib figure and axes for the plot</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>f, ax</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Figure</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Axes</span></code>]</p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>f, ax</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1106,22 +1097,24 @@ higher scale scores.</p>
 <p>Creates a chart for each question in each PAT test found in the provided
 PATResultsCollection and saves each chart as a .png.
 Files are saved using the format “[save_path][Reading/Maths] test [test number] question [question number].png”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 <dl class="simple">
 <dt>Example usage:</dt><dd><p>results = group_reports_to_patresults(path_to_group_reports)
 item_analysis_charts(results)</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> – a PATResultsCollection instance to produce plots from</p></li>
 <li><p><strong>save_path=&quot;&quot;</strong> – Optional; the path to save plot images to</p></li>
 <li><p><strong>verbose=True</strong> – Optional; if True, print information about each chart as
 it is generated.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1139,16 +1132,19 @@ labels the bins based on their relative level compared to the question.</p>
 response more often.</p>
 <p>Used by item_analysis_plot to summarise item results.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>pat_results</strong> – An instance of PATResults to summarise.</p></li>
 <li><p><strong>question</strong> – Which question number to produce a summary of.</p></li>
 <li><p><strong>open_ended</strong> – Optional; If true, then include outliers in the outermost
 bins. Otherwise, these students are exluded from the plot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl>
 <dt>A pandas DataFrame with these columns.</dt><dd><dl class="simple">
 <dt>’Student v Question’: A qualitative description of the relative</dt><dd><p>scale score of the students compared to the item.</p>
 </dd>
@@ -1159,11 +1155,41 @@ bins. Otherwise, these students are exluded from the plot.</p></li>
 </dl>
 </p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.acer.plots.student_time_series_plot">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.acer.plots.</span></span><span class="sig-name descname"><span class="pre">student_time_series_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scores</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.student_time_series_plot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.acer.plots.student_time_series_plots">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.acer.plots.</span></span><span class="sig-name descname"><span class="pre">student_time_series_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pat_scores_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">student_details_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_constructs_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir='.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.student_time_series_plots" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a time series plot of the pat results of all students.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pat_scores_csv</strong> – The path to a csv containing a pat score summary, as
+exported from PAT_Sittings.</p></li>
+<li><p><strong>student_details_csv</strong> – The path to a csv containing student details, as
+exported from CompassSession.</p></li>
+<li><p><strong>scale_constructs_json</strong> – The path to a saved scale_constructs_json, as
+exported from OARS.</p></li>
+<li><p><strong>save_dir</strong> – The path to save the images of each plot. Will save using a
+directory structure of save_dir/&lt;year level&gt;/&lt;form group&gt;/ with each
+image saved as “&lt;student code&gt; &lt;student name&gt; pat timeseries.png”</p></li>
+<li><p><strong>cmap</strong> – A diverging colormap to use for indicating results are above or
+below average.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vicedtools.acer.plots.time_series_background_coords">
+<span class="sig-prename descclassname"><span class="pre">vicedtools.acer.plots.</span></span><span class="sig-name descname"><span class="pre">time_series_background_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale_constructs_json</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.acer.plots.time_series_background_coords" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-vicedtools.acer">
@@ -1182,7 +1208,7 @@ bins. Otherwise, these students are exluded from the plot.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, VicEdTools authors.</p>
+    <p>&#169; Copyright 2023, VicEdTools authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

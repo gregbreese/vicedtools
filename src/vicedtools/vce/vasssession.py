@@ -15,38 +15,88 @@
 
 from __future__ import annotations
 
+from abc import abstractmethod
 from io import StringIO
 import math
 import re
 import requests
 import time
+from typing import Protocol
 import xml.etree.ElementTree as ET
 
 import pandas as pd
 
 
-class VassLoginError(Exception):
-    """Error with vass login."""
+class VASSAuthenticator(Protocol):
+    """An abstract class for generic VASS authenticators."""
+
+    @abstractmethod
+    def authenticate(self, session: VASSSession):
+        raise NotImplementedError
+
+
+class VASSAuthenticationError(Exception):
+    """Authentication with VASS failed."""
     pass
+
+
+class VASSBasicAuthenticator(VASSAuthenticator):
+    """Authenticates using a provided username, password and grid password."""
+
+    def __init__(self, username: str, password: str,
+                 grid_password: list[list[int, int]]):
+        self.username = username
+        self.password = password
+        self.grid_password = grid_password
+
+    def authenticate(self, s: VASSSession):
+        this_year = str(time.localtime().tm_year)
+        # username and password login
+        payload = {
+            "Login": "Login",
+            "password": self.password,
+            "username": self.username
+        }
+        submit_login_url = "https://www.vass.vic.edu.au/login/VerifyAuthLogin.cfm"
+        r = s.post(submit_login_url, data=payload)
+
+        if "https://www.vass.vic.edu.au/login/schoolcode.cfm" not in r.text:
+            # login unsuccessful
+            raise VASSAuthenticationError()
+
+        # get passcode grid and login with grid code
+        school_code_url = "https://www.vass.vic.edu.au/login/schoolcode.cfm"
+        r = s.get(school_code_url)
+
+        pattern = r'passlist="(?P<s>.*?)"'
+        m = re.search(pattern, r.text)
+        grid_values = m.group('s').split(',')
+        grid_password = [(int(a), int(b)) for (a, b) in self.grid_password]
+        grid_response = "".join(
+            [grid_values[(b - 1) * 8 + (a - 1)] for (a, b) in grid_password])
+        payload = []
+        for value in grid_values:
+            payload.append(("PASSCODEGRID", value))
+        payload.append(("PassCode", grid_response))
+        payload.append(("Year", this_year))
+        payload.append(("AcceptButton", "Accept"))
+        school_code_submit_url = "https://www.vass.vic.edu.au/login/SchoolCodeAction.cfm"
+        r = s.post(school_code_submit_url, data=payload)
+        if "https://www.vass.vic.edu.au/menu/Home.cfm" not in r.text:
+            raise VASSAuthenticationError()
+        s.year = this_year
 
 
 class VASSSession(requests.Session):
 
     def __init__(
         self,
-        username="",
-        password="",
-        grid_password="",
+        authenticator: VASSAuthenticator,
     ):
         """Creates a requests Session with VASS authentication completed.
     
         Args:
-            username: The username to login with
-            password: The password to login with
-            grid_password: The grid password to login with. A sequence of
-                tuples, each tuple being the grid coordinate of the next
-                password character. Must be given in top-> bottom, left->
-                right order.
+            authenticator: A VASSAuthenticator instance.
         
         Returns:
             An instance of requests.Session with authentication to
@@ -62,36 +112,7 @@ class VASSSession(requests.Session):
         }
         self.headers.update(headers)
 
-        # username and password login
-        payload = {"Login": "Login", "password": password, "username": username}
-        submit_login_url = "https://www.vass.vic.edu.au/login/VerifyAuthLogin.cfm"
-        r = self.post(submit_login_url, data=payload)
-
-        if "https://www.vass.vic.edu.au/login/schoolcode.cfm" not in r.text:
-            # login unsuccessful
-            raise VassLoginError()
-
-        # get passcode grid and login with grid code
-        school_code_url = "https://www.vass.vic.edu.au/login/schoolcode.cfm"
-        r = self.get(school_code_url)
-
-        pattern = r'passlist="(?P<s>.*?)"'
-        m = re.search(pattern, r.text)
-        grid_values = m.group('s').split(',')
-        grid_password = [(int(a), int(b)) for (a, b) in grid_password]
-        grid_response = "".join(
-            [grid_values[(b - 1) * 8 + (a - 1)] for (a, b) in grid_password])
-        payload = []
-        for value in grid_values:
-            payload.append(("PASSCODEGRID", value))
-        payload.append(("PassCode", grid_response))
-        payload.append(("Year", "2022"))
-        payload.append(("AcceptButton", "Accept"))
-        school_code_submit_url = "https://www.vass.vic.edu.au/login/SchoolCodeAction.cfm"
-        r = self.post(school_code_submit_url, data=payload)
-        if "https://www.vass.vic.edu.au/menu/Home.cfm" not in r.text:
-            raise VassLoginError()
-        self.year = "2022"
+        authenticator.authenticate(self)
 
     def change_year(self, year: str) -> None:
         """Changes the year in VASS.
@@ -260,7 +281,7 @@ class VASSSession(requests.Session):
             df = pd.DataFrame(school_scores)
             subject_names = {}
             unit_names = df["Unit"]
-            pattern = "(?P<code>[A-Z]{2}[0-9]{2})[34] - (?P<name>[A-Z :\(\)]+) [34]"
+            pattern = r"(?P<code>[A-Z]{2}[0-9]{2})[34] - (?P<name>[A-Z :\(\)]+) [34]"
             for unit in unit_names:
                 m = re.match(pattern, unit)
                 if m:

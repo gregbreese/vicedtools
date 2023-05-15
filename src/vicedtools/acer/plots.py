@@ -291,14 +291,21 @@ def time_series_background_coords(scale_constructs_json,
         background_coords[test]['Well above expected level']['top'] = [
             200 for _ in range(len(xs))
         ]
-        background_coords[test]['Well above expected level']['bottom'] = norm_values['95']
-        background_coords[test]['Above expected level']['top'] = norm_values['95']
-        background_coords[test]['Above expected level']['bottom'] = norm_values['75']
+        background_coords[test]['Well above expected level'][
+            'bottom'] = norm_values['95']
+        background_coords[test]['Above expected level']['top'] = norm_values[
+            '95']
+        background_coords[test]['Above expected level']['bottom'] = norm_values[
+            '75']
         background_coords[test]['At expected level']['top'] = norm_values['75']
-        background_coords[test]['At expected level']['bottom'] = norm_values['25']
-        background_coords[test]['Below expected level']['top'] = norm_values['25']
-        background_coords[test]['Below expected level']['bottom'] = norm_values['5']
-        background_coords[test]['Well below expected level']['top'] = norm_values['5']
+        background_coords[test]['At expected level']['bottom'] = norm_values[
+            '25']
+        background_coords[test]['Below expected level']['top'] = norm_values[
+            '25']
+        background_coords[test]['Below expected level']['bottom'] = norm_values[
+            '5']
+        background_coords[test]['Well below expected level'][
+            'top'] = norm_values['5']
         background_coords[test]['Well below expected level']['bottom'] = [
             0 for _ in range(len(xs))
         ]

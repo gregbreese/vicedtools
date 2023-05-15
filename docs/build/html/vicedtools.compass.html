@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vicedtools.compass package &mdash; VicEdTools 0.0.5 documentation</title>
+  <title>vicedtools.compass package &mdash; VicEdTools 0.0.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -12,10 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +26,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> VicEdTools
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            VicEdTools
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,8 +49,8 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">vicedtools.compass package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.gcp.html">vicedtools.gcp package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.naplan.html">vicedtools.naplan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vicedtools.scripts.html">vicedtools.scripts package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="vicedtools.vce.html">vicedtools.vce package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="vicedtools.workflows.html">vicedtools.workflows package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="vicedtools.html#submodules">Submodules</a></li>
@@ -73,10 +75,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">vicedtools</a> &raquo;</li>
-          <li><a href="vicedtools.html">vicedtools package</a> &raquo;</li>
-      <li>vicedtools.compass package</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">vicedtools</a></li>
+          <li class="breadcrumb-item"><a href="vicedtools.html">vicedtools package</a></li>
+      <li class="breadcrumb-item active">vicedtools.compass package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/vicedtools.compass.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -91,64 +93,55 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
-<section id="module-vicedtools.compass.compasssession">
-<span id="vicedtools-compass-compasssession-module"></span><h2>vicedtools.compass.compasssession module<a class="headerlink" href="#module-vicedtools.compass.compasssession" title="Permalink to this heading"></a></h2>
-<p>A requests.requests.Session class for accessing the Compass API.</p>
+<section id="module-vicedtools.compass.compassauthenticators">
+<span id="vicedtools-compass-compassauthenticators-module"></span><h2>vicedtools.compass.compassauthenticators module<a class="headerlink" href="#module-vicedtools.compass.compassauthenticators" title="Permalink to this heading"></a></h2>
 <dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassAuthenticationError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticationError</span></span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassAuthenticationError" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassAuthenticationError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compassauthenticators.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticationError</span></span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassAuthenticationError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>Authentication with Compass failed.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassAuthenticator" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compassauthenticators.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassAuthenticator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
 <p>An abstract class for generic Compass authenticators.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassAuthenticator.authenticate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassAuthenticator.authenticate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassCLIAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassCLIAuthenticator</span></span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassCLIAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasssession.CompassAuthenticator" title="vicedtools.compass.compasssession.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
-<p>Authenticates using login details from CLI prompt.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassCLIAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassCLIAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassConfigAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassConfigAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassConfigAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasssession.CompassAuthenticator" title="vicedtools.compass.compasssession.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassBasicAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compassauthenticators.</span></span><span class="sig-name descname"><span class="pre">CompassBasicAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassBasicAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compassauthenticators.CompassAuthenticator" title="vicedtools.compass.compassauthenticators.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
 <p>Authenticates using a provided username and password.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassConfigAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassConfigAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassBasicAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassBasicAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassFirefoxCookieAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassFirefoxCookieAuthenticator</span></span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassFirefoxCookieAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasssession.CompassAuthenticator" title="vicedtools.compass.compasssession.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
-<p>A Compass authenaticator that gets login details from the local Firefox installation.</p>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassCLIAuthenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compassauthenticators.</span></span><span class="sig-name descname"><span class="pre">CompassCLIAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassCLIAuthenticator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compassauthenticators.CompassAuthenticator" title="vicedtools.compass.compassauthenticators.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
+<p>Authenticates using login details from CLI prompt.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassFirefoxCookieAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassFirefoxCookieAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="vicedtools.compass.compassauthenticators.CompassCLIAuthenticator.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compassauthenticators.CompassCLIAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
+</section>
+<section id="module-vicedtools.compass.compasssession">
+<span id="vicedtools-compass-compasssession-module"></span><h2>vicedtools.compass.compasssession module<a class="headerlink" href="#module-vicedtools.compass.compasssession" title="Permalink to this heading"></a></h2>
+<p>A requests.requests.Session class for accessing the Compass API.</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassLongRunningFileRequestError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">CompassLongRunningFileRequestError</span></span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassLongRunningFileRequestError" title="Permalink to this definition"></a></dt>
@@ -163,7 +156,7 @@
 <p>A requests Session extension with methods for accessing data from Compass.</p>
 <p>Creates a requests Session with Compass authentication completed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>school_code</strong> – Your school’s compass school code.</p></li>
 <li><p><strong>authenticator</strong> – An instance of CompassAuthenticator to perform the
@@ -176,7 +169,7 @@ required authentication with Compass.</p></li>
 <span class="sig-name descname"><span class="pre">export_learning_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_year_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_year_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.export_learning_tasks" title="Permalink to this definition"></a></dt>
 <dd><p>Exports learning task data for a single academic group (cycle).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>academic_year_id</strong> – The id for the academic group to download.</p></li>
 <li><p><strong>academic_year_name</strong> – The title of the academic group to download.</p></li>
@@ -191,7 +184,7 @@ required authentication with Compass.</p></li>
 <span class="sig-name descname"><span class="pre">export_progress_reports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cycle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle_title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.export_progress_reports" title="Permalink to this definition"></a></dt>
 <dd><p>Exports a single progress report cycle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cycle_id</strong> – The Compass cycle id for the cycle to download.</p></li>
 <li><p><strong>cycle_title</strong> – The title of the cycle to download.</p></li>
@@ -206,7 +199,7 @@ required authentication with Compass.</p></li>
 <span class="sig-name descname"><span class="pre">export_reports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cycle_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle_title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.export_reports" title="Permalink to this definition"></a></dt>
 <dd><p>Exports a single  report cycle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cycle_id</strong> – The Compass cycle id for the cycle to download.</p></li>
 <li><p><strong>cycle_title</strong> – The title of the cycle to download.</p></li>
@@ -218,7 +211,7 @@ required authentication with Compass.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.export_sds">
-<span class="sig-name descname"><span class="pre">export_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.export_sds" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">export_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.export_sds" title="Permalink to this definition"></a></dt>
 <dd><p>Exports class enrolment and teacher information from Compass.</p>
 <p>Downloads the Microsoft SDS export from Compass.</p>
 <p>Requires access to SDS Export rights in the Subjects and Classes page.</p>
@@ -230,7 +223,7 @@ Section.csv: contains class id information</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>save_dir</strong> – The directory to save the export.</p></li>
 <li><p><strong>academic_group</strong> – The academic group (e.g. the year) to download the export
@@ -251,14 +244,14 @@ form group. It only includes current students.
 The detailed export also includes DOB, VCAA code, VSN, and school
 house. It includes students who have exited.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>file_name</strong> – The file path to save the csv export, including filename.</p></li>
 <li><p><strong>detailed</strong> – Whether to perform a detailed student details export.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -269,13 +262,19 @@ house. It includes students who have exited.</p>
 <dd><p>Exports student household information from Compass.</p>
 <p>The basic export includes student address, parent names and parent contact details.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_name</strong> – The file path to save the csv export, including filename.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>file_name</strong> – The file path to save the csv export, including filename.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get" title="Permalink to this definition"></a></dt>
+<dd><p>Enforce a minimum delay between requests.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -283,29 +282,46 @@ house. It includes students who have exited.</p>
 <span class="sig-name descname"><span class="pre">get_academic_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_academic_groups" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads academic group metadata from Compass.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A list containing the metadata for each academic group.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the metadata for each academic group.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.get_class_enrolments">
+<span class="sig-name descname"><span class="pre">get_class_enrolments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activity_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_activity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_class_enrolments" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a list of all enrolments in a class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>activity_id</strong> – An activity id for one lesson for the class.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing student metadata.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.get_classes">
-<span class="sig-name descname"><span class="pre">get_classes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_classes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_classes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_classes" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a list of all classes in an academic group.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>academic_group</strong> – The academic group to export. Defaults to the
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>academic_group</strong> – The academic group to export. Defaults to the
 currently active group.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of dictionaries containing class metadata.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing class metadata.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -315,15 +331,15 @@ currently active group.</p>
 <span class="sig-name descname"><span class="pre">get_classes_for_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subject_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_classes_for_subject" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads a CSV with subject metadata.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>subject_id</strong> – The Compass subject id number for the subject.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of dictionaries containing metadata for each class in the
-subject.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>subject_id</strong> – The Compass subject id number for the subject.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing metadata for each class in the
+subject.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -333,11 +349,11 @@ subject.</p>
 <span class="sig-name descname"><span class="pre">get_progress_report_cycles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_progress_report_cycles" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads metadata for progress report cycles.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A list of the metadata for each progress report cycle.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of the metadata for each progress report cycle.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -347,44 +363,29 @@ subject.</p>
 <span class="sig-name descname"><span class="pre">get_report_cycles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_report_cycles" title="Permalink to this definition"></a></dt>
 <dd><p>Downloads metadata for Compass report cycles.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A list of the metadata for each report cycle.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.get_subject_metadata">
-<span class="sig-name descname"><span class="pre">get_subject_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_subject_metadata" title="Permalink to this definition"></a></dt>
-<dd><p>Downloads a CSV with subject metadata.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_name</strong> – The file name to save the CSV to.</p></li>
-<li><p><strong>academic_group</strong> – Optional, the academic group id to download the
-metadata for. Defaults to the currently active academic group.</p></li>
-</ul>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of the metadata for each report cycle.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.get_subjects">
-<span class="sig-name descname"><span class="pre">get_subjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_subjects" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_subjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.get_subjects" title="Permalink to this definition"></a></dt>
 <dd><p>Gets a list of all subjects in an academic group.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>academic_group</strong> – The academic group to export. Defaults to the
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>academic_group</strong> – The academic group to export. Defaults to the
 currently active group.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of dictionaries containing subject metadata.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>]</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of dictionaries containing subject metadata.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -393,10 +394,16 @@ currently active group.</p>
 <dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.long_running_file_request">
 <span class="sig-name descname"><span class="pre">long_running_file_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request_payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.long_running_file_request" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vicedtools.compass.compasssession.CompassSession.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.CompassSession.post" title="Permalink to this definition"></a></dt>
+<dd><p>Enforce a minimum delay between requests.</p>
 </dd></dl>
 
 </dd></dl>
@@ -406,7 +413,7 @@ currently active group.</p>
 <span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasssession.</span></span><span class="sig-name descname"><span class="pre">current_ms_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasssession.current_ms_time" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the current millisecond time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></p>
 </dd>
 </dl>
@@ -423,481 +430,6 @@ currently active group.</p>
 <dd></dd></dl>
 
 </section>
-<section id="module-vicedtools.compass.compasswebdriver">
-<span id="vicedtools-compass-compasswebdriver-module"></span><h2>vicedtools.compass.compasswebdriver module<a class="headerlink" href="#module-vicedtools.compass.compasswebdriver" title="Permalink to this heading"></a></h2>
-<p>A WebDriver based class for exporting data from Compass.</p>
-<p>Deprecated: Use CompassSession.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassAuthenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
-<p>An abstract class for generic Compass Authenticator objects.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassAuthenticator.authenticate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd><p>Authenticates the given webdriver with Compass.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassCLIAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassCLIAuthenticator</span></span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassCLIAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
-<p>A Compass Authenticator that gets login details from CLI prompt.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassCLIAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassCLIAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd><p>Authenticates the given webdriver with Compass.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassDownloadFailedError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassDownloadFailedError</span></span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassDownloadFailedError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised a Compass download fails for some reason.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassElementSelectionError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassElementSelectionError</span></span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassElementSelectionError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised when an expected user interface element is not found.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassFirefoxCookieAuthenticator</span></span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#vicedtools.compass.compasswebdriver.CompassAuthenticator" title="vicedtools.compass.compasswebdriver.CompassAuthenticator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompassAuthenticator</span></code></a></p>
-<p>A Compass Authenticator that gets login details from local Firefox cookies.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator.authenticate">
-<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassFirefoxCookieAuthenticator.authenticate" title="Permalink to this definition"></a></dt>
-<dd><p>Authenticates the given webdriver with Compass.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">CompassWebDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">school_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geckodriver_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authenticator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WebDriver</span></code></p>
-<p>WebDriver extension that stores the Compass school code.</p>
-<p>Creates a webdriver with Compass authentication completed.</p>
-<p>Creates an instance of selenium.webdriver.Firefox and authenticates either
-through a manually entered username/password or through cookies stored in
-the locally installed Firefox installation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>school_code</strong> – Your school’s compass school code.</p></li>
-<li><p><strong>geckodriver_path</strong> – The path to geckodriver.exe</p></li>
-<li><p><strong>authenticator</strong> – An instance of CompassAuthenticator to perform the
-required authentication with Compass.</p></li>
-<li><p><strong>download_path</strong> – The path to download any files to.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>An instance of selenium.webdriver.Firefox with authentication to
-Compass completed.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.discover_academic_years">
-<span class="sig-name descname"><span class="pre">discover_academic_years</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.discover_academic_years" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the academic years that exist in Compass.</p>
-<p>Useful for downloading learning tasks.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A list of the names of each academic year.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.discover_progress_report_cycles">
-<span class="sig-name descname"><span class="pre">discover_progress_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.discover_progress_report_cycles" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the available progress report cycles.</p>
-<p>Currently only discovers cycles on first page.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>published_only</strong> – if true, only return those cycles set as “Published to
-All”.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of the names of each progress report cyle.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.discover_report_cycles">
-<span class="sig-name descname"><span class="pre">discover_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.discover_report_cycles" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the available report cycles.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>published_only</strong> – if true, only return those cycles set to allow student
-access.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of the (year,name) pairs for each report cyle.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_all_reports">
-<span class="sig-name descname"><span class="pre">export_all_reports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_tasks_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./learning</span> <span class="pre">tasks'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reports_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./reports'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_reports_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./progress</span> <span class="pre">reports'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_all_reports" title="Permalink to this definition"></a></dt>
-<dd><p>Exports available reports data from Compass.</p>
-<p>Attempts to download all learning task, report and progress report data
-from Compass. Will skip already downloaded data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>learning_tasks_dir</strong> – The directory to save learning tasks data to</p></li>
-<li><p><strong>reports_dir</strong> – The directory to save reports data to</p></li>
-<li><p><strong>progress_reports_dir</strong> – THe directory to save progress reports data to</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_learning_tasks">
-<span class="sig-name descname"><span class="pre">export_learning_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">academic_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_learning_tasks" title="Permalink to this definition"></a></dt>
-<dd><p>Exports all learning tasks data from Compass.</p>
-<p>Downloads the Learning Tasks exports from Compass using Selenium and the
-Firefox webdriver.</p>
-<p>Will prompt for Compass login details.
-Requires access to Learning Tasks Administration.</p>
-<p>Data is saved as “[download_path]/LearningTasks-[academic_year].csv”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-<li><p><strong>academic_year</strong> – Which Compass academic year to download the export for.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_progress_report">
-<span class="sig-name descname"><span class="pre">export_progress_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_progress_report" title="Permalink to this definition"></a></dt>
-<dd><p>Export progress report data.</p>
-<p>Data is saved as “[download_path]/[cycle].csv”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cycle</strong> – The name of the progress report cycle to export.</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_report_cycle">
-<span class="sig-name descname"><span class="pre">export_report_cycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_report_cycle" title="Permalink to this definition"></a></dt>
-<dd><p>Export progress report data.</p>
-<p>Data is saved as “[download_path]/SemesterReportAllResultsCsvExport Generated - [%Y-%m-%d_%I%M%p].csv”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>year</strong> – The year of the report cycle to export.</p></li>
-<li><p><strong>title</strong> – The title of the report cycle to export.</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_sds">
-<span class="sig-name descname"><span class="pre">export_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_sds" title="Permalink to this definition"></a></dt>
-<dd><p>Exports class enrolment and teacher information from Compass.</p>
-<p>Downloads the Microsoft SDS export from Compass using Selenium and the
-Firefox webdriver.</p>
-<p>Requires access to SDS Export rights in the Subjects and Classes page.</p>
-<dl class="simple">
-<dt>Will save four files in the provided path:</dt><dd><p>StudentEnrollment.csv: contains student-&gt;class mappings
-Teacher.csv: contains teacher id information
-TeacherRoster.csv: contains teacher-&gt;class mappings
-Section.csv: contains class id information</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>download_path</strong> – The directory to save the export.</p></li>
-<li><p><strong>download_wait</strong> – Optional; the amount of time to wait for Compass to
-generate the export, default 10 mins.</p></li>
-<li><p><strong>append_date</strong> – If True, append today’s date to the filenames in
-yyyy-mm-dd format.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_details">
-<span class="sig-name descname"><span class="pre">export_student_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'student</span> <span class="pre">details.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_details" title="Permalink to this definition"></a></dt>
-<dd><p>Exports student details from Compass.</p>
-<p>The basic export includes student codes, name, gender, year level and
-form group. It only includes current students.
-The detailed export also includes DOB, VCAA code, VSN, and school
-house. It includes students who have exited.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p></li>
-<li><p><strong>detailed</strong> – Whether to perform a detailed student details export.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_household_information">
-<span class="sig-name descname"><span class="pre">export_student_household_information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'student</span> <span class="pre">household</span> <span class="pre">information.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.export_student_household_information" title="Permalink to this definition"></a></dt>
-<dd><p>Exports student household information from Compass.</p>
-<p>The basic export includes student address, parent names and parent contact details.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.getDownLoadedFileName">
-<span class="sig-name descname"><span class="pre">getDownLoadedFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.getDownLoadedFileName" title="Permalink to this definition"></a></dt>
-<dd><p>Gets the filename of the most recently downloaded file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.CompassWebDriver.set_download_dir">
-<span class="sig-name descname"><span class="pre">set_download_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.CompassWebDriver.set_download_dir" title="Permalink to this definition"></a></dt>
-<dd><p>Sets the download directory.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>path</strong> – The new download path.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="vicedtools.compass.compasswebdriver.NoRecentDownloadError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vicedtools.compass.compasswebdriver.</span></span><span class="sig-name descname"><span class="pre">NoRecentDownloadError</span></span><a class="headerlink" href="#vicedtools.compass.compasswebdriver.NoRecentDownloadError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Raised if there is no most recent download to return.</p>
-</dd></dl>
-
-</section>
-<section id="module-vicedtools.compass.exports">
-<span id="vicedtools-compass-exports-module"></span><h2>vicedtools.compass.exports module<a class="headerlink" href="#module-vicedtools.compass.exports" title="Permalink to this heading"></a></h2>
-<p>Functions for automating the export of data from Compass.</p>
-<p>Deprecated, functions have been rolled into the CompassWebDriver class.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_academic_years">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_academic_years</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_academic_years" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the academic years that exist in Compass.</p>
-<p>Useful for downloading learning tasks.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>driver</strong> – An instance of CompassWebDriver</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of the names of each academic year.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_progress_report_cycles">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_progress_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_progress_report_cycles" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the available progress report cycles.</p>
-<p>Currently only discovers cycles on first page.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>published_only</strong> – if true, only return those cycles set as “Published to
-All”.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of the names of each progress report cyle.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.discover_report_cycles">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">discover_report_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.discover_report_cycles" title="Permalink to this definition"></a></dt>
-<dd><p>Discovers the available report cycles.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>published_only</strong> – if true, only return those cycles set to allow student
-access.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A list of the names of each report cyle.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_learning_tasks">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_learning_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">academic_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_learning_tasks" title="Permalink to this definition"></a></dt>
-<dd><p>Exports all learning tasks data from Compass.</p>
-<p>Downloads the Learning Tasks exports from Compass using Selenium and the
-Firefox webdriver.</p>
-<p>Will prompt for Compass login details.
-Requires access to Learning Tasks Administration.</p>
-<p>Data is saved as “[download_path]/LearningTasks-[academic_year].csv”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-<li><p><strong>academic_year</strong> – Which Compass academic year to download the export for.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_progress_report">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_progress_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_progress_report" title="Permalink to this definition"></a></dt>
-<dd><p>Export progress report data.</p>
-<p>Data is saved as “[download_path]/[cycle].csv”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>cycle</strong> – The name of the progress report cycle to export.</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_report_cycle">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_report_cycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_report_cycle" title="Permalink to this definition"></a></dt>
-<dd><p>Export progress report data.</p>
-<p>Data is saved as “[download_path]/SemesterReportAllResultsCsvExport Generated - [%Y-%m-%d_%I%M%p].csv”</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>year</strong> – The year of the report cycle to export.</p></li>
-<li><p><strong>title</strong> – The title of the report cycle to export.</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_sds">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_sds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.\\\\'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_sds" title="Permalink to this definition"></a></dt>
-<dd><p>Exports class enrolment and teacher information from Compass.</p>
-<p>Downloads the Microsoft SDS export from Compass using Selenium and the
-Firefox webdriver.</p>
-<p>Requires access to SDS Export rights in the Subjects and Classes page.</p>
-<dl class="simple">
-<dt>Will save four files in the provided path:</dt><dd><p>StudentEnrollment.csv: contains student-&gt;class mappings
-Teacher.csv: contains teacher id information
-TeacherRoster.csv: contains teacher-&gt;class mappings
-Section.csv: contains class id information</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – A CompassWebDriver instance</p></li>
-<li><p><strong>download_path</strong> – The directory to save the export. Must use slashes in
-windows.</p></li>
-<li><p><strong>download_wait</strong> – Optional; the amount of time to wait for Compass to
-generate the export, default 10 mins.</p></li>
-<li><p><strong>append_date</strong> – If True, append today’s date to the filenames in
-yyyy-mm-dd format.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="vicedtools.compass.exports.export_student_details">
-<span class="sig-prename descclassname"><span class="pre">vicedtools.compass.exports.</span></span><span class="sig-name descname"><span class="pre">export_student_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'student</span> <span class="pre">details.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.exports.export_student_details" title="Permalink to this definition"></a></dt>
-<dd><p>Exports student details from Compass.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>driver</strong> – An instance of CompassWebDriver</p></li>
-<li><p><strong>download_path</strong> – The file path to save the csv export, including filename.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
 <section id="module-vicedtools.compass.reports">
 <span id="vicedtools-compass-reports-module"></span><h2>vicedtools.compass.reports module<a class="headerlink" href="#module-vicedtools.compass.reports" title="Permalink to this heading"></a></h2>
 <p>A class for storing reporting data exported from Compass.</p>
@@ -912,7 +444,7 @@ yyyy-mm-dd format.</p></li>
 <span class="sig-name descname"><span class="pre">addLearningTasksExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_task_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.addLearningTasksExport" title="Permalink to this definition"></a></dt>
 <dd><p>Adds data from a Compass Learning Tasks export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -923,7 +455,7 @@ yyyy-mm-dd format.</p></li>
 <span class="sig-name descname"><span class="pre">addProgressReportsExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_report_items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.addProgressReportsExport" title="Permalink to this definition"></a></dt>
 <dd><p>Adds data from a Compass progress reports export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -934,7 +466,7 @@ yyyy-mm-dd format.</p></li>
 <span class="sig-name descname"><span class="pre">addReportsExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.addReportsExport" title="Permalink to this definition"></a></dt>
 <dd><p>Adds data from a Compass reports export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -945,7 +477,7 @@ yyyy-mm-dd format.</p></li>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromLearningTasksExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_task_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.fromLearningTasksExport" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new Reports instance from a Compass Learning Tasks export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#vicedtools.compass.reports.Reports" title="vicedtools.compass.reports.Reports"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reports</span></code></a></p>
 </dd>
 </dl>
@@ -956,7 +488,7 @@ yyyy-mm-dd format.</p></li>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromProgressReportsExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_report_items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.fromProgressReportsExport" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new Reports instance from a Compass progress reports export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#vicedtools.compass.reports.Reports" title="vicedtools.compass.reports.Reports"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reports</span></code></a></p>
 </dd>
 </dl>
@@ -967,7 +499,7 @@ yyyy-mm-dd format.</p></li>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromReportsExport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semester</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_score_mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.fromReportsExport" title="Permalink to this definition"></a></dt>
 <dd><p>Creates a new Reports instance from a Compass reports export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#vicedtools.compass.reports.Reports" title="vicedtools.compass.reports.Reports"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reports</span></code></a></p>
 </dd>
 </dl>
@@ -975,26 +507,22 @@ yyyy-mm-dd format.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="vicedtools.compass.reports.Reports.importSubjectsData">
-<span class="sig-name descname"><span class="pre">importSubjectsData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subjects_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_code_parser=&lt;function</span> <span class="pre">class_code_parser&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.importSubjectsData" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">importSubjectsData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classes_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.importSubjectsData" title="Permalink to this definition"></a></dt>
 <dd><p>Adds subject metadata from a separate csv file.</p>
-<p>Expects a csv with columns ‘SubjectCode’, ‘LearningArea’, ‘SubjectName’.</p>
+<p>Imports subject codes and names from the Compass classes csv export.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>subjects_file</strong> – The path to the csv file containing the subjects
-metadata.</p></li>
-<li><p><strong>class_code_parser</strong> – A function that takes the class code, a regex
-pattern to recognise the subject code and returns the subject
-code.</p></li>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>classes_csv</strong> – The path to the classes csv file.</p></li>
 <li><p><strong>replace_values</strong> – A dictionary to be passed to DataFrame.replace().
 Keys are columns and values are dictionaries containing
 remappings for values in that column. Can be used to
 standardise things where your school has changed the name of a
-subject over time or has changed their grading system.</p></li>
+subject or learning area over time.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1003,7 +531,7 @@ subject over time or has changed their grading system.</p></li>
 <dt class="sig sig-object py" id="vicedtools.compass.reports.Reports.saveReports">
 <span class="sig-name descname"><span class="pre">saveReports</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.saveReports" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -1013,7 +541,7 @@ subject over time or has changed their grading system.</p></li>
 <dt class="sig sig-object py" id="vicedtools.compass.reports.Reports.saveSummary">
 <span class="sig-name descname"><span class="pre">saveSummary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.saveSummary" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -1024,7 +552,7 @@ subject over time or has changed their grading system.</p></li>
 <span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.summary" title="Permalink to this definition"></a></dt>
 <dd><p>Aggregates Academic and Work Habits results to produce a summary.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
 </dd>
 </dl>
@@ -1035,7 +563,7 @@ subject over time or has changed their grading system.</p></li>
 <span class="sig-name descname"><span class="pre">updateFromClassDetails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#vicedtools.compass.reports.Reports.updateFromClassDetails" title="Permalink to this definition"></a></dt>
 <dd><p>Infills TeacherCode data with data available from other reports.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
@@ -1049,18 +577,18 @@ subject over time or has changed their grading system.</p></li>
 <dd><p>A default class code to subject code parser.</p>
 <p>Assumes that class codes contain their corresponding subject code.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>class_code</strong> – The class code.</p></li>
 <li><p><strong>pattern</strong> – A regex pattern that matches subject codes to a named group
 called ‘code’.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The subject code string.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The subject code string.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1082,7 +610,7 @@ called ‘code’.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2022, VicEdTools authors.</p>
+    <p>&#169; Copyright 2023, VicEdTools authors.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

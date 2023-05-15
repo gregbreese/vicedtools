@@ -73,7 +73,7 @@ class Reports:
                           filename: str,
                           year: str = None,
                           semester: str = None,
-                          grade_score_mapper: Callable[[str], float] = None,
+                          grade_score_mapper: dict[str, float] = None,
                           grade_dtype: pd.api.types.CategoricalDtype = None,
                           replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass reports export."""
@@ -114,7 +114,7 @@ class Reports:
             temp_df["Result"] = temp_df["Result"].astype(grade_dtype)
             temp_df.dropna(subset=["Result"], inplace=True)
         if grade_score_mapper:
-            temp_df["ResultScore"] = temp_df["Result"].apply(grade_score_mapper)
+            temp_df["ResultScore"] = temp_df["Result"].map(grade_score_mapper)
         else:
             temp_df["ResultScore"] = None
 
@@ -139,7 +139,7 @@ class Reports:
             cls,
             filename: str,
             year: str = None,
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             learning_task_filter: Callable[[pd.DataFrame], pd.DataFrame] = None,
             replace_values: dict[str, dict] = None) -> Reports:
@@ -178,7 +178,7 @@ class Reports:
             temp_df["Result"] = temp_df["Result"].astype(grade_dtype)
             temp_df.dropna(subset=["Result"], inplace=True)
         if grade_score_mapper:
-            temp_df["ResultScore"] = temp_df["Result"].apply(grade_score_mapper)
+            temp_df["ResultScore"] = temp_df["Result"].map(grade_score_mapper)
         else:
             temp_df["ResultScore"] = None
         temp_df.rename(columns={
@@ -202,7 +202,7 @@ class Reports:
             progress_report_items: list[str],
             year: str = None,
             term: str = None,
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> Reports:
         """Creates a new Reports instance from a Compass progress reports export."""
@@ -254,7 +254,7 @@ class Reports:
             temp_df["ResultGrade"] = temp_df["ResultGrade"].astype(grade_dtype)
             temp_df.dropna(subset=["ResultGrade"], inplace=True)
         if grade_score_mapper:
-            temp_df["ResultScore"] = temp_df["ResultGrade"].apply(
+            temp_df["ResultScore"] = temp_df["ResultGrade"].map(
                 grade_score_mapper)
         else:
             temp_df["ResultScore"] = None
@@ -299,7 +299,7 @@ class Reports:
     def addLearningTasksExport(
             self,
             filename: str,
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             learning_task_filter: Callable[[pd.DataFrame], pd.DataFrame] = None,
             replace_values: dict[str, dict] = None) -> None:
@@ -324,7 +324,7 @@ class Reports:
 
     def addReportsExport(self,
                          filename: str,
-                         grade_score_mapper: Callable[[str], float] = None,
+                         grade_score_mapper: dict[str, float] = None,
                          grade_dtype: pd.api.types.CategoricalDtype = None,
                          replace_values: dict[str, dict] = None) -> None:
         """Adds data from a Compass reports export."""
@@ -342,7 +342,7 @@ class Reports:
             self,
             filename: str,
             progress_report_items: list[str],
-            grade_score_mapper: Callable[[str], float] = None,
+            grade_score_mapper: dict[str, float] = None,
             grade_dtype: pd.api.types.CategoricalDtype = None,
             replace_values: dict[str, dict] = None) -> None:
         """Adds data from a Compass progress reports export."""
@@ -372,44 +372,45 @@ class Reports:
         return Reports(data)
 
     def importSubjectsData(self,
-                           subjects_file: str,
-                           class_code_parser: Callable[[str, str],
-                                                       str] = class_code_parser,
+                           classes_csv: str,
                            replace_values: dict[str, dict] = None) -> None:
         """Adds subject metadata from a separate csv file.
         
-        Expects a csv with columns 'SubjectCode', 'LearningArea', 'SubjectName'.
+        Imports subject codes and names from the Compass classes csv export.
 
         Args:
-            subjects_file: The path to the csv file containing the subjects
-                metadata.
-            class_code_parser: A function that takes the class code, a regex
-                pattern to recognise the subject code and returns the subject
-                code.
+            classes_csv: The path to the classes csv file.
             replace_values: A dictionary to be passed to DataFrame.replace().
                 Keys are columns and values are dictionaries containing 
                 remappings for values in that column. Can be used to
                 standardise things where your school has changed the name of a
-                subject over time or has changed their grading system.
+                subject or learning area over time.
         """
 
-        subjects_df = pd.read_csv(subjects_file)
+        classes_df = pd.read_csv(classes_csv)
 
-        subjects = subjects_df["SubjectCode"].values
-        pattern_string = "(?P<code>" + "|".join(subjects) + ")"
-
-        self.data["SubjectCode"] = self.data["ClassCode"].apply(
-            class_code_parser, pattern_string=pattern_string)
+        self.data["Year"] = self.data["Time"].dt.year
+        reports_columns = [
+            'Time',
+            'ClassCode',
+            'StudentCode',
+            'ResultName',
+            'ResultGrade',
+            'ResultScore',
+            'Type',
+            'Year',
+        ]
+        classes_columns = [
+            'LearningArea', 'ClassCode', 'SubjectCode', 'SubjectName',
+            'TeacherCode', 'Year'
+        ]
+        self.data = pd.merge(self.data[reports_columns],
+                             classes_df[classes_columns],
+                             how="left",
+                             on=["ClassCode", "Year"])
         if replace_values:
             self.data.replace(replace_values, inplace=True)
-        columns = [
-            'Time', 'ClassCode', 'StudentCode', 'ResultName', 'ResultGrade',
-            'ResultScore', 'Type', 'SubjectCode', 'TeacherCode'
-        ]
-        self.data = pd.merge(self.data[columns],
-                             subjects_df,
-                             how="left",
-                             on="SubjectCode")
+        self.data.drop(columns="Year", inplace=True)
 
     def updateFromClassDetails(self) -> None:
         """Infills TeacherCode data with data available from other reports."""
@@ -422,7 +423,10 @@ class Reports:
 
     def summary(self) -> pd.DataFrame:
         """Aggregates Academic and Work Habits results to produce a summary."""
-        grpd = self.data.groupby([
+        columns = ['Time', 'ClassCode', 'StudentCode',
+       'ResultScore', 'Type', 'LearningArea', 'SubjectCode',
+       'SubjectName', 'TeacherCode']
+        grpd = self.data[columns].groupby([
             'Time', 'ClassCode', 'StudentCode', 'Type', 'SubjectCode',
             'SubjectName', 'LearningArea', 'TeacherCode'
         ],

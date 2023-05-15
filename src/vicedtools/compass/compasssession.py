@@ -15,18 +15,18 @@
 
 from __future__ import annotations
 
-from abc import abstractmethod
 from datetime import datetime
 from math import ceil
 import os
 import re
 import requests
 import time
-from typing import Protocol
-from urllib.parse import quote
 import zipfile
 
-import browser_cookie3
+from vicedtools.compass import CompassAuthenticator
+
+# Minimum interval between requests
+MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
 
 
 def current_ms_time() -> int:
@@ -40,105 +40,13 @@ def sanitise_filename(filename):
     return filename
 
 
-class CompassAuthenticator(Protocol):
-    """An abstract class for generic Compass authenticators."""
-
-    @abstractmethod
-    def authenticate(self, session: CompassSession):
-        raise NotImplementedError
-
-
-class CompassFirefoxCookieAuthenticator(CompassAuthenticator):
-    """A Compass authenaticator that gets login details from the local Firefox installation."""
-
-    def authenticate(self, s: CompassSession):
-        cj = browser_cookie3.firefox(
-            domain_name=f'{s.school_code}.compass.education')
-
-        for cookie in cj:
-            c = {cookie.name: cookie.value}
-            s.cookies.update(c)
-
-
-class CompassAuthenticationError(Exception):
-    """Authentication with Compass failed."""
-    pass
-
-
 class CompassLongRunningFileRequestError(Exception):
     """Long running file request failed."""
     pass
 
 
-class CompassBasicAuthenticator(CompassAuthenticator):
-    """Authenticates using a provided username and password."""
-
-    def __init__(self, username: str, password: str):
-        self.username = username
-        self.password = password
-
-    def authenticate(self, s: CompassSession):
-        home_url = f"https://{s.school_code}.compass.education"
-        r = s.get(home_url)
-        # get viewstate
-        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
-        m = re.search(pattern, r.text)
-        viewstate = quote(m.group('viewstate'))
-        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/=]*)"'
-        m = re.search(pattern, r.text)
-        viewstategenerator = quote(m.group('viewstategenerator'))
-        # url encode username and password
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        s.headers.update(headers)
-        username = quote(self.username)
-        password = quote(self.password)
-        # auth
-        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
-        payload = f'__EVENTTARGET=button1&__EVENTARGUMENT=&__VIEWSTATE={viewstate}&browserFingerprint=3597254041&username={username}&password={password}&g-recaptcha-response=&rememberMeChk=on&__VIEWSTATEGENERATOR={viewstategenerator}'
-        r = s.post(login_url, data=payload)
-        if r.status_code != 200:
-            raise CompassAuthenticationError
-        pattern = "Sorry - your username and/or password was incorrect"
-        m = re.search(pattern, r.text)
-        if m:
-            raise CompassAuthenticationError
-
-
-class CompassCLIAuthenticator(CompassAuthenticator):
-    """Authenticates using login details from CLI prompt."""
-
-    def authenticate(self, s: CompassSession):
-        username = input("Compass username: ")
-        password = input("Compass password: ")
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        s.headers.update(headers)
-        login_url = f"https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled"
-        # get viewstate
-        r = s.get(login_url)
-        pattern = 'id="__VIEWSTATE" value="(?P<viewstate>[0-9A-Za-z+/=]*)"'
-        m = re.search(pattern, r.text)
-        viewstate = quote(m.group('viewstate'))
-        pattern = 'id="__VIEWSTATEGENERATOR" value="(?P<viewstategenerator>[0-9A-Za-z+/=]*)"'
-        m = re.search(pattern, r.text)
-        viewstategenerator = quote(m.group('viewstategenerator'))
-        # url encode username and password
-        username = quote(username)
-        password = quote(password)
-        # auth
-        payload = f'__EVENTTARGET=button1&__EVENTARGUMENT=&__VIEWSTATE={viewstate}&browserFingerprint=3597254041&username={username}&password={password}&g-recaptcha-response=&rememberMeChk=on&__VIEWSTATEGENERATOR={viewstategenerator}'
-        r = s.post(login_url, data=payload)
-        if r.status_code != 200:
-            raise CompassAuthenticationError
-        pattern = "Sorry - your username and/or password was incorrect"
-        m = re.search(pattern, r.text)
-        if m:
-            raise CompassAuthenticationError
-
-
 class CompassSession(requests.sessions.Session):
     """A requests Session extension with methods for accessing data from Compass."""
-
-    MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
 
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
         """Creates a requests Session with Compass authentication completed.
@@ -164,7 +72,7 @@ class CompassSession(requests.sessions.Session):
     def get(self, *args, **kwargs):
         """Enforce a minimum delay between requests."""
         now = time.time_ns()
-        wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
+        wait_time = MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
             time.sleep(wait_time / 1000000000)
         self.last_request_time = time.time_ns()
@@ -173,7 +81,7 @@ class CompassSession(requests.sessions.Session):
     def post(self, *args, **kwargs):
         """Enforce a minimum delay between requests."""
         now = time.time_ns()
-        wait_time = self.MIN_REQUEST_INTERVAL - now + self.last_request_time
+        wait_time = MIN_REQUEST_INTERVAL - now + self.last_request_time
         if wait_time > 0:
             time.sleep(wait_time / 1000000000)
         self.last_request_time = time.time_ns()
@@ -275,7 +183,7 @@ class CompassSession(requests.sessions.Session):
         """
         payload = f'{{"type":"2","parameters":"{{\\"cycleId\\":{cycle_id}}}"}}'
         filename = self.long_running_file_request(payload, save_dir)
-        head, tail = os.path.split(filename)
+        head, _tail = os.path.split(filename)
         sanitised_title = sanitise_filename(cycle_title)
         new_tail = f"SemesterReports-{cycle_year}-{sanitised_title}.csv"
         new_filename = os.path.join(head, new_tail)
@@ -341,7 +249,7 @@ class CompassSession(requests.sessions.Session):
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
 
-        learning_tasks_admin_url = f"https://{self.school_code}.compass.education/Communicate/LearningTasksAdministration.aspx"
+        learning_tasks_admin_url = f"https://{self.school_code}.compass.education/Learn/Subjects.aspx"
         r = self.get(learning_tasks_admin_url)
         pattern = "Compass.referenceDataCacheKeys.schoolConfigKey = '(?P<key>[0-9a-z-]*)'"
         m = re.search(pattern, r.text)
@@ -357,6 +265,8 @@ class CompassSession(requests.sessions.Session):
             academic_groups_url = f"https://{self.school_code}.compass.education/Services/ReferenceDataCache.svc/GetAllAcademicGroups?sessionstate=readonly&v={key}&page={page}&start={25*(page-1)}&limit=25"
             r = self.get(academic_groups_url)
             new_groups = r.json()['d']
+            if new_groups[0]['id'] != 25 * (page - 1):
+                break
             groups += new_groups
         return groups
 
@@ -378,6 +288,46 @@ class CompassSession(requests.sessions.Session):
             url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=37"
         else:
             url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=38"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
+    def export_student_custom_flags(
+            self, file_name: str = "student custom flags.csv") -> None:
+        '''Exports student flags that have been added to Compass.
+
+        Note: Doesn't include flags imported through CASES.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=17"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+
+    def export_student_demographic_details(
+            self, file_name: str = "student custom flags.csv") -> None:
+        '''Exports student demographic details.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=54"
+        r = self.get(url)
+        with open(file_name, "wb") as f:
+            f.write(r.content)
+            
+    def export_parent_mailmerge(
+            self, file_name: str = "parent mailmerge.csv") -> None:
+        '''Exports each parent contact for use in mail merges.
+
+        The basic export includes student address, parent names and parent contact details.
+
+        Args:
+            file_name: The file path to save the csv export, including filename.
+        '''
+        url = f"https://{self.school_code}.compass.education/Services/FileDownload/CsvRequestHandler?type=24"
         r = self.get(url)
         with open(file_name, "wb") as f:
             f.write(r.content)
@@ -438,19 +388,6 @@ class CompassSession(requests.sessions.Session):
                 else:
                     zip_ref.extract(content, path=save_dir)
         os.remove(archive_file_name)
-
-    def get_subject_metadata(self, file_name: str, academic_group: int = -1):
-        """Downloads a CSV with subject metadata.
-        
-        Args:
-            file_name: The file name to save the CSV to.
-            academic_group: Optional, the academic group id to download the
-                metadata for. Defaults to the currently active academic group.
-        """
-        url = f"https://{self.school_code}.compass.education/Learn/Subjects.aspx?action=export-csv&academicGroup={academic_group}"
-        r = self.get(url)
-        with open(file_name, 'wb') as f:
-            f.write(r.content)
 
     def get_classes_for_subject(self, subject_id: int) -> list[dict]:
         """Downloads a CSV with subject metadata.

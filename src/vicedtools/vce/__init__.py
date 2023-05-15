@@ -12,4 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from vicedtools.vce.vasssession import VASSSession
+from vicedtools.vce.vasssession import (VASSAuthenticator,
+                                        VASSBasicAuthenticator,
+                                        VASSAuthenticationError, VASSSession)

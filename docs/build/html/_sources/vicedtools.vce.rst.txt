@@ -20,14 +20,6 @@ vicedtools.vce.vasssession module
    :undoc-members:
    :show-inheritance:
 
-vicedtools.vce.vasswebdriver module
------------------------------------
-
-.. automodule:: vicedtools.vce.vasswebdriver
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
