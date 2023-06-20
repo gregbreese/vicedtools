@@ -19,7 +19,7 @@ import glob
 import os
 
 from vicedtools.compass import Reports
-from vicedtools.scripts._config import (config, learning_tasks_dir,
+from vicedtools.scripts.config import (config, learning_tasks_dir,
                                         progress_reports_dir, reports_dir,
                                         learning_task_filter, grade_dtype,
                                         classes_csv, reports_csv,

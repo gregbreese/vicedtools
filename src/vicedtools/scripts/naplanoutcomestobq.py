@@ -18,7 +18,7 @@
 from vicedtools.gcp import (upload_csv_to_bigquery, NAPLAN_OUTCOMES_SCHEMA,
                             NAPLAN_OUTCOMES_CLUSTERING_FIELDS,
                             NAPLAN_OUTCOMES_MOST_RECENT_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (naplan_outcomes_combined_csv,
+from vicedtools.scripts.config import (naplan_outcomes_combined_csv,
                                         naplan_outcomes_most_recent_csv,
                                         naplan_outcomes_table_id, 
                                         naplan_outcomes_most_recent_table_id,

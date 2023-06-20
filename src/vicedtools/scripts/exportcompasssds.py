@@ -21,7 +21,7 @@ import os
 import sys
 
 from vicedtools.compass import CompassSession
-from vicedtools.scripts._config import (sds_dir, compass_authenticator,
+from vicedtools.scripts.config import (sds_dir, compass_authenticator,
                                         compass_school_code,
                                         academic_groups_json)
 

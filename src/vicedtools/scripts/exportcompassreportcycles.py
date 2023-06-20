@@ -20,7 +20,7 @@ import sys
 import os
 
 from vicedtools.compass.compasssession import CompassSession, CompassAuthenticator
-from vicedtools.scripts._config import (report_cycles_json,
+from vicedtools.scripts.config import (report_cycles_json,
                                         compass_authenticator,
                                         compass_school_code)
 

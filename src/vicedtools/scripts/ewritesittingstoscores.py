@@ -23,7 +23,7 @@ import sys
 import pandas as pd
 
 from vicedtools.acer import OARSTests, EWriteSittings
-from vicedtools.scripts._config import (oars_tests_json, ewrite_sittings_dir,
+from vicedtools.scripts.config import (oars_tests_json, ewrite_sittings_dir,
                                         ewrite_scores_csv, ewrite_criteria_csv)
 
 

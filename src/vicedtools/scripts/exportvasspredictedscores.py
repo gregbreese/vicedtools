@@ -19,7 +19,7 @@ import argparse
 import os
 
 from vicedtools.vce import VASSSession
-from vicedtools.scripts._config import (vass_authenticator,
+from vicedtools.scripts.config import (vass_authenticator,
                                         vass_predicted_scores_dir)
 
 

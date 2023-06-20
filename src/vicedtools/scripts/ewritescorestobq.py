@@ -23,7 +23,7 @@ from vicedtools.gcp import (upload_csv_to_bigquery, EWRITE_SCORES_SCHEMA,
                             EWRITE_SCORES_CLUSTERING_FIELDS,
                             EWRITE_CRITERIA_SCHEMA,
                             EWRITE_CRITERIA_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (ewrite_scores_csv,
+from vicedtools.scripts.config import (ewrite_scores_csv,
                                         ewrite_scores_table_id,
                                         ewrite_criteria_csv,
                                         ewrite_criteria_table_id, gcs_bucket)

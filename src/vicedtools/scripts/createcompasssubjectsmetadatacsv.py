@@ -20,7 +20,7 @@ import os
 
 import pandas as pd
 
-from vicedtools.scripts._config import (subjects_csv, subjects_dir)
+from vicedtools.scripts.config import (subjects_csv, subjects_dir)
 
 
 def main():

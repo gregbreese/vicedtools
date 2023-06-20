@@ -22,7 +22,7 @@ import pandas as pd
 
 from vicedtools.gcp import (upload_csv_to_bigquery, STUDENT_ENROLMENTS_SCHEMA,
                             STUDENT_ENROLMENTS_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (academic_groups_json, compass_dir,
+from vicedtools.scripts.config import (academic_groups_json, compass_dir,
                                         enrolment_details_dir,
                                         student_enrolments_table_id, gcs_bucket)
 

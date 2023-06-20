@@ -18,7 +18,7 @@
 import os
 
 from vicedtools.compass import CompassSession
-from vicedtools.scripts._config import (student_household_information_csv,
+from vicedtools.scripts.config import (student_household_information_csv,
                                         compass_authenticator,
                                         compass_school_code)
 

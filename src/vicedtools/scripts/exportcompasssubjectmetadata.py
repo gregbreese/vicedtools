@@ -25,7 +25,7 @@ import time
 import pandas as pd
 
 from vicedtools.compass import CompassSession, sanitise_filename
-from vicedtools.scripts._config import (compass_authenticator,
+from vicedtools.scripts.config import (compass_authenticator,
                                         compass_school_code,
                                         academic_groups_json, subjects_dir)
 

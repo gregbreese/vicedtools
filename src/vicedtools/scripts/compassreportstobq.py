@@ -18,7 +18,7 @@
 from vicedtools.gcp import (upload_csv_to_bigquery, REPORTS_SCHEMA,
                             REPORTS_CLUSTERING_FIELDS, REPORTS_SUMMARY_SCHEMA,
                             REPORTS_SUMMARY_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (reports_csv, reports_summary_csv,
+from vicedtools.scripts.config import (reports_csv, reports_summary_csv,
                                         reports_table_id,
                                         reports_summary_table_id, gcs_bucket)
 

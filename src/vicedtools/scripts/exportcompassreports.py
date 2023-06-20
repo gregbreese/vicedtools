@@ -22,7 +22,7 @@ import json
 import os
 
 from vicedtools.compass import CompassSession, get_report_cycle_id
-from vicedtools.scripts._config import (reports_dir, compass_authenticator,
+from vicedtools.scripts.config import (reports_dir, compass_authenticator,
                                         compass_school_code, report_cycles_json)
 
 

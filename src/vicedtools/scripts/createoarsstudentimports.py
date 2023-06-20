@@ -25,7 +25,7 @@ import pandas as pd
 
 from vicedtools.acer import OARSCandidates, OARSSession
 
-from vicedtools.scripts._config import (
+from vicedtools.scripts.config import (
     config,
     student_details_csv,
     oars_candidates_json,

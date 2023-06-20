@@ -20,7 +20,7 @@ import os
 
 import pandas as pd
 
-from vicedtools.scripts._config import (naplan_outcomes_combined_csv,
+from vicedtools.scripts.config import (naplan_outcomes_combined_csv,
                                         naplan_outcomes_most_recent_csv,
                                         naplan_outcomes_dir)
 

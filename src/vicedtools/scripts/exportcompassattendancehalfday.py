@@ -20,7 +20,7 @@ import datetime
 import os
 
 from vicedtools.compass import CompassSession
-from vicedtools.scripts._config import (attendance_halfday_dir,
+from vicedtools.scripts.config import (attendance_halfday_dir,
                                         compass_authenticator,
                                         compass_school_code)
 

@@ -21,7 +21,7 @@ import pandas as pd
 
 from vicedtools.gcp import (upload_csv_to_bigquery, PAT_MOST_RECENT_SCHEMA,
                             PAT_MOST_RECENT_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (pat_most_recent_csv,
+from vicedtools.scripts.config import (pat_most_recent_csv,
                                         pat_most_recent_table_id, gcs_bucket)
 
 

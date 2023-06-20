@@ -19,7 +19,7 @@ from datetime import datetime
 import os
 
 from vicedtools.sportstrak import create_sportstrak_student_import
-from vicedtools.scripts._config import (config, sportstrak_dir,
+from vicedtools.scripts.config import (config, sportstrak_dir,
                                         student_details_csv)
 
 
