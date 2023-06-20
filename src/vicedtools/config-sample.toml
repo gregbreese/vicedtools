@@ -43,6 +43,7 @@ progress_report_cycles_json = "progress report cycles.json"
 report_cycles_json = "report cycles.json"
 subjects_csv = "subjects.csv"
 classes_csv = "classes.csv"
+attendance_halfday_dir = "attendance halfday"
 
 # Order of all learning task, report and progress report grades, ordered
 # lowest to highest
@@ -110,6 +111,7 @@ dir = "naplan exports"
 outcomes_dir = "outcomes exports"
 sssr_dir = "sssr exports"
 outcomes_combined_csv = "NAPLAN outcomes combined.csv"
+outcomes_most_recent_csv = "NAPLAN outcomes most recent.csv"
 
 [oars]
 # ACER OARS username, password and school code
@@ -158,6 +160,7 @@ student_enrolments_table_id = "student_enrolments"
 pat_scores_table_id = "pat_scores"
 pat_most_recent_table_id = "pat_most_recent"
 naplan_outcomes_table_id = "naplan"
+naplan_outcomes_most_recent_table_id = "naplan_most_recent"
 reports_table_id = "reports"
 reports_summary_table_id = "reports_summary"
 ewrite_scores_table_id = "ewrite_scores"

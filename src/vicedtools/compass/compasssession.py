@@ -292,8 +292,9 @@ class CompassSession(requests.sessions.Session):
         with open(file_name, "wb") as f:
             f.write(r.content)
 
-    def export_student_custom_flags(
-            self, file_name: str = "student custom flags.csv") -> None:
+    def export_student_custom_flags(self,
+                                    file_name: str = "student custom flags.csv"
+                                   ) -> None:
         '''Exports student flags that have been added to Compass.
 
         Note: Doesn't include flags imported through CASES.
@@ -317,7 +318,7 @@ class CompassSession(requests.sessions.Session):
         r = self.get(url)
         with open(file_name, "wb") as f:
             f.write(r.content)
-            
+
     def export_parent_mailmerge(
             self, file_name: str = "parent mailmerge.csv") -> None:
         '''Exports each parent contact for use in mail merges.
@@ -480,6 +481,21 @@ class CompassSession(requests.sessions.Session):
         del self.headers['Content-Type']
 
         return new_enrolments
+
+    def export_attendance_cases_halfday(self,
+                                        start_date: str,
+                                        finish_date: str,
+                                        save_dir: str,
+                                        included_exited: bool = True):
+        """Exports attendance data in the CASES half-day csv format.
+        
+        Args:
+            start_date: The start date for the export as yyyy-mm-dd
+            finish_date: The finish date for the export as yyyy-mm-dd
+            save_dir: The folder to save the export into.
+        """
+        payload = f'{{"type":"5","parameters":"{{\\"reportName\\":\\"cases21HalfDayCsv\\",\\"filename\\":\\"CASES21_HalfDay.csv\\",\\"startDateIn\\":\\"{start_date}T13:00:00.000Z\\",\\"finishDateIn\\":\\"{finish_date}T13:00:00.000Z\\",\\"includeExitedStudents\\":{str(included_exited).lower()},\\"minimumAbsentDays\\":\\"\\",\\"includeOverSixteens\\":true,\\"includePLCStudents\\":true,\\"yearLevelId\\":\\"\\",\\"campuses\\":\\"\\",\\"semester\\":\\"1\\",\\"collection\\":\\"Semester 1\\",\\"modifiedSinceDateIn\\":null,\\"userIds\\":\\"19311\\",\\"yearLevels\\":\\"7|8|9|10\\",\\"startDatePickerAttendanceByDayReport\\":\\"2023-05-19T14:00:00.000Z\\",\\"exportDatePickerFullSchoolAuditRollReport\\":\\"2023-05-19T14:00:00.000Z\\",\\"teachingDaysNumber\\":\\"8\\",\\"includeComments\\":true,\\"yearLevelsPreSchool\\":\\"\\",\\"yearLevelsPrimary\\":\\"\\",\\"yearLevelsMiddle\\":\\"\\",\\"yearLevelsSenior\\":\\"\\",\\"groupBy\\":null,\\"ethnicities\\":\\"\\",\\"yearLevelIds\\":\\"\\",\"formGroups\\":\\"\\"}}"}}'
+        self.long_running_file_request(payload, save_dir)
 
 
 def get_report_cycle_id(cycles, year, name):

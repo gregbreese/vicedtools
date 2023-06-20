@@ -83,6 +83,8 @@ reports_summary_csv = os.path.join(compass_dir,
                                    config['compass']['reports_summary_csv'])
 subjects_csv = os.path.join(compass_dir, config['compass']['subjects_csv'])
 classes_csv = os.path.join(compass_dir, config['compass']['classes_csv'])
+attendance_halfday_dir = os.path.join(
+    compass_dir, config['compass']['attendance_halfday_dir'])
 grade_dtype = pd.api.types.CategoricalDtype(
     categories=config['compass']['grade_order'], ordered=True)
 
@@ -96,6 +98,8 @@ naplan_outcomes_dir = os.path.join(naplan_dir, config['naplan']['outcomes_dir'])
 naplan_sssr_dir = os.path.join(naplan_dir, config['naplan']['sssr_dir'])
 naplan_outcomes_combined_csv = os.path.join(
     naplan_dir, config['naplan']['outcomes_combined_csv'])
+naplan_outcomes_most_recent_csv = os.path.join(
+    naplan_dir, config['naplan']['outcomes_most_recent_csv'])
 
 # oars
 oars_authenticator = OARSBasicAuthenticator(config['oars']['username'],
@@ -130,6 +134,7 @@ student_enrolments_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['
 pat_scores_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['pat_scores_table_id']}"
 pat_most_recent_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['pat_most_recent_table_id']}"
 naplan_outcomes_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['naplan_outcomes_table_id']}"
+naplan_outcomes_most_recent_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['naplan_outcomes_most_recent_table_id']}"
 reports_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['reports_table_id']}"
 reports_summary_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['reports_summary_table_id']}"
 gat_table_id = f"{gcp_project}.{general_dataset}.{config['gcp']['general_dataset_tables']['gat_table_id']}"

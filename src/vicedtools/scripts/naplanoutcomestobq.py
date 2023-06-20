@@ -16,15 +16,22 @@
 """Executable script for uploading NAPLAN outcomes BigQuery."""
 
 from vicedtools.gcp import (upload_csv_to_bigquery, NAPLAN_OUTCOMES_SCHEMA,
-                            NAPLAN_OUTCOMES_CLUSTERING_FIELDS)
+                            NAPLAN_OUTCOMES_CLUSTERING_FIELDS,
+                            NAPLAN_OUTCOMES_MOST_RECENT_CLUSTERING_FIELDS)
 from vicedtools.scripts._config import (naplan_outcomes_combined_csv,
-                                        naplan_outcomes_table_id, gcs_bucket)
+                                        naplan_outcomes_most_recent_csv,
+                                        naplan_outcomes_table_id, 
+                                        naplan_outcomes_most_recent_table_id,
+                                        gcs_bucket)
 
 
 def main():
     upload_csv_to_bigquery(naplan_outcomes_combined_csv, NAPLAN_OUTCOMES_SCHEMA,
                            NAPLAN_OUTCOMES_CLUSTERING_FIELDS,
                            naplan_outcomes_table_id, gcs_bucket)
+    upload_csv_to_bigquery(naplan_outcomes_most_recent_csv, NAPLAN_OUTCOMES_SCHEMA,
+                           NAPLAN_OUTCOMES_MOST_RECENT_CLUSTERING_FIELDS,
+                           naplan_outcomes_most_recent_table_id, gcs_bucket)
 
 
 if __name__ == "__main__":
