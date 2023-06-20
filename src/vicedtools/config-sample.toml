@@ -135,7 +135,7 @@ scale_constructs_json = "scale constructs.json"
 oars_candidates_json = "candidates.json"
 
 [sportstrak]
-dir = "sportstrak
+dir = "sportstrak"
 
 [sportstrak.house_map]
 # Map the house colours as given in CASES to the house names as used in Sportstrak
