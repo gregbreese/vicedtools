@@ -15,6 +15,7 @@
 import pandas as pd
 import pdfquery
 
+
 def scrape_login_details(input_pdf, output_csv):
     """Scrapes the login details from the PDF given by DAL.
 
