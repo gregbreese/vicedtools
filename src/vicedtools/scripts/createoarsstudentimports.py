@@ -132,8 +132,9 @@ def main():
     today = datetime.today()
     pat_results_df["Maths Completed"] = pd.to_datetime(
         pat_results_df["Maths Completed"])
-    recent_maths = pat_results_df.loc[(today - pat_results_df["Maths Completed"]
-                                      ) < timedelta(days=90)]['Username']
+    recent_maths = pat_results_df.loc[(
+        today -
+        pat_results_df["Maths Completed"]) < timedelta(days=90)]['Username']
     maths_allocations = student_details_df[["Username"]].copy()
     maths_allocations["Tags"] = "Maths adaptive"
     maths_allocations = maths_allocations.loc[~maths_allocations["Username"].

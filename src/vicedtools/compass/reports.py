@@ -425,14 +425,15 @@ class Reports:
 
     def summary(self) -> pd.DataFrame:
         """Aggregates Academic and Work Habits results to produce a summary."""
-        columns = ['Time', 'ClassCode', 'StudentCode',
-       'ResultScore', 'Type', 'LearningArea', 'SubjectCode',
-       'SubjectName', 'TeacherCode']
+        columns = [
+            'Time', 'ClassCode', 'StudentCode', 'ResultScore', 'Type',
+            'LearningArea', 'SubjectCode', 'SubjectName', 'TeacherCode'
+        ]
         grpd = self.data[columns].groupby([
             'Time', 'ClassCode', 'StudentCode', 'Type', 'SubjectCode',
             'SubjectName', 'LearningArea', 'TeacherCode'
         ],
-                                 as_index=False).mean()
+                                          as_index=False).mean()
         pvtd = grpd.pivot_table(index=[
             'Time', 'ClassCode', 'StudentCode', 'SubjectCode', 'SubjectName',
             'LearningArea', 'TeacherCode'

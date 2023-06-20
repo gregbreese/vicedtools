@@ -19,7 +19,8 @@ from datetime import datetime
 import os
 
 from vicedtools.sportstrak import create_sportstrak_student_import
-from vicedtools.scripts._config import (config, sportstrak_dir, student_details_csv)
+from vicedtools.scripts._config import (config, sportstrak_dir,
+                                        student_details_csv)
 
 
 def main():
@@ -27,11 +28,10 @@ def main():
         os.makedirs(sportstrak_dir)
 
     date_today = datetime.today().strftime('%Y-%m-%d')
-    destination_xlsx = os.path.join(sportstrak_dir, f"{date_today} sportstrak export.xlsx")
-    create_sportstrak_student_import(student_details_csv,
-                                     destination_xlsx,
+    destination_xlsx = os.path.join(sportstrak_dir,
+                                    f"{date_today} sportstrak export.xlsx")
+    create_sportstrak_student_import(student_details_csv, destination_xlsx,
                                      config["sportstrak"]["house_map"])
-
 
 
 if __name__ == "__main__":

@@ -59,8 +59,8 @@ def question_summary(pat_results: PATResults,
     '''
     q_difficulty = pat_results.question_scales[question]
     if from_date and to_date:
-        rows = (pat_results.results["Completed"] >
-                from_date) & (pat_results.results["Completed"] < to_date)
+        rows = (pat_results.results["Completed"]
+                > from_date) & (pat_results.results["Completed"] < to_date)
         summary_df = pat_results.results.loc[rows, ["Scale", question]].copy()
     elif from_date:
         rows = (pat_results.results["Completed"] > from_date)
