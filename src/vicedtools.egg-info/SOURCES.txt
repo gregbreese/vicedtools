@@ -4,7 +4,6 @@ pyproject.toml
 setup.cfg
 setup.py
 src/vicedtools/__init__.py
-src/vicedtools/config.py
 src/vicedtools/educationperfect.py
 src/vicedtools/sportstrak.py
 src/vicedtools.egg-info/PKG-INFO
@@ -43,6 +42,8 @@ src/vicedtools/scripts/__init__.py
 src/vicedtools/scripts/compassreportstobq.py
 src/vicedtools/scripts/compassstudentdetailstobq.py
 src/vicedtools/scripts/compassstudentenrolmenttobq.py
+src/vicedtools/scripts/config.py
+src/vicedtools/scripts/createcompassclassescsv.py
 src/vicedtools/scripts/createcompassreportssummaries.py
 src/vicedtools/scripts/createcompasssubjectsmetadatacsv.py
 src/vicedtools/scripts/createnaplansummary.py
