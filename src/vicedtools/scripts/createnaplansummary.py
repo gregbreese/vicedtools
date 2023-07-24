@@ -78,25 +78,33 @@ def main():
         "READING", "WRITING", "SPELLING", "NUMERACY", "GRAMMAR & PUNCTUATION"
     ]
     for field in fields:
-        outcomes_df[f"{field}_nb"] = outcomes_df[f"{field}_nb"].astype(float)
+        # newer exports have columns like 'READING'
+        # older exports have columns like 'READING_nb'
+        if field in outcomes_df.columns:
+            column = field
+        elif f"{field}_nb" in outcomes_df.columns:
+            column = f"{field}_nb"
+        else:
+            raise KeyError(f"'{field}' missing from Dataframe")
+        outcomes_df[field] = outcomes_df[column].astype(float)
         outcomes_df[f"{field}_band"] = outcomes_df.apply(
-            lambda x: get_band(x[f"{field}_nb"], x["Reporting Test"]), axis=1)
+            lambda x: get_band(x[column], x["Reporting Test"]), axis=1)
         outcomes_df[f"{field}_toptwo"] = outcomes_df.apply(
-            lambda x: is_in_top_two_bands(x[f"{field}_band"], x["Reporting Test"
+            lambda x: is_in_top_two_bands(x[column], x["Reporting Test"
                                                                ]),
             axis=1)
         outcomes_df[f"{field}_bottomtwo"] = outcomes_df.apply(
-            lambda x: is_in_bottom_two_bands(x[f"{field}_band"], x[
+            lambda x: is_in_bottom_two_bands(x[column], x[
                 "Reporting Test"]),
             axis=1)
 
     column_order = [
         'APS Year', 'Reporting Test', 'Cases ID', 'First Name', 'Second Name',
-        'Surname', 'READING_nb', 'READING_band', 'READING_toptwo',
-        'READING_bottomtwo', 'WRITING_nb', 'WRITING_band', 'WRITING_toptwo',
-        'WRITING_bottomtwo', 'SPELLING_nb', 'SPELLING_band', 'SPELLING_toptwo',
-        'SPELLING_bottomtwo', 'NUMERACY_nb', 'NUMERACY_band', 'NUMERACY_toptwo',
-        'NUMERACY_bottomtwo', 'GRAMMAR & PUNCTUATION_nb',
+        'Surname', 'Gender', 'READING', 'READING_band', 'READING_toptwo',
+        'READING_bottomtwo', 'WRITING', 'WRITING_band', 'WRITING_toptwo',
+        'WRITING_bottomtwo', 'SPELLING', 'SPELLING_band', 'SPELLING_toptwo',
+        'SPELLING_bottomtwo', 'NUMERACY', 'NUMERACY_band', 'NUMERACY_toptwo',
+        'NUMERACY_bottomtwo', 'GRAMMAR & PUNCTUATION',
         'GRAMMAR & PUNCTUATION_band', 'GRAMMAR & PUNCTUATION_toptwo',
         'GRAMMAR & PUNCTUATION_bottomtwo'
     ]
