@@ -37,6 +37,7 @@ src/vicedtools/gcp/format.py
 src/vicedtools/gcp/schema.py
 src/vicedtools/naplan/__init__.py
 src/vicedtools/naplan/dataservicesession.py
+src/vicedtools/naplan/reports.py
 src/vicedtools/naplan/sssrdata.py
 src/vicedtools/scripts/__init__.py
 src/vicedtools/scripts/compassreportstobq.py
@@ -50,6 +51,7 @@ src/vicedtools/scripts/createnaplansummary.py
 src/vicedtools/scripts/createoarsstudentimports.py
 src/vicedtools/scripts/createpatparentlettertable.py
 src/vicedtools/scripts/createsportstrakxlsx.py
+src/vicedtools/scripts/createvcesummaries.py
 src/vicedtools/scripts/ewritescorestobq.py
 src/vicedtools/scripts/ewritesittingstoscores.py
 src/vicedtools/scripts/exportcompassacademicgroups.py
