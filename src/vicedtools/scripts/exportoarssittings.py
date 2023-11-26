@@ -21,7 +21,7 @@ import os
 import sys
 
 from vicedtools.acer import OARSAuthenticator, OARSSession
-from vicedtools.scripts._config import (pat_sittings_dir, oars_authenticator,
+from vicedtools.scripts.config import (pat_sittings_dir, oars_authenticator,
                                         oars_school_code)
 
 

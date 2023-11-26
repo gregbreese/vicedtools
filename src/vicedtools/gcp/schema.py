@@ -30,11 +30,11 @@ STUDENT_DETAILS_CLUSTERING_FIELDS = [
 ]
 
 STUDENT_ENROLMENTS_SCHEMA = [
-    bigquery.SchemaField("ClassCode", "STRING"),
+    bigquery.SchemaField("EnrolmentClassCode", "STRING"),
     bigquery.SchemaField("StudentCode", "STRING")
 ]
 
-STUDENT_ENROLMENTS_CLUSTERING_FIELDS = ["ClassCode", "StudentCode"]
+STUDENT_ENROLMENTS_CLUSTERING_FIELDS = ["EnrolmentClassCode", "StudentCode"]
 
 REPORTS_SCHEMA = [
     bigquery.SchemaField("Time", "DATE"),
@@ -69,25 +69,40 @@ REPORTS_SUMMARY_CLUSTERING_FIELDS = [
 NAPLAN_OUTCOMES_SCHEMA = [
     bigquery.SchemaField("APS_Year", "STRING"),
     bigquery.SchemaField("Reporting_Test", "STRING"),
+    bigquery.SchemaField("Cases_ID", "STRING"),
     bigquery.SchemaField("First_Name", "STRING"),
     bigquery.SchemaField("Second_Name", "STRING"),
     bigquery.SchemaField("Surname", "STRING"),
     bigquery.SchemaField("READING_nb", "FLOAT"),
+    bigquery.SchemaField("READING_band", "INTEGER"),
+    bigquery.SchemaField("READING_toptwo", "BOOLEAN"),
+    bigquery.SchemaField("READING_bottomtwo", "BOOLEAN"),
     bigquery.SchemaField("WRITING_nb", "FLOAT"),
+    bigquery.SchemaField("WRITING_band", "INTEGER"),
+    bigquery.SchemaField("WRITING_toptwo", "BOOLEAN"),
+    bigquery.SchemaField("WRITING_bottomtwo", "BOOLEAN"),
     bigquery.SchemaField("SPELLING_nb", "FLOAT"),
+    bigquery.SchemaField("SPELLING_band", "INTEGER"),
+    bigquery.SchemaField("SPELLING_toptwo", "BOOLEAN"),
+    bigquery.SchemaField("SPELLING_bottomtwo", "BOOLEAN"),
     bigquery.SchemaField("NUMERACY_nb", "FLOAT"),
+    bigquery.SchemaField("NUMERACY_band", "INTEGER"),
+    bigquery.SchemaField("NUMERACY_toptwo", "BOOLEAN"),
+    bigquery.SchemaField("NUMERACY_bottomtwo", "BOOLEAN"),
     bigquery.SchemaField("GRAMMAR___PUNCTUATION_nb", "FLOAT"),
-    bigquery.SchemaField("Class", "STRING"),
-    bigquery.SchemaField("Date_of_Birth", "STRING"),
-    bigquery.SchemaField("Gender", "STRING"),
-    bigquery.SchemaField("LBOTE", "BOOLEAN"),
-    bigquery.SchemaField("ATSI", "BOOLEAN"),
-    bigquery.SchemaField("Home_School_Name", "STRING"),
-    bigquery.SchemaField("Reporting_School_Name", "STRING"),
-    bigquery.SchemaField("Cases_ID", "STRING"),
+    bigquery.SchemaField("GRAMMAR___PUNCTUATION_band", "INTEGER"),
+    bigquery.SchemaField("GRAMMAR___PUNCTUATION_toptwo", "BOOLEAN"),
+    bigquery.SchemaField("GRAMMAR___PUNCTUATION_bottomtwo", "BOOLEAN"),
 ]
+
 NAPLAN_OUTCOMES_CLUSTERING_FIELDS = [
-    "APS_Year", "Reporting_Test", "Cases_ID", "Gender"
+    "APS_Year",
+    "Reporting_Test",
+    "Cases_ID",
+]
+
+NAPLAN_OUTCOMES_MOST_RECENT_CLUSTERING_FIELDS = [
+    "Cases_ID",
 ]
 
 GAT_SCHEMA = [

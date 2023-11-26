@@ -19,7 +19,7 @@ import json
 import os
 
 from vicedtools.acer import OARSSession
-from vicedtools.scripts._config import (oars_candidates_json,
+from vicedtools.scripts.config import (oars_candidates_json,
                                         oars_authenticator, oars_school_code)
 
 

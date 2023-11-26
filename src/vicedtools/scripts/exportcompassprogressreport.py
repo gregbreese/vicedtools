@@ -20,7 +20,7 @@ import os
 import sys
 
 from vicedtools.compass import CompassSession
-from vicedtools.scripts._config import (progress_reports_dir,
+from vicedtools.scripts.config import (progress_reports_dir,
                                         progress_report_cycles_json,
                                         compass_authenticator,
                                         compass_school_code)

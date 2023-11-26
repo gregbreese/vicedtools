@@ -21,7 +21,7 @@ import pandas as pd
 
 from vicedtools.gcp import (upload_csv_to_bigquery, PAT_SCORES_SCHEMA,
                             PAT_SCORES_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (pat_scores_csv, pat_scores_table_id,
+from vicedtools.scripts.config import (pat_scores_csv, pat_scores_table_id,
                                         gcs_bucket)
 
 

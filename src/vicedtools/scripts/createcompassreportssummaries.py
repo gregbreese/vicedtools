@@ -19,16 +19,17 @@ import glob
 import os
 
 from vicedtools.compass import Reports
-from vicedtools.scripts._config import (config, learning_tasks_dir,
+from vicedtools.scripts.config import (config, learning_tasks_dir,
                                         progress_reports_dir, reports_dir,
                                         learning_task_filter, grade_dtype,
-                                        classes_csv, reports_csv, 
+                                        classes_csv, reports_csv,
                                         reports_summary_csv)
 
 
 def main():
     reports = Reports()
 
+    # import learning task data
     files = glob.glob(os.path.join(learning_tasks_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
@@ -43,6 +44,7 @@ def main():
         except ValueError:
             pass
 
+    # import report data
     files = glob.glob(os.path.join(reports_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
@@ -55,6 +57,8 @@ def main():
                 ['result_values'])
         except ValueError:
             pass
+
+    # import progress report data
     files = glob.glob(os.path.join(progress_reports_dir, "*.csv"))
     for filename in files:
         print("importing ", filename)
@@ -67,9 +71,9 @@ def main():
                 ['result_values'])
         except ValueError:
             pass
+
     reports.importSubjectsData(
-        classes_csv,
-        replace_values=config['compass']['replace_values'])
+        classes_csv, replace_values=config['compass']['replace_values'])
 
     reports.saveReports(reports_csv)
     reports.saveSummary(reports_summary_csv)

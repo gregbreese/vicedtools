@@ -21,7 +21,7 @@ import pandas as pd
 
 from vicedtools.gcp import (upload_csv_to_bigquery, STUDENT_DETAILS_SCHEMA,
                             STUDENT_DETAILS_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (compass_dir, student_details_csv,
+from vicedtools.scripts.config import (compass_dir, student_details_csv,
                                         student_details_table_id, gcs_bucket)
 
 

@@ -23,7 +23,7 @@ import os
 import pandas as pd
 
 from vicedtools.compass.compasssession import CompassSession, CompassAuthenticator
-from vicedtools.scripts._config import (academic_groups_json,
+from vicedtools.scripts.config import (academic_groups_json,
                                         compass_authenticator,
                                         compass_school_code, class_details_dir,
                                         enrolment_details_dir)

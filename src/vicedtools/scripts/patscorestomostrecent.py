@@ -19,7 +19,7 @@ import os
 
 import pandas as pd
 
-from vicedtools.scripts._config import (pat_scores_csv, pat_most_recent_csv)
+from vicedtools.scripts.config import (pat_scores_csv, pat_most_recent_csv)
 
 
 def main():

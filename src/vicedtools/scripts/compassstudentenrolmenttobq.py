@@ -22,7 +22,7 @@ import pandas as pd
 
 from vicedtools.gcp import (upload_csv_to_bigquery, STUDENT_ENROLMENTS_SCHEMA,
                             STUDENT_ENROLMENTS_CLUSTERING_FIELDS)
-from vicedtools.scripts._config import (academic_groups_json, compass_dir,
+from vicedtools.scripts.config import (academic_groups_json, compass_dir,
                                         enrolment_details_dir,
                                         student_enrolments_table_id, gcs_bucket)
 
@@ -43,11 +43,11 @@ def main():
     current_enrolments = pd.read_csv(enrolments_file)
     # Just take StudentCode and ClassCode columns
     current_enrolments = current_enrolments[["ii", "name"]]
-    column_renaming = {"ii": "StudentCode", "name": "ClassCode"}
+    column_renaming = {"ii": "StudentCode", "name": "EnrolmentClassCode"}
     current_enrolments.rename(columns=column_renaming, inplace=True)
 
     temp_file = os.path.join(compass_dir, "temp.csv")
-    column_order = ["ClassCode", "StudentCode"]
+    column_order = ["EnrolmentClassCode", "StudentCode"]
     current_enrolments[column_order].to_csv(temp_file, index=False)
 
     upload_csv_to_bigquery(temp_file, STUDENT_ENROLMENTS_SCHEMA,

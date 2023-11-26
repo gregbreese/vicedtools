@@ -23,7 +23,7 @@ import os
 import pandas as pd
 
 from vicedtools.acer import OARSTests, PATSittings
-from vicedtools.scripts._config import (oars_tests_json, pat_sittings_dir,
+from vicedtools.scripts.config import (oars_tests_json, pat_sittings_dir,
                                         pat_scores_csv, student_details_csv)
 
 

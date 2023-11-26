@@ -21,7 +21,7 @@ import argparse
 import os
 
 from vicedtools.naplan import DataserviceSession
-from vicedtools.scripts._config import (naplan_sssr_dir,
+from vicedtools.scripts.config import (naplan_sssr_dir,
                                         dataservice_authenticator)
 
 

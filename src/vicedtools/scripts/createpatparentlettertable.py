@@ -20,7 +20,7 @@ import os
 
 import pandas as pd
 
-from vicedtools.scripts._config import (student_details_csv,
+from vicedtools.scripts.config import (student_details_csv,
                                         student_household_information_csv,
                                         pat_scores_csv)
 
