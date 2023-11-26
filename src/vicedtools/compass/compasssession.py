@@ -59,7 +59,7 @@ class CompassSession(requests.sessions.Session):
         requests.sessions.Session.__init__(self)
         headers = {
             "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0"
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
         }
         self.headers.update(headers)
         self.school_code = school_code
@@ -346,6 +346,16 @@ class CompassSession(requests.sessions.Session):
         r = self.get(url)
         with open(file_name, "wb") as f:
             f.write(r.content)
+
+    def export_addresses( self, file_name: str = "address export.csv") -> None:
+        '''Exports contact information for all Compass users.
+        
+        Includes address, phone number and email address.
+        
+        Args:
+            file_name: The file path to save teh csv export, including filename.
+        '''
+        payload = f'{{"action":"read","filters":[],"sorters":[],"page":1,"start":0,"limit":{limit},"addRecords":false}}'
 
     def export_sds(self,
                    save_dir: str = ".",
