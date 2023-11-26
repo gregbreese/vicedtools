@@ -21,7 +21,7 @@ import re
 
 import pandas as pd
 
-from vicedtools.workflows.config import (vass_student_details_dir,
+from vicedtools.scripts.config import (vass_student_details_dir,
                                          vass_school_program_dir, 
                                          vass_external_scores_dir, 
                                          vass_gat_scores_dir, 
@@ -178,7 +178,7 @@ def main():
     # aggregate predicted scores
     predicted_scores_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "predicted scores ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -200,7 +200,7 @@ def main():
 
     student_program_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "school program summary ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -235,10 +235,11 @@ def main():
 
     student_program_df.rename(columns={"Class Code":"ClassGroup"}, inplace=True)
 
+    student_program_df = student_program_df.astype(str)
+    predicted_scores_df = predicted_scores_df.astype(str)
 
     student_program_cols = ['Year', 'ClassGroup', 'Subject', 'Teacher Code', 'Teacher Name']
     predicted_scores_df = predicted_scores_df.merge(student_program_df[student_program_cols], on=["Year", "Subject", "ClassGroup"], how='left')
-
 
     column_map = {"Surname":"Last Name",
                 "FirstName":"First Name",
