@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: vicedtools
-Version: 0.0.9.1
+Version: 0.0.10.1
 Summary: A collection of tools for school data in Victorian schools.
 Home-page: https://github.com/gregbreese/vicedtools
 Author: Greg Breese
@@ -12,6 +12,19 @@ Classifier: Development Status :: 3 - Alpha
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: browser_cookie3
+Requires-Dist: bs4
+Requires-Dist: cloudscraper
+Requires-Dist: google-cloud-bigquery
+Requires-Dist: google-cloud-storage
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: seaborn
+Requires-Dist: selenium
+Requires-Dist: seleniumbase
+Requires-Dist: selenium_stealth
+Requires-Dist: tomli
 
 # vicedtools
 

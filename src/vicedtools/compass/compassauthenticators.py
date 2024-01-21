@@ -19,6 +19,10 @@ import re
 from typing import Protocol, TYPE_CHECKING
 from urllib.parse import quote
 
+from selenium.webdriver.common.by import By
+from seleniumbase import Driver
+from selenium_stealth import stealth
+
 if TYPE_CHECKING:
     from vicedtools.compass import CompassSession
 
@@ -99,3 +103,37 @@ class CompassCLIAuthenticator(CompassAuthenticator):
         m = re.search(pattern, r.text)
         if m:
             raise CompassAuthenticationError
+
+class CompassCFBypassAuthenticator(CompassAuthenticator):
+    """Authenticates using stealth methods to bypass CF checks."""
+
+    def __init__(self, username: str, password: str):
+        self.username = username
+        self.password = password
+
+    def authenticate(self, s: CompassSession):
+        # Create temporary selenium driver to do initial authentication
+        driver = Driver(uc=True, browser='chrome')
+        stealth(
+            driver,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+        )
+        # login
+        login_url = f'https://{s.school_code}.compass.education/login.aspx?sessionstate=disabled'
+        driver.get(login_url)
+        username_field = driver.find_element(By.NAME, "username")
+        username_field.send_keys(self.username)
+        password_field = driver.find_element(By.NAME, "password")
+        password_field.send_keys(self.password)
+        submit_button = driver.find_element(By.NAME, "button1")
+        submit_button.click()
+        # copy cookies from driver and close it
+        for cookie in driver.get_cookies():
+            c = {cookie['name']: cookie['value']}
+            s.cookies.update(c)
+        s.driver = driver
