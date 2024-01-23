@@ -1,9 +1,13 @@
 browser_cookie3
 bs4
+cloudscraper
 google-cloud-bigquery
 google-cloud-storage
 matplotlib
 numpy
 pandas
 seaborn
+selenium
+seleniumbase
+selenium_stealth
 tomli

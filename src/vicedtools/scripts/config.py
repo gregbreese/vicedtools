@@ -17,7 +17,7 @@ import os
 import pandas as pd
 import tomli
 
-from vicedtools import CompassBasicAuthenticator, OARSBasicAuthenticator, VASSBasicAuthenticator
+from vicedtools import CompassCFBypassAuthenticator, OARSBasicAuthenticator, VASSBasicAuthenticator
 
 if 'VICEDTOOLS_CONFIG' in os.environ:
     config_file = os.environ['VICEDTOOLS_CONFIG']
@@ -50,7 +50,7 @@ vass_moderated_coursework_scores_dir = os.path.join(
     vass_dir, config['vass']["moderated_coursework_scores_dir"])
 
 # compass
-compass_authenticator = CompassBasicAuthenticator(config['compass']['username'],
+compass_authenticator = CompassCFBypassAuthenticator(config['compass']['username'],
                                                   config['compass']['password'])
 compass_school_code = config['compass']['school_code']
 compass_dir = os.path.join(root_dir, config['compass']['dir'])

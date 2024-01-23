@@ -20,7 +20,8 @@ from vicedtools.acer import (
     OARSTests, item_analysis_plot, item_analysis_plots)
 from vicedtools.compass import (CompassSession, CompassAuthenticationError,
                                 CompassLongRunningFileRequestError,
-                                CompassBasicAuthenticator, Reports)
+                                CompassBasicAuthenticator, 
+                                CompassCFBypassAuthenticator, Reports)
 from vicedtools.naplan import (DataserviceSession,
                                DataServiceBasicAuthenticator,
                                DataserviceAuthenticationError)

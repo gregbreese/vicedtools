@@ -23,11 +23,12 @@ import requests
 import time
 import zipfile
 
+from cloudscraper import CloudScraper
 from vicedtools.compass import CompassAuthenticator
 
 # Minimum interval between requests
 MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
-
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
 
 def current_ms_time() -> int:
     """Returns the current millisecond time."""
@@ -45,7 +46,7 @@ class CompassLongRunningFileRequestError(Exception):
     pass
 
 
-class CompassSession(requests.sessions.Session):
+class CompassSession(CloudScraper):
     """A requests Session extension with methods for accessing data from Compass."""
 
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
@@ -56,12 +57,7 @@ class CompassSession(requests.sessions.Session):
             authenticator: An instance of CompassAuthenticator to perform the
                 required authentication with Compass.
         """
-        requests.sessions.Session.__init__(self)
-        headers = {
-            "User-Agent":
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
-        }
-        self.headers.update(headers)
+        CloudScraper.__init__(self)
         self.school_code = school_code
 
         self.last_request_time = 0

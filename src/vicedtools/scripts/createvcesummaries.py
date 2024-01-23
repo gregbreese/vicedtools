@@ -37,7 +37,7 @@ def main():
 
     student_details_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "personal details summary ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -53,7 +53,7 @@ def main():
 
     school_scores_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "school scores ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -61,7 +61,7 @@ def main():
             year = m[0]
             temp_df["Year"] = year
             school_scores_df = pd.concat([school_scores_df,temp_df])
-    school_scores_df["Result Percentage"] = school_scores_df["Result"] / school_scores_df["Max Score"]
+    school_scores_df["Result Percentage"] = school_scores_df["Result"].astype(float) / school_scores_df["Max Score"].astype(int)
     cols = ['Year', 'Student Number', 'Student Name', 'Unit Code', 'Unit Name', 'GA', 
             'Focus Area', 'Class', 'Result', 'Max Score', "Result Percentage", 'SIAR', 'SIARScore', 'SIAR Max Score', ]
     school_scores_df["Student Name"] = school_scores_df["Student Name"].str.strip()
@@ -71,7 +71,7 @@ def main():
     # Aggregate moderated score data
     moderated_scores_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "moderated coursework scores ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -146,7 +146,7 @@ def main():
 
     external_scores_df = pd.DataFrame()
     for f in files:
-        temp_df = pd.read_csv(f)
+        temp_df = pd.read_csv(f, dtype=str)
         
         pattern = "external scores ([0-9]{4}).csv"
         m = re.findall(pattern, f)
@@ -199,17 +199,11 @@ def main():
             temp_df["Year"] = year
             predicted_scores_df = pd.concat([predicted_scores_df,temp_df])
         
-
-
-
     student_details_cols = ['Student Number', 'Surname', 'FirstName', 'External ID', 'Gender', 'Year']
     predicted_scores_df = predicted_scores_df.merge(student_details_df[student_details_cols], on=["Year", "Surname", "FirstName"])
-
-
-
+    predicted_scores_df["ClassGroup"] = predicted_scores_df["ClassGroup"].str.strip()
 
     files = glob.glob(os.path.join(vass_school_program_dir, "school program summary *.csv"))
-
     student_program_df = pd.DataFrame()
     for f in files:
         temp_df = pd.read_csv(f, dtype=str)
@@ -246,9 +240,9 @@ def main():
         }, inplace=True)
 
     student_program_df.rename(columns={"Class Code":"ClassGroup"}, inplace=True)
-
-    student_program_df = student_program_df.astype(str)
-    predicted_scores_df = predicted_scores_df.astype(str)
+    student_program_df["ClassGroup"] = student_program_df["ClassGroup"].str.strip()
+    filename = os.path.join(vass_dir, "student programs.csv")
+    student_program_df.to_csv(filename, index=False)
 
     student_program_cols = ['Year', 'ClassGroup', 'Subject', 'Teacher Code', 'Teacher Name']
     predicted_scores_df = predicted_scores_df.merge(student_program_df[student_program_cols], on=["Year", "Subject", "ClassGroup"], how='left')
