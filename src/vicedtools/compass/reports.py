@@ -23,6 +23,34 @@ from typing import Callable
 import pandas as pd
 from pandas.errors import EmptyDataError
 
+LEARNING_TASKS_DTYPES = {"SubjectName": 'str',
+                         "Code": 'str',
+                         "TeacherImportIdentifier": 'str',
+                         "TaskId": 'int',
+                         "IsSubjectWide": 'bool',
+                         "TaskName": 'str',
+                         "StudentCode": 'str',
+                         "GovtCode1": 'str',
+                         "StudentLastName":'str',
+                         "StudentFirstName":'str',
+                         "YearLevel":'str',
+                         "FormGroup":'str',
+                         "ResultType":'str',
+                         "PrimaryGrade":'str',
+                         "CommentTimestamp": 'str',
+                         "CommentPosterCode": 'str',
+                         "CommentPosterName": 'str',
+                         "Result": 'str',
+                         "ComponentName": 'str',
+                         "ComponentType": 'str',
+                         "IsIncludedInReport": 'bool',
+                         "ReportCycleName": 'str',
+                         "DueDate": 'str',
+                         "Category": 'str',
+                         "SubmissionStatus": 'str',
+                         "ReceiptTime": 'str'
+}
+
 
 def class_code_parser(class_code: str, pattern: str) -> str:
     """A default class code to subject code parser.
@@ -146,6 +174,7 @@ class Reports:
         """Creates a new Reports instance from a Compass Learning Tasks export."""
         try:
             temp_df = pd.read_csv(filename,
+                                  dtype=LEARNING_TASKS_DTYPES,
                                   na_values=None,
                                   keep_default_na=False)
         except EmptyDataError:
@@ -311,16 +340,22 @@ class Reports:
             grade_dtype=grade_dtype,
             learning_task_filter=learning_task_filter,
             replace_values=replace_values)
-        self.data = pd.concat([self.data, temp.data], ignore_index=True)
-        self.data.drop_duplicates(
-            subset=["Time", "StudentCode", "ClassCode", "ResultName"],
-            inplace=True)
-        self.class_details = pd.concat([
-            self.class_details,
-            temp.class_details.dropna(subset=["TeacherCode"])
-        ],
-                                       ignore_index=True)
-        self.class_details.drop_duplicates(inplace=True)
+        if temp.data.empty:
+            print("Warning: No rows added.")
+        elif self.data.empty:
+            self.data = temp.data
+            self.class_details = temp.class_details
+        else:
+            self.data = pd.concat([self.data, temp.data], ignore_index=True)
+            self.data.drop_duplicates(
+                subset=["Time", "StudentCode", "ClassCode", "ResultName"],
+                inplace=True)
+            self.class_details = pd.concat([
+                self.class_details,
+                temp.class_details.dropna(subset=["TeacherCode"])
+            ],
+                                        ignore_index=True)
+            self.class_details.drop_duplicates(inplace=True)
 
     def addReportsExport(self,
                          filename: str,
@@ -333,10 +368,16 @@ class Reports:
                                          grade_score_mapper=grade_score_mapper,
                                          grade_dtype=grade_dtype,
                                          replace_values=replace_values)
-        self.data = pd.concat([self.data, temp.data], ignore_index=True)
-        self.data.drop_duplicates(
-            subset=["Time", "StudentCode", "ClassCode", "ResultName"],
-            inplace=True)
+        if temp.data.empty:
+            print("Warning: No rows added.")
+        elif self.data.empty:
+            self.data = temp.data
+            self.class_details = temp.class_details
+        else:
+            self.data = pd.concat([self.data, temp.data], ignore_index=True)
+            self.data.drop_duplicates(
+                subset=["Time", "StudentCode", "ClassCode", "ResultName"],
+                inplace=True)
 
     def addProgressReportsExport(
             self,
@@ -353,16 +394,22 @@ class Reports:
             grade_score_mapper=grade_score_mapper,
             grade_dtype=grade_dtype,
             replace_values=replace_values)
-        self.data = pd.concat([self.data, temp.data], ignore_index=True)
-        self.data.drop_duplicates(
-            subset=["Time", "StudentCode", "ClassCode", "ResultName"],
-            inplace=True)
-        self.class_details = pd.concat([
-            self.class_details,
-            temp.class_details.dropna(subset=["TeacherCode"])
-        ],
-                                       ignore_index=True)
-        self.class_details.drop_duplicates(inplace=True)
+        if temp.data.empty:
+            print("Warning: No rows added.")
+        elif self.data.empty:
+            self.data = temp.data
+            self.class_details = temp.class_details
+        else:
+            self.data = pd.concat([self.data, temp.data], ignore_index=True)
+            self.data.drop_duplicates(
+                subset=["Time", "StudentCode", "ClassCode", "ResultName"],
+                inplace=True)
+            self.class_details = pd.concat([
+                self.class_details,
+                temp.class_details.dropna(subset=["TeacherCode"])
+            ],
+                                        ignore_index=True)
+            self.class_details.drop_duplicates(inplace=True)
 
     def __add__(self, other: Reports):
         data = pd.concat([self.data, other.data], ignore_index=True)
