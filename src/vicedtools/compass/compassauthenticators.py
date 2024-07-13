@@ -19,6 +19,7 @@ import re
 from typing import Protocol, TYPE_CHECKING
 from urllib.parse import quote
 
+import browser_cookie3
 from selenium.webdriver.common.by import By
 from seleniumbase import Driver
 from selenium_stealth import stealth
@@ -137,3 +138,39 @@ class CompassCFBypassAuthenticator(CompassAuthenticator):
             c = {cookie['name']: cookie['value']}
             s.cookies.update(c)
         s.driver = driver
+
+
+class CompassChromeCookieAuthenticator(CompassAuthenticator):
+    """A Compass authenaticator that gets login details from the local Chrome installation."""
+
+    def authenticate(self, s: CompassSession):
+        cj = browser_cookie3.chrome(
+            domain_name=f'{s.school_code}.compass.education')
+
+        for cookie in cj:
+            c = {cookie.name: cookie.value}
+            s.cookies.update(c)
+            
+
+class CompassEdgeCookieAuthenticator(CompassAuthenticator):
+    """A Compass authenaticator that gets login details from the local Edge installation."""
+
+    def authenticate(self, s: CompassSession):
+        cj = browser_cookie3.edge(
+            domain_name=f'{s.school_code}.compass.education')
+
+        for cookie in cj:
+            c = {cookie.name: cookie.value}
+            s.cookies.update(c)
+
+
+class CompassFirefoxCookieAuthenticator(CompassAuthenticator):
+    """A Compass authenaticator that gets login details from the local Firefox installation."""
+
+    def authenticate(self, s: CompassSession):
+        cj = browser_cookie3.firefox(
+            domain_name=f'{s.school_code}.compass.education')
+
+        for cookie in cj:
+            c = {cookie.name: cookie.value}
+            s.cookies.update(c)

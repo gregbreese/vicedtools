@@ -17,7 +17,7 @@ import os
 import pandas as pd
 import tomli
 
-from vicedtools import CompassCFBypassAuthenticator, OARSBasicAuthenticator, VASSBasicAuthenticator
+from vicedtools import CompassCFBypassAuthenticator, OARSBasicAuthenticator, VASSBasicAuthenticator, CompassEdgeCookieAuthenticator, CompassChromeCookieAuthenticator, CompassFirefoxCookieAuthenticator, CompassBasicAuthenticator
 
 if 'VICEDTOOLS_CONFIG' in os.environ:
     config_file = os.environ['VICEDTOOLS_CONFIG']
@@ -50,7 +50,20 @@ vass_moderated_coursework_scores_dir = os.path.join(
     vass_dir, config['vass']["moderated_coursework_scores_dir"])
 
 # compass
-compass_authenticator = CompassCFBypassAuthenticator(config['compass']['username'],
+if config['compass']['authenticator'] == 'chrome':
+    compass_authenticator = CompassChromeCookieAuthenticator()
+elif config['compass']['authenticator'] == 'edge':
+    compass_authenticator = CompassEdgeCookieAuthenticator()
+elif config['compass']['authenticator'] == 'firefox':
+    compass_authenticator = CompassFirefoxCookieAuthenticator()
+elif config['compass']['authenticator'] == 'cfbypass':
+    compass_authenticator = CompassCFBypassAuthenticator(config['compass']['username'],
+                                                  config['compass']['password'])
+elif config['compass']['authenticator'] == 'basic':
+    compass_authenticator = CompassBasicAuthenticator(config['compass']['username'],
+                                                  config['compass']['password'])
+else:
+    compass_authenticator = CompassBasicAuthenticator(config['compass']['username'],
                                                   config['compass']['password'])
 compass_school_code = config['compass']['school_code']
 compass_dir = os.path.join(root_dir, config['compass']['dir'])
@@ -150,5 +163,5 @@ def learning_task_filter(temp_df: pd.DataFrame) -> pd.DataFrame:
     temp_df = temp_df.loc[temp_df["IsIncludedInReport"], :]
     temp_df = temp_df.loc[(temp_df["ComponentType"] != "Comment"), :]
     temp_df = temp_df.loc[
-        temp_df["ReportCycleName"].isin(["Semester One", "Semester Two"]), :]
+        temp_df["ReportCycleName"].isin(["Semester One", "Semester Two", "Semester 1 End of Semester", "Semester 2 End of Semester"]), :]
     return temp_df
