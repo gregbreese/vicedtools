@@ -23,12 +23,11 @@ import requests
 import time
 import zipfile
 
-from cloudscraper import CloudScraper
+from curl_cffi import requests
 from vicedtools.compass import CompassAuthenticator
 
 # Minimum interval between requests
 MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
 
 def current_ms_time() -> int:
     """Returns the current millisecond time."""
@@ -46,7 +45,7 @@ class CompassLongRunningFileRequestError(Exception):
     pass
 
 
-class CompassSession(CloudScraper):
+class CompassSession(requests.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
@@ -57,7 +56,7 @@ class CompassSession(CloudScraper):
             authenticator: An instance of CompassAuthenticator to perform the
                 required authentication with Compass.
         """
-        CloudScraper.__init__(self)
+        requests.Session.__init__(self, impersonate="chrome")
         self.school_code = school_code
 
         self.last_request_time = 0
@@ -411,7 +410,12 @@ class CompassSession(CloudScraper):
         url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetStandardClassesOfSubject?sessionstate=readonly&_dc={current_ms_time()}"
         payload = f'{{"subjectId":{subject_id},"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
         r = self.post(url, data=payload)
-        decoded_response = r.json()['d']['data']
+        try:
+            decoded_response = r.json()['d']['data']
+        except KeyError:
+            print(f"Error downloading subject id: {subject_id}")
+            print(r.text)
+            decoded_response = []
         del self.headers['Content-Type']
         return decoded_response
 
