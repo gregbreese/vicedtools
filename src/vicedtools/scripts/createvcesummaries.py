@@ -84,7 +84,9 @@ def main():
                                                                             "GENERAL MATHEMATICS": "MATHS: GENERAL MATHEMATICS", 
                                                                             "SPECIALIST MATHEMATICS": "MATHS: SPECIALIST MATHEMATICS", 
                                                                             "FRENCH": "LANGUAGES: FRENCH",
-                                                                            "CHINESE FIRST LANGUAGE": "LANGUAGES: CHINESE FIRST LANGUAGE"})
+                                                                            "CHINESE FIRST LANGUAGE": "LANGUAGES: CHINESE FIRST LANGUAGE",
+                                                                            "CHINESE SECOND LANGUAGE": "LANGUAGES: CHINESE SECOND LANGUAGE",
+                                                                            "CHINESE SECOND LANGUAGE ADVANCED": "LANGUAGES: CHINESE SECOND LANGUAGE ADVANCED",})
     moderated_scores_df["GA"] = moderated_scores_df["GA Number"].astype(str) + " - " + moderated_scores_df["GA Name"]
 
     school_scores_df = pd.merge(school_scores_df, moderated_scores_df, left_on=["Year", "Unit Name", "GA", "Result"], right_on=["Year", "Subject", "GA", "School score"], how='left')
@@ -172,8 +174,17 @@ def main():
 
     external_scores_df.rename(columns=column_map, inplace=True)
 
+    # add subject dux column
+    dux_scores = external_scores_df[["Year","UnitCode","Study Score*"]].groupby(["Year","UnitCode"]).max().reset_index()
+    dux_scores["IsSubjectDux"] = True
+    external_scores_df = external_scores_df.merge(dux_scores, on=["Year","UnitCode","Study Score*"], how='left')
+    external_scores_df['IsSubjectDux'] = external_scores_df['IsSubjectDux'].fillna(False)
+
     filename = os.path.join(vass_dir, "external scores.csv")
     external_scores_df.to_csv(filename, index=False)
+
+
+
 
     files = glob.glob(os.path.join(vass_predicted_scores_dir, "predicted scores *.csv"))
 
