@@ -19,4 +19,4 @@ from vicedtools.compass.compassauthenticators import (
 from vicedtools.compass.compasssession import (
     CompassSession, CompassLongRunningFileRequestError, get_report_cycle_id,
     sanitise_filename)
-from vicedtools.compass.reports import Reports, class_code_parser
+from vicedtools.compass.reports import Reports

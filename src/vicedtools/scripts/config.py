@@ -95,10 +95,14 @@ reports_summary_csv = os.path.join(compass_dir,
                                    config['compass']['reports_summary_csv'])
 subjects_csv = os.path.join(compass_dir, config['compass']['subjects_csv'])
 classes_csv = os.path.join(compass_dir, config['compass']['classes_csv'])
+enrolments_csv = os.path.join(compass_dir, config['compass']['enrolments_csv'])
 attendance_halfday_dir = os.path.join(
     compass_dir, config['compass']['attendance_halfday_dir'])
 grade_dtype = pd.api.types.CategoricalDtype(
     categories=config['compass']['grade_order'], ordered=True)
+compass_reports_schema = config['compass']['reports']
+compass_learning_tasks_schema = config['compass']['learning_tasks']
+compass_progress_reports_schema = config['compass']['progress_reports']
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator
