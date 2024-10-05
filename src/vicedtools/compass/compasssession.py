@@ -6,7 +6,7 @@
 
 #     http://www.apache.org/licenses/LICENSE-2.0
 
-# Unless required by applicable law or agreed to in writing, software
+# Unless required by applicable law or agreed to in writing, software 
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
@@ -408,7 +408,10 @@ class CompassSession(requests.Session):
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
         url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetStandardClassesOfSubject?sessionstate=readonly&_dc={current_ms_time()}"
-        payload = f'{{"subjectId":{subject_id},"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
+
+        classes = []
+        page = 1
+        payload = f'{{"subjectId":{subject_id},"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
         r = self.post(url, data=payload)
         try:
             decoded_response = r.json()['d']['data']
@@ -416,8 +419,20 @@ class CompassSession(requests.Session):
             print(f"Error downloading subject id: {subject_id}")
             print(r.text)
             decoded_response = []
+        classes += decoded_response
+        while len(decoded_response) == 50:
+            page += 1
+            payload = f'{{"subjectId":{subject_id},"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
+            r = self.post(url, data=payload)
+            try:
+                decoded_response = r.json()['d']['data']
+            except KeyError:
+                print(f"Error downloading subject id: {subject_id}")
+                print(r.text)
+                decoded_response = []
+            classes += decoded_response
         del self.headers['Content-Type']
-        return decoded_response
+        return classes
 
     def get_subjects(self, academic_group: int = -1) -> list[dict]:
         """Gets a list of all subjects in an academic group.
