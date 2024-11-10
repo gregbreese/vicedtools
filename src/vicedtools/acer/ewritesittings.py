@@ -81,10 +81,16 @@ class EWriteSitting(dict):
             scale, band = form['scaleScores'][data['Score']].values()
             data['Scale'] = scale
             data['Band'] = band
-            for idx, key in enumerate([
-                    'OE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS',
-                    'SP'
-            ]):
+            prompt = self['responses'][1]['vantageResult']['raw_response']['promptCode']
+            if prompt == "eWrite_D":
+                # descriptive
+                criteria = ['OE', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP']
+            elif prompt == "eWrite_C":
+                # report
+                criteria = ['RE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP']
+            else:
+                criteria = ['OE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP']
+            for idx, key in enumerate(criteria):
                 data[key] = self['responses'][1]['vantageResult'][
                     'dimensionalScores'][idx]
         else:
