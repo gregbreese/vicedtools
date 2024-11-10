@@ -6,7 +6,7 @@
 
 #     http://www.apache.org/licenses/LICENSE-2.0
 
-# Unless required by applicable law or agreed to in writing, software
+# Unless required by applicable law or agreed to in writing, software 
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
@@ -23,12 +23,11 @@ import requests
 import time
 import zipfile
 
-from cloudscraper import CloudScraper
+from curl_cffi import requests
 from vicedtools.compass import CompassAuthenticator
 
 # Minimum interval between requests
 MIN_REQUEST_INTERVAL = 500000000  # 500 milliseconds in nanoseconds
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0"
 
 def current_ms_time() -> int:
     """Returns the current millisecond time."""
@@ -46,7 +45,7 @@ class CompassLongRunningFileRequestError(Exception):
     pass
 
 
-class CompassSession(CloudScraper):
+class CompassSession(requests.Session):
     """A requests Session extension with methods for accessing data from Compass."""
 
     def __init__(self, school_code: str, authenticator: CompassAuthenticator):
@@ -57,7 +56,7 @@ class CompassSession(CloudScraper):
             authenticator: An instance of CompassAuthenticator to perform the
                 required authentication with Compass.
         """
-        CloudScraper.__init__(self)
+        requests.Session.__init__(self, impersonate="chrome")
         self.school_code = school_code
 
         self.last_request_time = 0
@@ -409,11 +408,31 @@ class CompassSession(CloudScraper):
         headers = {'Content-Type': 'application/json; charset=utf-8'}
         self.headers.update(headers)
         url = f"https://{self.school_code}.compass.education/Services/Subjects.svc/GetStandardClassesOfSubject?sessionstate=readonly&_dc={current_ms_time()}"
-        payload = f'{{"subjectId":{subject_id},"page":1,"start":0,"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
+
+        classes = []
+        page = 1
+        payload = f'{{"subjectId":{subject_id},"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
         r = self.post(url, data=payload)
-        decoded_response = r.json()['d']['data']
+        try:
+            decoded_response = r.json()['d']['data']
+        except KeyError:
+            print(f"Error downloading subject id: {subject_id}")
+            print(r.text)
+            decoded_response = []
+        classes += decoded_response
+        while len(decoded_response) == 50:
+            page += 1
+            payload = f'{{"subjectId":{subject_id},"page":{page},"start":{50*page-50},"limit":50,"sort":"[{{\\"property\\":\\"name\\",\\"direction\\":\\"ASC\\"}}]"}}'
+            r = self.post(url, data=payload)
+            try:
+                decoded_response = r.json()['d']['data']
+            except KeyError:
+                print(f"Error downloading subject id: {subject_id}")
+                print(r.text)
+                decoded_response = []
+            classes += decoded_response
         del self.headers['Content-Type']
-        return decoded_response
+        return classes
 
     def get_subjects(self, academic_group: int = -1) -> list[dict]:
         """Gets a list of all subjects in an academic group.
@@ -500,7 +519,7 @@ class CompassSession(CloudScraper):
             finish_date: The finish date for the export as yyyy-mm-dd
             save_dir: The folder to save the export into.
         """
-        payload = f'{{"type":"5","parameters":"{{\\"reportName\\":\\"cases21HalfDayCsv\\",\\"filename\\":\\"CASES21_HalfDay.csv\\",\\"startDateIn\\":\\"{start_date}T13:00:00.000Z\\",\\"finishDateIn\\":\\"{finish_date}T13:00:00.000Z\\",\\"includeExitedStudents\\":{str(included_exited).lower()},\\"minimumAbsentDays\\":\\"\\",\\"includeOverSixteens\\":true,\\"includePLCStudents\\":true,\\"yearLevelId\\":\\"\\",\\"campuses\\":\\"\\",\\"semester\\":\\"1\\",\\"collection\\":\\"Semester 1\\",\\"modifiedSinceDateIn\\":null,\\"userIds\\":\\"19311\\",\\"yearLevels\\":\\"7|8|9|10\\",\\"startDatePickerAttendanceByDayReport\\":\\"2023-05-19T14:00:00.000Z\\",\\"exportDatePickerFullSchoolAuditRollReport\\":\\"2023-05-19T14:00:00.000Z\\",\\"teachingDaysNumber\\":\\"8\\",\\"includeComments\\":true,\\"yearLevelsPreSchool\\":\\"\\",\\"yearLevelsPrimary\\":\\"\\",\\"yearLevelsMiddle\\":\\"\\",\\"yearLevelsSenior\\":\\"\\",\\"groupBy\\":null,\\"ethnicities\\":\\"\\",\\"yearLevelIds\\":\\"\\",\"formGroups\\":\\"\\"}}"}}'
+        payload = f'{{"type":"5","parameters":"{{\\"reportName\\":\\"cases21HalfDayCsv\\",\\"filename\\":\\"CASES21_HalfDay.csv\\",\\"startDateIn\\":\\"{start_date}T13:00:00.000Z\\",\\"finishDateIn\\":\\"{finish_date}T13:00:00.000Z\\",\\"includeExitedStudents\\":{str(included_exited).lower()},\\"minimumAbsentDays\\":\\"\\",\\"includeOverSixteens\\":true,\\"includePLCStudents\\":true,\\"yearLevelId\\":\\"\\",\\"campuses\\":\\"\\",\\"semester\\":\\"1\\",\\"collection\\":\\"Semester 1\\",\\"modifiedSinceDateIn\\":null,\\"userIds\\":\\"13894\\",\\"yearLevels\\":\\"7|8|9|10\\",\\"startDatePickerAttendanceByDayReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"exportDatePickerFullSchoolAuditRollReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"teachingDaysNumber\\":\\"8\\",\\"includeComments\\":true,\\"yearLevelsPreSchool\\":\\"\\",\\"yearLevelsPrimary\\":\\"\\",\\"yearLevelsMiddle\\":\\"\\",\\"yearLevelsSenior\\":\\"\\",\\"groupBy\\":null,\\"ethnicities\\":\\"\\",\\"yearLevelIds\\":\\"\\",\"formGroups\\":\\"\\",\"showNotes\":false}}"}}'
         self.long_running_file_request(payload, save_dir)
 
 

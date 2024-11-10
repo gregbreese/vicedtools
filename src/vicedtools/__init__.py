@@ -21,7 +21,10 @@ from vicedtools.acer import (
 from vicedtools.compass import (CompassSession, CompassAuthenticationError,
                                 CompassLongRunningFileRequestError,
                                 CompassBasicAuthenticator, 
-                                CompassCFBypassAuthenticator, Reports)
+                                CompassCFBypassAuthenticator, 
+                                CompassChromeCookieAuthenticator,
+                                CompassEdgeCookieAuthenticator, 
+                                CompassFirefoxCookieAuthenticator, Reports)
 from vicedtools.naplan import (DataserviceSession,
                                DataServiceBasicAuthenticator,
                                DataserviceAuthenticationError)

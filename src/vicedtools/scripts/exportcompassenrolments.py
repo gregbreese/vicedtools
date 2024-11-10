@@ -36,19 +36,19 @@ def main():
     parser = argparse.ArgumentParser(
         description='Export Compass class metadata.')
     parser.add_argument('academic_group',
-                        type=int,
-                        default=-1,
+                        type=str,
+                        default='current',
                         nargs='?',
                         help='the academic group to export')
     args = parser.parse_args()
 
     with open(academic_groups_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
-    if args.academic_group != -1:
+    if args.academic_group != 'current':
 
         cycle_found = False
         for cycle in cycles:
-            if cycle['id'] == args.academic_group:
+            if cycle['name'] == args.academic_group:
                 cycle_found = True
                 cycle_name = cycle['name']
                 break

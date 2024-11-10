@@ -80,8 +80,8 @@ def main():
             temp_df["Year"] = year
             moderated_scores_df = pd.concat([moderated_scores_df,temp_df])
     moderated_scores_df["Subject"] = moderated_scores_df["Subject"].replace({"MATHEMATICAL METHODS":"MATHS: MATHEMATICAL METHODS", 
-                                                                            "FURTHER MATHEMATICS": "MATHS: FURTHER MATHEMATICS", 
-                                                                            "GENERAL MATHEMATICS": "MATHS: GENERAL MATHEMATICS",
+                                                                            "FURTHER MATHEMATICS": "MATHS: FURTHER MATHEMATICS",
+                                                                            "GENERAL MATHEMATICS": "MATHS: GENERAL MATHEMATICS", 
                                                                             "SPECIALIST MATHEMATICS": "MATHS: SPECIALIST MATHEMATICS", 
                                                                             "FRENCH": "LANGUAGES: FRENCH",
                                                                             "CHINESE FIRST LANGUAGE": "LANGUAGES: CHINESE FIRST LANGUAGE",
@@ -106,7 +106,8 @@ def main():
         "History: Revolutions":"History Revolutions",
         "Mathematical Methods (Cas)":"Mathematical Methods",
         "Food And Technology":"Food Studies",
-        "Computing: Informatics":"Applied Computing: Data Analytics"
+        "Computing: Informatics":"Applied Computing: Data Analytics",
+        "Further Mathematics": "General Mathematics"
         }, inplace=True)
     
     cols = ['Year', 'Student Number', 'Student Name', 'Focus Area', 'Class', 'Result',
@@ -236,7 +237,7 @@ def main():
         "History: Revolutions":"History Revolutions",
         "Mathematical Methods (Cas)":"Mathematical Methods",
         "Food And Technology":"Food Studies",
-        "Computing: Informatics":"Applied Computing: Data Analytics"
+        "Computing: Informatics":"Applied Computing: Data Analytics",
         }, inplace=True)
 
     student_program_df.rename(columns={"Class Code":"ClassGroup"}, inplace=True)

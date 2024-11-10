@@ -19,15 +19,15 @@ import glob
 import os
 
 from vicedtools.compass import Reports
-from vicedtools.scripts.config import (config, learning_tasks_dir,
-                                        progress_reports_dir, reports_dir,
-                                        learning_task_filter, grade_dtype,
-                                        classes_csv, reports_csv,
-                                        reports_summary_csv)
+from vicedtools.scripts.config import (
+    config, learning_tasks_dir, progress_reports_dir, reports_dir,
+    compass_progress_reports_schema, compass_learning_tasks_schema,
+    compass_reports_schema, enrolments_csv, classes_csv, reports_csv,
+    reports_summary_csv)
 
 
 def main():
-    reports = Reports()
+    reports = Reports(classes_csv, enrolments_csv)
 
     # import learning task data
     files = glob.glob(os.path.join(learning_tasks_dir, "*.csv"))
@@ -36,11 +36,8 @@ def main():
         try:
             reports.addLearningTasksExport(
                 filename,
-                grade_dtype=grade_dtype,
-                replace_values=config['compass']['replace_values'],
-                grade_score_mapper=config['compass']['learning_tasks']
-                ['result_values'],
-                learning_task_filter=learning_task_filter)
+                compass_learning_tasks_schema,
+                replace_values=config['compass']['replace_values'])
         except ValueError:
             pass
 
@@ -51,10 +48,8 @@ def main():
         try:
             reports.addReportsExport(
                 filename,
-                grade_dtype=grade_dtype,
-                replace_values=config['compass']['replace_values'],
-                grade_score_mapper=config['compass']['reports']
-                ['result_values'])
+                compass_reports_schema,
+                replace_values=config['compass']['replace_values'])
         except ValueError:
             pass
 
@@ -65,15 +60,10 @@ def main():
         try:
             reports.addProgressReportsExport(
                 filename,
-                config['compass']['progress_reports']['progress_report_items'],
-                grade_dtype=grade_dtype,
-                grade_score_mapper=config['compass']['progress_reports']
-                ['result_values'])
+                compass_progress_reports_schema,
+                replace_values=config['compass']['replace_values'])
         except ValueError:
             pass
-
-    reports.importSubjectsData(
-        classes_csv, replace_values=config['compass']['replace_values'])
 
     reports.saveReports(reports_csv)
     reports.saveSummary(reports_summary_csv)

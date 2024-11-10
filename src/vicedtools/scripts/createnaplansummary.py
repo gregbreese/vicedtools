@@ -16,8 +16,8 @@
 """Executable script for combining NAPLAN outcome exports to a single file."""
 
 import glob
-import os
 
+import numpy as np
 import pandas as pd
 
 from vicedtools.scripts.config import (naplan_outcomes_combined_csv,
@@ -26,6 +26,8 @@ from vicedtools.scripts.config import (naplan_outcomes_combined_csv,
 
 
 def get_band(score: str, test: str) -> int:
+    if score == "":
+        return np.nan
     year_level = int(test[2])
     if score < 270 and year_level == 3:
         return 1
