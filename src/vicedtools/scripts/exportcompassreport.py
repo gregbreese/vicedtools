@@ -28,9 +28,9 @@ from vicedtools.scripts.config import (reports_dir, compass_authenticator,
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Export all Compass progress reports.')
-    parser.add_argument('year', type=int, help='the report year')
-    parser.add_argument('title', help='the report title')
+        description='Export a single Compass report cycle.')
+    parser.add_argument('year', type=int, nargs='?', help='the report year')
+    parser.add_argument('title', nargs='?', help='the report title')
     args = parser.parse_args()
 
     if not os.path.exists(reports_dir):
@@ -39,9 +39,27 @@ def main():
     with open(report_cycles_json, 'r', encoding='utf-8') as f:
         cycles = json.load(f)
 
-    cycle_id = get_report_cycle_id(cycles, args.year, args.title)
     s = CompassSession(compass_school_code, compass_authenticator)
-    s.export_reports(cycle_id, args.year, args.title, save_dir=reports_dir)
+
+    if args.year and args.title:
+        cycle_id = get_report_cycle_id(cycles, args.year, args.title)
+        s.export_reports(cycle_id, args.year, args.title, save_dir=reports_dir)
+    else:
+        print("Select which report cycle to export:")
+        for i in range(len(cycles)):
+            print(f"{i+1}: {cycles[i]['year']} {cycles[i]['name']}")
+        resp = input("Select a cycle: ")
+        try:
+            resp = int(resp)
+        except TypeError:
+            print("Invalid cycle input.")
+            return
+        cycle_id = cycles[resp-1]['id']
+        title = cycles[resp-1]['name']
+        year = cycles[resp-1]['year']
+        s.export_reports(cycle_id, year, title, save_dir=reports_dir)
+
+            
 
 
 if __name__ == "__main__":
