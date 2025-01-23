@@ -80,14 +80,14 @@ def main():
 
     # Create criteria score table
     cols = [
-        'Date', 'StudentCode', 'Year level', 'Effective year level', 'OE', 'TS',
+        'Date', 'StudentCode', 'Year level', 'Effective year level', 'OE', 'RE', 'TS',
         'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP'
     ]
     rows = sittings_df["Result flag"] == "OK"
     criteria_df = sittings_df.loc[rows, cols].melt(
         id_vars=['Date', 'StudentCode', 'Year level', 'Effective year level'],
         value_vars=[
-            'OE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP'
+            'OE', 'RE', 'TS', 'ID', 'VOC', 'PARA', 'SENT', 'SPUNC', 'PINS', 'SP'
         ],
         value_name="Score",
         var_name="Criteria")

@@ -21,8 +21,9 @@ import os
 import sys
 
 from vicedtools.acer import OARSAuthenticator, OARSSession
-from vicedtools.scripts.config import (pat_sittings_dir, oars_authenticator,
-                                        oars_school_code)
+from vicedtools.scripts.config import (pat_sittings_dir, ewrite_sittings_dir,
+                                       oars_candidates_json, 
+                                       oars_authenticator, oars_school_code)
 
 
 def main():
@@ -46,15 +47,27 @@ def main():
         print("Dates must be formatted as dd-mm-yyyy")
         sys.exit(2)
 
-    # Export the requested sittings data
+    s = OARSSession(oars_school_code, oars_authenticator)
+
+    # Export the requested PAT sittings data
     if not os.path.exists(pat_sittings_dir):
         os.makedirs(pat_sittings_dir)
-
     export_file = os.path.join(pat_sittings_dir,
                                f"sittings {from_date} {to_date}.json")
 
-    s = OARSSession(oars_school_code, oars_authenticator)
     sittings = s.get_all_pat_sittings(from_date, to_date)
+    with open(export_file, 'w') as f:
+        json.dump(sittings, f)
+
+    # Export the requested eWrite sittings data
+    if not os.path.exists(ewrite_sittings_dir):
+        os.makedirs(ewrite_sittings_dir)
+    export_file = os.path.join(ewrite_sittings_dir,
+                               f"sittings {from_date} {to_date}.json")
+
+    with open(oars_candidates_json, 'r') as f:
+        candidates = json.load(f)
+    sittings = s.get_ewrite_sittings(candidates, from_date, to_date)
     with open(export_file, 'w') as f:
         json.dump(sittings, f)
 
