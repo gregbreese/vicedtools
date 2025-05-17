@@ -375,7 +375,7 @@ class CompassSession(requests.Session):
             append_date: If True, append today's date to the filenames in
                 yyyy-mm-dd format.
         '''
-        payload = f'{{"type":"77","parameters":"{{\\"schoolSisId\\":\\"1\\",\\"studentSisId\\":1,\\"studentUsername\\":1,\\"teacherUsername\\":1,\\"sectionSisId\\":1,\\"sectionName\\":1,\\"academicGroup\\":{academic_group}}}"}}'
+        payload = f'{{"type":"77","parameters":"{{\\"schoolSisId\\":\\"1\\",\\"studentSisId\\":1,\\"studentUsername\\":1,\\"teacherIdentifier\\":1,\\"teacherUsername\\":1,\\"sectionSisId\\":1,\\"sectionName\\":1,\\"academicGroup\\":{academic_group}}}"}}'
         archive_file_name = self.long_running_file_request(payload, save_dir)
         # unpack archive
         contents = [
@@ -519,7 +519,7 @@ class CompassSession(requests.Session):
             finish_date: The finish date for the export as yyyy-mm-dd
             save_dir: The folder to save the export into.
         """
-        payload = f'{{"type":"5","parameters":"{{\\"reportName\\":\\"cases21HalfDayCsv\\",\\"filename\\":\\"CASES21_HalfDay.csv\\",\\"startDateIn\\":\\"{start_date}T13:00:00.000Z\\",\\"finishDateIn\\":\\"{finish_date}T13:00:00.000Z\\",\\"includeExitedStudents\\":{str(included_exited).lower()},\\"minimumAbsentDays\\":\\"\\",\\"includeOverSixteens\\":true,\\"includePLCStudents\\":true,\\"yearLevelId\\":\\"\\",\\"campuses\\":\\"\\",\\"semester\\":\\"1\\",\\"collection\\":\\"Semester 1\\",\\"modifiedSinceDateIn\\":null,\\"userIds\\":\\"13894\\",\\"yearLevels\\":\\"7|8|9|10\\",\\"startDatePickerAttendanceByDayReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"exportDatePickerFullSchoolAuditRollReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"teachingDaysNumber\\":\\"8\\",\\"includeComments\\":true,\\"yearLevelsPreSchool\\":\\"\\",\\"yearLevelsPrimary\\":\\"\\",\\"yearLevelsMiddle\\":\\"\\",\\"yearLevelsSenior\\":\\"\\",\\"groupBy\\":null,\\"ethnicities\\":\\"\\",\\"yearLevelIds\\":\\"\\",\"formGroups\\":\\"\\",\"showNotes\":false}}"}}'
+        payload = f'{{"type":"5","parameters":"{{\\"reportName\\":\\"cases21HalfDayCsv\\",\\"filename\\":\\"CASES21_HalfDay.csv\\",\\"startDateIn\\":\\"{start_date}T13:00:00.000Z\\",\\"finishDateIn\\":\\"{finish_date}T13:00:00.000Z\\",\\"includeExitedStudents\\":{str(included_exited).lower()},\\"minimumAbsentDays\\":\\"\\",\\"includeOverSixteens\\":true,\\"includePLCStudents\\":true,\\"yearLevelId\\":\\"\\",\\"campuses\\":\\"\\",\\"semester\\":\\"1\\",\\"collection\\":\\"Semester 1\\",\\"modifiedSinceDateIn\\":null,\\"userIds\\":\\"13894\\",\\"yearLevels\\":\\"7|8|9|10\\",\\"startDatePickerAttendanceByDayReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"exportDatePickerFullSchoolAuditRollReport\\":\\"{finish_date}T14:00:00.000Z\\",\\"teachingDaysNumber\\":\\"8\\",\\"includeComments\\":true,\\"yearLevelsPreSchool\\":\\"\\",\\"yearLevelsPrimary\\":\\"\\",\\"yearLevelsMiddle\\":\\"\\",\\"yearLevelsSenior\\":\\"\\",\\"groupBy\\":null,\\"ethnicities\\":\\"\\",\\"yearLevelIds\\":\\"\\",\"formGroups\\":\\"\\",\"showNotes\":false,\"showSchoolActivities\":false}}"}}'
         self.long_running_file_request(payload, save_dir)
 
 
