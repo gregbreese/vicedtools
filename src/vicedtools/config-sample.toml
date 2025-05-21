@@ -41,54 +41,221 @@ reports_summary_csv = "reports_summary.csv"
 academic_groups_json = "academic groups.json"
 progress_report_cycles_json = "progress report cycles.json"
 report_cycles_json = "report cycles.json"
-subjects_csv = "subjects.csv"
+subjects_csv = "subjects metadata.csv"
 classes_csv = "classes.csv"
+enrolments_csv = "enrolments.csv"
 attendance_halfday_dir = "attendance halfday"
 
-# Order of all learning task, report and progress report grades, ordered
-# lowest to highest
-grade_order = [
-    "Exempt", "Modified", "Not Demonstrated", "Unsatisfactory", "Rarely",
-    "Below Standard", "Satisfactory", "Sometimes", "Competent", "Good", 
-    "Very Good", "Usually", "Excellent", "Consistently", "Outstanding" # sample
-]
-
-[compass.learning_tasks]
-# School-particular learning task metadata
+# School-particular learning task schema
+# compass.learning_tasks is a list of dicts
+# each dict contains a 'type' string, 'time_suffix' string, 'filters' list and 'result_values' dict
+# 'filters' list items are dicts containing 'column' and 'value' items for selecting rows from the learning tasks csv
+# 'result_values' is a dict of result_name:result_value pairs
+# sem 1 report tasks
+[[compass.learning_tasks]]
+"type"="Academic"
+"time_suffix"="-06-30"
+[[compass.learning_tasks.filters]]
+"column"="ComponentType"
+"value"="Academic Achievement - Outstanding, Excellent, Very Good, Good, Satisfactory, Below Standard, Unsatisfactory, Did Not Complete, Modified Assessment"
+[[compass.learning_tasks.filters]]
+"column"="IsIncludedInReport"
+"value"="True"
+[[compass.learning_tasks.filters]]
+"column"="ReportCycleName"
+"value"="Semester 1 End of Semester"
 [compass.learning_tasks.result_values]
-# Mapping of learning task grades to score values
-"Not Demonstrated" = 0.35
-"Below Standard" = 0.46
-"Satisfactory" = 0.55
-"Competent" = 0.64
-"Good" = 0.73
-"Very Good" = 0.82
-"Excellent" = 0.91
+"Modified Assessment" = nan
+"Did Not Complete" = nan
+"Not Shown" = nan
+"Unsatisfactory" = 0.2
+"Below Standard" = 0.4
+"Satisfactory" = 0.5
+"Good" = 0.6
+"Very Good" = 0.7
+"Excellent" = 0.85
+"Outstanding" = 1.0
+# sem 2 report tasks
+[[compass.learning_tasks]]
+"type" = "Academic"
+"time_suffix" = "-12-31"
+[[compass.learning_tasks.filters]]
+"column"="ComponentType"
+"value"="Academic Achievement - Outstanding, Excellent, Very Good, Good, Satisfactory, Below Standard, Unsatisfactory, Did Not Complete, Modified Assessment"
+[[compass.learning_tasks.filters]]
+"column"="IsIncludedInReport"
+"value"="True"
+[[compass.learning_tasks.filters]]
+"column"="ReportCycleName"
+"value"="Semester 2 End of Semester"
+[compass.learning_tasks.result_values]
+"Modified Assessment" = nan
+"Did Not Complete" = nan
+"Not Shown" = nan
+"Unsatisfactory" = 0.2
+"Below Standard" = 0.4
+"Satisfactory" = 0.5
+"Good" = 0.6
+"Very Good" = 0.7
+"Excellent" = 0.85
 "Outstanding" = 1.0
 
-# School-particular reports metadata
-[compass.reports.result_values]
-# Mapping of reports grades to scores
-"Unsatisfactory" = 0.35
-"Satisfactory" = 0.55
-"Good" = 0.73
-"Very Good" = 0.82
-"Excellent" = 1.0
+# School-particular reports schema
+# compass.reports is a list of dicts
+# each dict contains a 'type' string, 'filters' list and 'result_values' dict
+# 'filters' list items are dicts containing 'column' and 'value' items for selecting rows from the learning tasks csv
+# 'result_values' is a dict of result_name:result_value pairs
 
-[compass.progress_reports]
-# School-particular progress reports metadata
-# Titles of progress report items
-progress_report_items = [ 
-    "Completes all set learning", "Contribution in class", "Perseverance",
-    "Ready to learn", "Respectfully works/communicates with others",
-    "Uses feedback to improve" # sample
-]
-[compass.progress_reports.result_values]
-# Mapping of progress reports grades to scores
+#active_participation_learning_behaviour
+#effort_and_participation_learning_behaviour
+[[compass.reports]]
+"type"="Learning Behaviours"
+[[compass.reports.filters]]
+"column"="AssessmentArea"
+"value"="Effort and participation in class"
+[compass.reports.result_values]
 "Rarely" = 0.25
 "Sometimes" = 0.5
 "Usually" = 0.75
 "Consistently" = 1.0
+#acts_on_feedback_learning_behaviour
+[[compass.reports]]
+"type"="Learning Behaviours"
+[[compass.reports.filters]]
+"column"="AssessmentArea"
+"value"="Acts on Feedback"
+[compass.reports.result_values]
+"Rarely" = 0.25
+"Sometimes" = 0.5
+"Usually" = 0.75
+"Consistently" = 1.0
+#effective_class_time_learning_behaviour
+[[compass.reports]]
+"type"="Learning Behaviours"
+[[compass.reports.filters]]
+"column"="AssessmentArea"
+"value"="Effective use of class time"
+[compass.reports.result_values]
+"Rarely" = 0.25
+"Sometimes" = 0.5
+"Usually" = 0.75
+"Consistently" = 1.0
+
+#reports academic
+[[compass.reports]]
+"type"="Academic"
+[[compass.reports.filters]]
+"column"="AssessmentType"
+"value"="Assessment Tasks"
+[compass.reports.result_values]
+"Modified Assessment" = nan
+"Did Not Complete" = nan
+"Not Shown" = nan
+"Unsatisfactory" = 0.2
+"Below Standard" = 0.4
+"Satisfactory" = 0.5
+"Good" = 0.6
+"Very Good" = 0.7
+"Excellent" = 0.85
+"Outstanding" = 1.0
+
+#reports viccurric
+[[compass.reports]]
+"type"="VicCurric"
+[[compass.reports.filters]]
+"column"="AssessmentType"
+"value"="Victorian Curriculum Achievement Standards"
+[compass.reports.result_values]
+"2.0" = 2.0
+"2.5" = 2.5
+"3.0" = 3.0
+"3.5" = 3.5
+"4.0" = 4.0
+"4.5" = 4.5
+"5.0" = 5.0
+"5.5" = 5.5
+"6.0" = 6.0
+"6.5" = 6.5
+"7.0" = 7.0
+"7.5" = 7.5
+"8.0" = 8.0
+"8.5" = 8.5
+"9.0" = 9.0
+"9.5" = 9.5
+"10.0" = 10.0
+"10.5" = 10.5
+"11.0" = 11.0
+"DNP-UN" = nan
+"DNP-LP" = nan
+"DNP-EX" = nan
+"DNP-AB" = nan
+"DNP-LE" = nan
+"DNP-SI" = nan
+
+# eal reports
+[[compass.reports]]
+"type"="EAL Pathways"
+[[compass.reports.filters]]
+"column"="AssessmentType"
+"value"="EAL Pathways"
+[compass.reports.result_values]
+"B1.1" = nan
+"B1.2" = nan
+"B1.3" = nan
+"B2.1" = nan
+"B2.2" = nan
+"B2.3" = nan
+"B3.1" = nan
+"B3.2" = nan
+"B3.3" = nan
+"CL.1" = nan
+"CL.2" = nan
+"CL.3" = nan
+"C1.1" = nan
+"C1.2" = nan
+"C1.3" = nan
+"C2.1" = nan
+"C2.2" = nan
+"C2.3" = nan
+"C3.1" = nan
+"C3.2" = nan
+"C3.3" = nan
+"C4.1" = nan
+"C4.2" = nan
+"C4.3" = nan
+"DNP-UN" = nan
+"DNP-LP" = nan
+"DNP-EX" = nan
+"DNP-AB" = nan
+"DNP-LE" = nan
+"DNP-SI" = nan
+
+# vce s/n reports
+[[compass.reports]]
+"type"="VCE"
+[[compass.reports.filters]]
+"column"="AssessmentType"
+"value"="Victorian Certificate of Education (VCE) Outcomes"
+[compass.reports.result_values]
+"S" = 1
+"N" = 0
+"NA" = nan
+
+
+# School-particular progress reports schema
+# learning behaviours
+[[compass.progress_reports]]
+"type"="Learning Behaviours"
+"columns" = ["Active Participation", "Growth Mindset", "Self-regulation"]
+[compass.progress_reports.result_values]
+"Excluded" = nan
+"Not Yet Observed" = 0
+"Guided" = 0.2
+"Engaged" = 0.4
+"Self-Aware" = 0.6
+"Driven" = 0.8
+"Adaptive" = 1.0
+
 
 # General substitutions to make to Compass exports
 # Formatted as compass.replace_values.<field>.<original value> = <replace value>
