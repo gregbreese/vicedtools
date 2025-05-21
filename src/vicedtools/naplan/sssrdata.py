@@ -33,7 +33,6 @@ class SSSRdata:
         questions: A DataFrame containing metadata about NAPLAN test questions.
         responses: A DataFrame containing the individual item responses for
             all students.
-        bands: A DataFrame containing band cutoff metadata for each test.
     """
 
     def __init__(self, js_file: str):
@@ -58,8 +57,6 @@ class SSSRdata:
         self.questions["exemplarItemImageFile"] = self.questions[
             "exemplarItem"].str[-9:] + ".png"
 
-        self.bands = extract_bands_info(self.data['testLevelBandsInfo'])
-
         extracted_attempts = np.concatenate([
             extract_attempt_details(attempt)
             for attempt in self.data['attempts']
@@ -67,7 +64,7 @@ class SSSRdata:
         self.responses = pd.DataFrame.from_records(extracted_attempts)
         self.responses = pd.merge(
             self.responses,
-            self.questions[["eventIdentifier", "difficulty"]],
+            self.questions[["questionId","eventIdentifier", "difficulty"]],
             on=["questionId", "eventIdentifier"])
         self.responses["scaledScore"] = self.responses["scaledScore"].astype(
             float)
@@ -100,6 +97,47 @@ class SSSRdata:
                         handler.write(img_data)
                     time.sleep(0.1)
 
+
+    def export_outcome_levels(self, csv_file):
+        """Creates an Outcome Levels csv export.
+        
+        Exports each students overall results in all tests in a csv using the
+        same format as the NAPLAN Outcome Levels export.
+
+        Args:
+            csv_file: The path to save the export to.
+        """
+        records = []
+        for attempt in self.data['attempts']:
+            record = {}
+            record["First Name"] = attempt['student']['studentFirstName']
+            record[" Surname"] = attempt['student']['studentLastName']
+            record[" Reporting Test"] = "YR" + attempt['student']['testLevel'] + "O"
+            try:
+                record['Cases ID'] = attempt['student']['metadata']['schoolStudentId']
+            except KeyError:
+                record['Cases ID'] = ""
+            record['domain'] = attempt['domain']['domainName']
+            record['scaledScore'] = attempt['scaledScore']
+            records.append(record)
+        df = pd.DataFrame.from_records(records)
+
+        df['domain'] = df['domain'].str.upper()
+        df['domain'] = df['domain'].str.replace('AND', '&')
+        output = df.pivot(index=["Cases ID", "First Name", " Surname", " Reporting Test"], columns="domain", values="scaledScore").reset_index()
+
+        # make missing columns and save with columns in correct order
+        fields = ['APS Year', ' Reporting Test', 'First Name', ' Second Name', ' Surname',
+            'READING', 'WRITING', 'SPELLING', 'NUMERACY', 'GRAMMAR & PUNCTUATION',
+            'Home Group', 'Date of birth', 'Gender', 'LBOTE', 'ATSI',
+            'Home School Name', 'Reporting School Name', 'Cases ID']
+
+        output['APS Year'] = self.data['foreword'][-4:]
+        output['Home School Name'] =  self.data['school']['schoolName']
+        for field in fields:
+            if field not in output.columns:
+                output[field] = ""
+        output[fields].to_csv(csv_file, index=False)
 
 def extract_bands_info(bands_info):
     bands = []
@@ -146,45 +184,3 @@ def extract_attempt_details(attempt):
             extracted_answer[key] = answer[key]
         extracted_answers.append(extracted_answer)
     return extracted_answers
-
-
-    def export_outcome_levels(self, csv_file):
-        """Creates an Outcome Levels csv export.
-        
-        Exports each students overall results in all tests in a csv using the
-        same format as the NAPLAN Outcome Levels export.
-
-        Args:
-            csv_file: The path to save the export to.
-        """
-        records = []
-        for attempt in self.data['attempts']:
-            record = {}
-            record["First Name"] = attempt['student']['studentFirstName']
-            record[" Surname"] = attempt['student']['studentLastName']
-            record[" Reporting Test"] = "YR" + attempt['student']['testLevel'] + "O"
-            try:
-                record['Cases ID'] = attempt['student']['metadata']['schoolStudentId']
-            except KeyError:
-                record['Cases ID'] = ""
-            record['domain'] = attempt['domain']['domainName']
-            record['scaledScore'] = attempt['scaledScore']
-            records.append(record)
-        df = pd.DataFrame.from_records(records)
-
-        df['domain'] = df['domain'].str.upper()
-        df['domain'] = df['domain'].str.replace('AND', '&')
-        output = df.pivot(index=["Cases ID", "First Name", " Surname", " Reporting Test"], columns="domain", values="scaledScore").reset_index()
-
-        # make missing columns and save with columns in correct order
-        fields = ['APS Year', ' Reporting Test', 'First Name', ' Second Name', ' Surname',
-            'READING', 'WRITING', 'SPELLING', 'NUMERACY', 'GRAMMAR & PUNCTUATION',
-            'Home Group', 'Date of birth', 'Gender', 'LBOTE', 'ATSI',
-            'Home School Name', 'Reporting School Name', 'Cases ID']
-
-        output['APS Year'] = data['foreword'][-4:]
-        output['Home School Name'] = data['school']['schoolName']
-        for field in fields:
-            if field not in output.columns:
-                output[field] = ""
-        output[fields].to_csv(csv_file, index=False)
