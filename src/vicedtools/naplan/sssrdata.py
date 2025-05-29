@@ -67,7 +67,7 @@ class SSSRdata:
         self.responses = pd.DataFrame.from_records(extracted_attempts)
         self.responses = pd.merge(
             self.responses,
-            self.questions[["eventIdentifier", "difficulty"]],
+            self.questions[["questionId", "eventIdentifier", "difficulty"]],
             on=["questionId", "eventIdentifier"])
         self.responses["scaledScore"] = self.responses["scaledScore"].astype(
             float)
