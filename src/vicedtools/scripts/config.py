@@ -79,6 +79,8 @@ student_details_csv = os.path.join(student_details_dir,
                                    config['compass']['student_details_csv'])
 student_household_information_csv = os.path.join(
     student_details_dir, config['compass']['student_household_information_csv'])
+parent_mail_merge_csv = os.path.join(
+    student_details_dir, config['compass']['parent_mail_merge_csv'])
 subjects_dir = os.path.join(compass_dir, config['compass']['subjects_dir'])
 class_details_dir = os.path.join(compass_dir,
                                  config['compass']['class_details_dir'])
@@ -103,6 +105,7 @@ grade_dtype = pd.api.types.CategoricalDtype(
 compass_reports_schema = config['compass']['reports']
 compass_learning_tasks_schema = config['compass']['learning_tasks']
 compass_progress_reports_schema = config['compass']['progress_reports']
+
 
 # naplan
 from vicedtools.naplan.dataservicesession import DataServiceBasicAuthenticator

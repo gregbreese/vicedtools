@@ -55,7 +55,7 @@ def main():
     files = glob.glob(os.path.join(enrolment_details_dir, "*.csv"))
     for file in files:
         print(f"Processing file: {file}")
-        temp_df = pd.read_csv(file)
+        temp_df = pd.read_csv(file, dtype=str)
         temp_df['ss'] = pd.to_datetime(temp_df['ss'])
         temp_df['fs'] = pd.to_datetime(temp_df['fs'])
         temp_df["Year"] = ((temp_df['ss'].dt.year +

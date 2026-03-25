@@ -156,6 +156,7 @@ class Reports:
             if len(selected_df) == 0:
                 continue
             selected_df["Time"] = f"{year}{data_set['time_suffix']}"
+            selected_df['Time'] = pd.to_datetime(selected_df["Time"])
             selected_df["Type"] = data_set['type']
             if replace_values:
                 selected_df.replace(replace_values, inplace=True)

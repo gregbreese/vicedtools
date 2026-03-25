@@ -30,21 +30,19 @@ def main():
     if len(sys.argv) != 3:
         print("Received arguments were: ", sys.argv[1:])
         print("Required arguments are: from_date to_date")
-        print("Dates to be given as dd-mm-yyyy")
+        print("Dates to be given as yyyy-mm-dd")
         sys.exit(2)
     #else: # grab results from most recent end date to yesterday
 
     from_date = sys.argv[1]
     to_date = sys.argv[2]
-    if to_date[2] != "-" or to_date[5] != "-" or from_date[
-            2] != "-" or from_date[5] != "-":
-        print("Dates must be formatted as dd-mm-yyyy")
-        sys.exit(2)
+    if to_date[4] != "-" or to_date[7] != "-" or from_date[4] != "-" or from_date[7] != "-":
+        print("Dates must be formatted as yyyy-mm-dd")
     try:
-        date(int(from_date[6:10]), int(from_date[3:5]), int(from_date[:2]))
-        date(int(to_date[6:10]), int(to_date[3:5]), int(to_date[:2]))
+        date(int(from_date[:4]), int(from_date[5:7]), int(from_date[8:10]))
+        date(int(to_date[:4]), int(to_date[5:7]), int(to_date[8:10]))
     except ValueError:
-        print("Dates must be formatted as dd-mm-yyyy")
+        print("ValueError when creating dates. Dates must be formatted as yyyy-mm-dd")
         sys.exit(2)
 
     s = OARSSession(oars_school_code, oars_authenticator)
